@@ -26,7 +26,7 @@
 
 <main>
 
-  <!-- ホーム：3つの大ボタン＋デモ内容 -->
+  <!-- ホーム：3つの大ボタン（ページ切り替え用） -->
   <section id="home" class="page active">
     <div class="hero">
       <h2>人生二周目ノート</h2>
@@ -36,68 +36,26 @@
     <h3 class="section-title">どのノートから始める？</h3>
 
     <div class="home-buttons">
-      <button class="home-feature active" data-target="home-gen">
+      <button class="home-feature" data-go="generation">
         <span class="home-feature-title">世代別ノート</span>
         <span class="home-feature-desc">
           自分の年代の悩み・テーマ・心理学を整理
         </span>
       </button>
 
-      <button class="home-feature" data-target="home-knowledge">
+      <button class="home-feature" data-go="knowledge">
         <span class="home-feature-title">教養ノート</span>
         <span class="home-feature-desc">
           歴史・科学・心理学・社会を“二周目視点”で理解
         </span>
       </button>
 
-      <button class="home-feature" data-target="home-catchup">
+      <button class="home-feature" data-go="catchup">
         <span class="home-feature-title">キャッチアップノート</span>
         <span class="home-feature-desc">
           最新の社会変化・AI・ニュースを高速で把握
         </span>
       </button>
-    </div>
-
-    <!-- デモ内容（押したボタンに応じて切り替え） -->
-    <div id="home-gen" class="card home-demo">
-      <h3>世代別ノート（デモ）</h3>
-      <p>
-        あなたの年代（高校生・大学生・社会人など）を選ぶと、<br>
-        よくある悩み・心理学のキーワード・「二周目目線の捉え直し」が表示されます。
-      </p>
-      <ul>
-        <li>例：大学生 → 就活不安 / 社会的比較 / アイデンティティの揺れ</li>
-        <li>例：社会人 → バーンアウト / キャリアの曲がり角 / 同期との比較</li>
-      </ul>
-      <p class="demo-note">※現在はサンプル表示です。本実装では年代ごとの詳細データを紐づけ予定。</p>
-    </div>
-
-    <div id="home-knowledge" class="card home-demo hidden">
-      <h3>教養ノート（デモ）</h3>
-      <p>
-        歴史・科学・心理学・社会の出来事を、<br>
-        「今の自分の人生にどう関係するか？」という視点でまとめていくノートです。
-      </p>
-      <ul>
-        <li>産業革命 → 「識字率」と現代の「AIリテラシー」を対応させて理解</li>
-        <li>行動経済学 → 自分の買い物・勉強・人間関係のクセを言語化</li>
-        <li>社会構造の変化 → AI時代のキャリア設計に落とし込む</li>
-      </ul>
-      <p class="demo-note">※今は固定テキストですが、将来はトピックごとにカード化予定。</p>
-    </div>
-
-    <div id="home-catchup" class="card home-demo hidden">
-      <h3>キャッチアップノート（デモ）</h3>
-      <p>
-        1日5分で、世界と日本・AI・社会変化の「今だけ大事なところ」だけ拾うページ。<br>
-        気になったトピックは教養ノートや世代別ノートに送って深掘りできます。
-      </p>
-      <ul>
-        <li>今日のニュース3本（AI要約）</li>
-        <li>今日のキーワード：例）「生成AIエージェント」「リスキリング」</li>
-        <li>自分メモ：「これは将来の自分に関係しそう / しなさそう」</li>
-      </ul>
-      <p class="demo-note">※今はサンプル文章です。API連携で自動更新を予定。</p>
     </div>
   </section>
 
@@ -120,7 +78,7 @@
     </div>
   </section>
 
-  <!-- 教養ノート（詳細ページ） -->
+  <!-- 教養ノート（詳細ページ・デモ内容） -->
   <section id="knowledge" class="page">
     <h2>教養ノート</h2>
 
@@ -141,7 +99,7 @@
     </div>
   </section>
 
-  <!-- キャッチアップノート（詳細ページ） -->
+  <!-- キャッチアップノート（詳細ページ・デモ内容） -->
   <section id="catchup" class="page">
     <h2>キャッチアップノート</h2>
 
