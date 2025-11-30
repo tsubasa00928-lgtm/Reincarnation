@@ -68,37 +68,32 @@
     </div>
 
     <div class="menu-panel-body">
+      <!-- ホームだけ内部遷移 -->
       <button class="nav-item" data-go="home">
         <span class="material-symbols-rounded">home</span>
         <span>ホーム</span>
       </button>
 
-      <!-- ★ 修正：世代別ノートは別ページへのリンクに変更 -->
+      <!-- 以降はURL遷移（5タブ構成） -->
       <a class="nav-item" href="contents/generation-notes.html">
         <span class="material-symbols-rounded">diversity_3</span>
         <span>世代別ノート</span>
       </a>
 
-      <button class="nav-item" data-go="knowledge">
+      <a class="nav-item" href="contents/knowledge-notes.html">
         <span class="material-symbols-rounded">psychology</span>
         <span>教養ノート</span>
-      </button>
-      <button class="nav-item" data-go="catchup">
-        <span class="material-symbols-rounded">bolt</span>
-        <span>キャッチアップノート</span>
-      </button>
-      <button class="nav-item" data-go="experiences">
+      </a>
+
+      <a class="nav-item" href="contents/life-stories.html">
         <span class="material-symbols-rounded">menu_book</span>
-        <span>人生体験記</span>
-      </button>
-      <button class="nav-item" data-go="roadmap">
-        <span class="material-symbols-rounded">map</span>
-        <span>人生ロードマップ</span>
-      </button>
-      <button class="nav-item" data-go="stock">
-        <span class="material-symbols-rounded">grade</span>
-        <span>ユーザーストック</span>
-      </button>
+        <span>人生体験記ノート</span>
+      </a>
+
+      <a class="nav-item" href="contents/user-notes.html">
+        <span class="material-symbols-rounded">person</span>
+        <span>ユーザーノート</span>
+      </a>
     </div>
   </div>
 </div>
@@ -117,40 +112,34 @@
   <!-- ホーム：サイドバー + 中央コンテンツ -->
   <section id="home" class="page active">
     <div class="home-layout">
-      <!-- 左サイドバー：ホーム + 6ノート -->
+      <!-- 左サイドバー：ホーム + 4ノート -->
       <aside class="home-sidebar">
         <h2 class="sidebar-title">ノート一覧</h2>
+
         <button class="sidebar-nav-item" data-go="home">
           <span class="material-symbols-rounded">home</span>
           <span>ホーム</span>
         </button>
 
-        <!-- ★ 修正：世代別ノートは別ページへのリンクに変更 -->
         <a class="sidebar-nav-item" href="contents/generation-notes.html">
           <span class="material-symbols-rounded">diversity_3</span>
           <span>世代別ノート</span>
         </a>
 
-        <button class="sidebar-nav-item" data-go="knowledge">
+        <a class="sidebar-nav-item" href="contents/knowledge-notes.html">
           <span class="material-symbols-rounded">psychology</span>
           <span>教養ノート</span>
-        </button>
-        <button class="sidebar-nav-item" data-go="catchup">
-          <span class="material-symbols-rounded">bolt</span>
-          <span>キャッチアップノート</span>
-        </button>
-        <button class="sidebar-nav-item" data-go="experiences">
+        </a>
+
+        <a class="sidebar-nav-item" href="contents/life-stories.html">
           <span class="material-symbols-rounded">menu_book</span>
-          <span>人生体験記</span>
-        </button>
-        <button class="sidebar-nav-item" data-go="roadmap">
-          <span class="material-symbols-rounded">map</span>
-          <span>人生ロードマップ</span>
-        </button>
-        <button class="sidebar-nav-item" data-go="stock">
-          <span class="material-symbols-rounded">grade</span>
-          <span>ユーザーストック</span>
-        </button>
+          <span>人生体験記ノート</span>
+        </a>
+
+        <a class="sidebar-nav-item" href="contents/user-notes.html">
+          <span class="material-symbols-rounded">person</span>
+          <span>ユーザーノート</span>
+        </a>
       </aside>
 
       <!-- 中央〜右：キャッチコピー・ストーリー・機能・デイリーメッセージ -->
@@ -160,7 +149,7 @@
           <h2 class="home-heading">迷ったときに戻る「二周目の地図」</h2>
           <p class="home-text">
             人生は一度きりだけど、考え方は何度でもアップデートできる。<br>
-            人生二周目ノートは、世代・教養・変化キャッチアップの3つの視点で、今の自分を整理するための個人用OSです。
+            人生二周目ノートは、世代・教養・人生パターン・自分の記録の4つの視点で、今の自分を整理するための個人用OSです。
           </p>
         </section>
 
@@ -169,17 +158,16 @@
           <h3 class="home-subheading">ストーリー</h3>
           <p class="home-text">
             「もし今の知識と視点を持ったまま、もう一度やり直せるとしたら？」<br>
-            そんな二周目視点を、学生・社会人・定年後までつなげていくためのノート群として設計しています。
+            そんな二周目視点を、世代別ノート・教養ノート・人生体験記・ユーザーノートとして整理していきます。
           </p>
         </section>
 
-        <!-- 機能紹介：6つのノートカード -->
+        <!-- 機能紹介：4つのノートカード -->
         <section class="home-block">
-          <h3 class="home-subheading">機能紹介</h3>
-          <p class="home-text">6つのノートで、人生の全体像をゆっくり整理していきます。</p>
+          <h3 class="home-subheading">4つのノート機能</h3>
+          <p class="home-text">人生を「全体で見て」「自分ごととして編集する」ための4ノートです。</p>
 
           <div class="home-grid">
-            <!-- ★ 修正：ここも別ページリンクに -->
             <a class="large-feature" href="contents/generation-notes.html">
               <span class="feature-icon material-symbols-rounded">diversity_3</span>
               <div class="feature-text">
@@ -188,45 +176,29 @@
               </div>
             </a>
 
-            <button class="large-feature" data-go="knowledge">
+            <a class="large-feature" href="contents/knowledge-notes.html">
               <span class="feature-icon material-symbols-rounded">psychology</span>
               <div class="feature-text">
                 <span class="feature-title">教養ノート</span>
-                <span class="feature-sub">歴史・科学・心理・社会</span>
+                <span class="feature-sub">人間関係・心理・ビジネス・AI活用術</span>
               </div>
-            </button>
+            </a>
 
-            <button class="large-feature" data-go="catchup">
-              <span class="feature-icon material-symbols-rounded">bolt</span>
-              <div class="feature-text">
-                <span class="feature-title">キャッチアップノート</span>
-                <span class="feature-sub">社会変化・AI・ニュース</span>
-              </div>
-            </button>
-
-            <button class="large-feature" data-go="experiences">
+            <a class="large-feature" href="contents/life-stories.html">
               <span class="feature-icon material-symbols-rounded">menu_book</span>
               <div class="feature-text">
-                <span class="feature-title">人生体験記</span>
-                <span class="feature-sub">いろんな人生ストーリー</span>
+                <span class="feature-title">人生体験記ノート</span>
+                <span class="feature-sub">典型パターンから人生を俯瞰する</span>
               </div>
-            </button>
+            </a>
 
-            <button class="large-feature" data-go="roadmap">
-              <span class="feature-icon material-symbols-rounded">map</span>
+            <a class="large-feature" href="contents/user-notes.html">
+              <span class="feature-icon material-symbols-rounded">person</span>
               <div class="feature-text">
-                <span class="feature-title">人生ロードマップ</span>
-                <span class="feature-sub">3年・5年・10年の計画</span>
+                <span class="feature-title">ユーザーノート</span>
+                <span class="feature-sub">自分だけのメモ・相談ログ</span>
               </div>
-            </button>
-
-            <button class="large-feature" data-go="stock">
-              <span class="feature-icon material-symbols-rounded">grade</span>
-              <div class="feature-text">
-                <span class="feature-title">ユーザーストック</span>
-                <span class="feature-sub">刺さった言葉・記事・メモ</span>
-              </div>
-            </button>
+            </a>
           </div>
         </section>
 
@@ -242,7 +214,10 @@
     </div>
   </section>
 
-  <!-- 世代別ノート（※今は内部ページとして残しておくが、ナビからは飛ばない） -->
+  <!-- 以下のセクション（generation / knowledge / catchup / experiences / roadmap / stock）は
+       既存コードとの互換のため残しているが、ナビからは飛ばない想定 -->
+
+  <!-- 世代別ノート（内部版：今は使わない） -->
   <section id="generation" class="page">
     <div class="page-header-row">
       <div class="page-title-block">
@@ -266,7 +241,7 @@
     </div>
   </section>
 
-  <!-- 教養ノート -->
+  <!-- 教養ノート（内部版：今は使わない） -->
   <section id="knowledge" class="page">
     <div class="page-header-row">
       <div class="page-title-block">
@@ -281,7 +256,7 @@
     </div>
   </section>
 
-  <!-- キャッチアップノート -->
+  <!-- キャッチアップノート（未使用） -->
   <section id="catchup" class="page">
     <div class="page-header-row">
       <div class="page-title-block">
@@ -296,7 +271,7 @@
     </div>
   </section>
 
-  <!-- 人生体験記 -->
+  <!-- 人生体験記（内部版：今は使わない） -->
   <section id="experiences" class="page">
     <div class="page-header-row">
       <div class="page-title-block">
@@ -311,7 +286,7 @@
     </div>
   </section>
 
-  <!-- 人生ロードマップ -->
+  <!-- 人生ロードマップ（未使用） -->
   <section id="roadmap" class="page">
     <div class="page-header-row">
       <div class="page-title-block">
@@ -326,7 +301,7 @@
     </div>
   </section>
 
-  <!-- ユーザーストック -->
+  <!-- ユーザーストック（内部版：今は使わない） -->
   <section id="stock" class="page">
     <div class="page-header-row">
       <div class="page-title-block">
