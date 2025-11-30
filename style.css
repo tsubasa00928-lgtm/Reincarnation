@@ -17,12 +17,14 @@ body {
    ========================= */
 
 header {
-  padding: 10px 18px 4px;
+  padding: 10px 0 4px;
 }
 
 .header-inner {
-  max-width: 1040px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
+  padding: 0 20px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -207,9 +209,10 @@ header {
 }
 
 .hero-inner {
-  max-width: 1040px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   padding: 60px 20px 40px;
+  box-sizing: border-box;
   text-align: center;
 }
 
@@ -239,9 +242,10 @@ header {
    ========================= */
 
 main {
-  max-width: 1040px;
-  margin: 0 auto;
-  padding: 24px 18px 60px;
+  width: 100%;
+  margin: 0;
+  padding: 24px 20px 60px;
+  box-sizing: border-box;
 }
 
 /* ページ切り替えアニメ */
@@ -249,13 +253,20 @@ main {
   display: none;
   animation: fadeIn 0.25s ease;
 }
+
 .page.active {
   display: block;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* =========================
@@ -266,6 +277,8 @@ main {
   display: flex;
   gap: 24px;
   align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .home-sidebar {
@@ -335,6 +348,7 @@ main {
 }
 
 /* ホーム内の機能紹介グリッド */
+
 .section-heading {
   margin: 0 0 16px;
   font-size: 18px;
@@ -447,6 +461,14 @@ main {
   box-shadow: 0 18px 20px rgba(0, 0, 0, 0.05);
 }
 
+/* 中央寄せではなく、画面幅いっぱいに近づける */
+.page .card {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* デフォルトのテキストスタイル */
+
 .card h3 {
   margin-top: 0;
   margin-bottom: 8px;
@@ -465,6 +487,7 @@ main {
 }
 
 /* Markdownブロック用 */
+
 .markdown-block {
   line-height: 1.6;
 }
@@ -526,11 +549,13 @@ main {
   .home-layout {
     flex-direction: column;
   }
+
   .home-sidebar {
     width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
   }
+
   .sidebar-nav-item {
     flex: 1 1 calc(50% - 4px);
   }
@@ -539,5 +564,13 @@ main {
 @media (max-width: 640px) {
   .header-orbit {
     display: none;
+  }
+
+  main {
+    padding: 20px 12px 48px;
+  }
+
+  .hero-inner {
+    padding: 40px 12px 28px;
   }
 }
