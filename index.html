@@ -22,7 +22,7 @@
 
 <header>
   <div class="header-inner">
-    <!-- 左端：メニューボタン -->
+    <!-- 左端：メニューボタン（オーバーレイ） -->
     <button id="menu-toggle" class="menu-toggle" aria-expanded="false" aria-controls="menu-overlay">
       <span class="material-symbols-rounded">menu</span>
     </button>
@@ -111,60 +111,127 @@
 
 <main>
 
-  <!-- ホーム：6つのノート -->
+  <!-- ホーム：サイドバー + 中央コンテンツ -->
   <section id="home" class="page active">
-    <h2 class="section-heading">ノートを選ぶ</h2>
+    <div class="home-layout">
+      <!-- 左サイドバー：ホーム + 6ノート -->
+      <aside class="home-sidebar">
+        <h2 class="sidebar-title">ノート一覧</h2>
+        <button class="sidebar-nav-item" data-go="home">
+          <span class="material-symbols-rounded">home</span>
+          <span>ホーム</span>
+        </button>
+        <button class="sidebar-nav-item" data-go="generation">
+          <span class="material-symbols-rounded">diversity_3</span>
+          <span>世代別ノート</span>
+        </button>
+        <button class="sidebar-nav-item" data-go="knowledge">
+          <span class="material-symbols-rounded">psychology</span>
+          <span>教養ノート</span>
+        </button>
+        <button class="sidebar-nav-item" data-go="catchup">
+          <span class="material-symbols-rounded">bolt</span>
+          <span>キャッチアップノート</span>
+        </button>
+        <button class="sidebar-nav-item" data-go="experiences">
+          <span class="material-symbols-rounded">menu_book</span>
+          <span>人生体験記</span>
+        </button>
+        <button class="sidebar-nav-item" data-go="roadmap">
+          <span class="material-symbols-rounded">map</span>
+          <span>人生ロードマップ</span>
+        </button>
+        <button class="sidebar-nav-item" data-go="stock">
+          <span class="material-symbols-rounded">grade</span>
+          <span>ユーザーストック</span>
+        </button>
+      </aside>
 
-    <div class="home-grid">
+      <!-- 中央〜右：キャッチコピー・ストーリー・機能・デイリーメッセージ -->
+      <div class="home-main">
+        <!-- キャッチコピー -->
+        <section class="home-block">
+          <h2 class="home-heading">迷ったときに戻る「二周目の地図」</h2>
+          <p class="home-text">
+            人生は一度きりだけど、考え方は何度でもアップデートできる。<br>
+            人生二周目ノートは、世代・教養・変化キャッチアップの3つの視点で、今の自分を整理するための個人用OSです。
+          </p>
+        </section>
 
-      <button class="large-feature" data-go="generation">
-        <span class="feature-icon material-symbols-rounded">diversity_3</span>
-        <div class="feature-text">
-          <span class="feature-title">世代別ノート</span>
-          <span class="feature-sub">年代ごとの悩み・心理・テーマ</span>
-        </div>
-      </button>
+        <!-- ストーリー性 -->
+        <section class="home-block">
+          <h3 class="home-subheading">ストーリー</h3>
+          <p class="home-text">
+            「もし今の知識と視点を持ったまま、もう一度やり直せるとしたら？」<br>
+            そんな二周目視点を、学生・社会人・定年後までつなげていくためのノート群として設計しています。
+          </p>
+        </section>
 
-      <button class="large-feature" data-go="knowledge">
-        <span class="feature-icon material-symbols-rounded">psychology</span>
-        <div class="feature-text">
-          <span class="feature-title">教養ノート</span>
-          <span class="feature-sub">歴史・科学・心理・社会</span>
-        </div>
-      </button>
+        <!-- 機能紹介：6つのノートカード -->
+        <section class="home-block">
+          <h3 class="home-subheading">機能紹介</h3>
+          <p class="home-text">6つのノートで、人生の全体像をゆっくり整理していきます。</p>
 
-      <button class="large-feature" data-go="catchup">
-        <span class="feature-icon material-symbols-rounded">bolt</span>
-        <div class="feature-text">
-          <span class="feature-title">キャッチアップノート</span>
-          <span class="feature-sub">社会変化・AI・ニュース</span>
-        </div>
-      </button>
+          <div class="home-grid">
+            <button class="large-feature" data-go="generation">
+              <span class="feature-icon material-symbols-rounded">diversity_3</span>
+              <div class="feature-text">
+                <span class="feature-title">世代別ノート</span>
+                <span class="feature-sub">年代ごとの悩み・心理・テーマ</span>
+              </div>
+            </button>
 
-      <button class="large-feature" data-go="experiences">
-        <span class="feature-icon material-symbols-rounded">menu_book</span>
-        <div class="feature-text">
-          <span class="feature-title">人生体験記</span>
-          <span class="feature-sub">いろんな人生ストーリー</span>
-        </div>
-      </button>
+            <button class="large-feature" data-go="knowledge">
+              <span class="feature-icon material-symbols-rounded">psychology</span>
+              <div class="feature-text">
+                <span class="feature-title">教養ノート</span>
+                <span class="feature-sub">歴史・科学・心理・社会</span>
+              </div>
+            </button>
 
-      <button class="large-feature" data-go="roadmap">
-        <span class="feature-icon material-symbols-rounded">map</span>
-        <div class="feature-text">
-          <span class="feature-title">人生ロードマップ</span>
-          <span class="feature-sub">3年・5年・10年の計画</span>
-        </div>
-      </button>
+            <button class="large-feature" data-go="catchup">
+              <span class="feature-icon material-symbols-rounded">bolt</span>
+              <div class="feature-text">
+                <span class="feature-title">キャッチアップノート</span>
+                <span class="feature-sub">社会変化・AI・ニュース</span>
+              </div>
+            </button>
 
-      <button class="large-feature" data-go="stock">
-        <span class="feature-icon material-symbols-rounded">grade</span>
-        <div class="feature-text">
-          <span class="feature-title">ユーザーストック</span>
-          <span class="feature-sub">刺さった言葉・記事・メモ</span>
-        </div>
-      </button>
+            <button class="large-feature" data-go="experiences">
+              <span class="feature-icon material-symbols-rounded">menu_book</span>
+              <div class="feature-text">
+                <span class="feature-title">人生体験記</span>
+                <span class="feature-sub">いろんな人生ストーリー</span>
+              </div>
+            </button>
 
+            <button class="large-feature" data-go="roadmap">
+              <span class="feature-icon material-symbols-rounded">map</span>
+              <div class="feature-text">
+                <span class="feature-title">人生ロードマップ</span>
+                <span class="feature-sub">3年・5年・10年の計画</span>
+              </div>
+            </button>
+
+            <button class="large-feature" data-go="stock">
+              <span class="feature-icon material-symbols-rounded">grade</span>
+              <div class="feature-text">
+                <span class="feature-title">ユーザーストック</span>
+                <span class="feature-sub">刺さった言葉・記事・メモ</span>
+              </div>
+            </button>
+          </div>
+        </section>
+
+        <!-- デイリーメッセージ（デモ） -->
+        <section class="home-block">
+          <h3 class="home-subheading">今日のメッセージ（デモ）</h3>
+          <p class="home-text">
+            「一周目の自分を責めなくていい。<br>
+            二周目の自分が、ただ静かに道を整えていけばいい。」
+          </p>
+        </section>
+      </div>
     </div>
   </section>
 
