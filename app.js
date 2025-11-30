@@ -2,46 +2,44 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   //----------------------------------
-  // 下タブ：ページ切り替え
+  // 汎用：ページ切り替え関数
   //----------------------------------
-  const tabButtons = document.querySelectorAll(".tabbar button");
   const pages = document.querySelectorAll(".page");
+  const tabButtons = document.querySelectorAll(".tabbar button");
 
+  function switchPage(pageId) {
+    // ページ表示の切り替え
+    pages.forEach(p => p.classList.remove("active"));
+    const target = document.getElementById(pageId);
+    if (target) target.classList.add("active");
+
+    // 下タブの見た目切り替え
+    tabButtons.forEach(b => {
+      b.classList.toggle("active", b.dataset.page === pageId);
+    });
+  }
+
+  //----------------------------------
+  // 下タブ：クリックでページ切り替え
+  //----------------------------------
   tabButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const pageId = btn.dataset.page;
-
-      pages.forEach(p => p.classList.remove("active"));
-      const target = document.getElementById(pageId);
-      if (target) target.classList.add("active");
-
-      tabButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
+      switchPage(pageId);
     });
   });
 
   //----------------------------------
-  // ホーム：3つの大ボタン → デモ内容切替
+  // ホームの大ボタン：別ページへ切り替え
   //----------------------------------
-  const featureButtons = document.querySelectorAll(".home-feature");
-  const featureSections = document.querySelectorAll(".home-demo");
+  const homeButtons = document.querySelectorAll(".home-feature");
 
-  featureButtons.forEach(btn => {
+  homeButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-      const targetId = btn.dataset.target;
-
-      // ボタンの見た目切り替え
-      featureButtons.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      // デモセクションの切り替え
-      featureSections.forEach(sec => {
-        if (sec.id === targetId) {
-          sec.classList.remove("hidden");
-        } else {
-          sec.classList.add("hidden");
-        }
-      });
+      const targetPage = btn.dataset.go; // generation / knowledge / catchup
+      if (targetPage) {
+        switchPage(targetPage);
+      }
     });
   });
 
