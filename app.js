@@ -31,7 +31,7 @@ function switchPage(pageId) {
 }
 
 /* =========================
-   ホームの6ノート
+   ホームの大きいカード（機能紹介）
    ========================= */
 
 document.querySelectorAll(".large-feature").forEach(btn => {
@@ -45,7 +45,21 @@ document.querySelectorAll(".large-feature").forEach(btn => {
 });
 
 /* =========================
-   「ホーム」ボタン
+   ホーム左サイドバーのナビ
+   ========================= */
+
+document.querySelectorAll(".sidebar-nav-item").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const targetPage = btn.dataset.go;
+    if (targetPage) {
+      switchPage(targetPage);
+      closeMenuIfOpen();
+    }
+  });
+});
+
+/* =========================
+   「ホーム」ボタン（各ページ右上）
    ========================= */
 
 document.querySelectorAll(".back-home").forEach(btn => {
