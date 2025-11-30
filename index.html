@@ -26,30 +26,20 @@
 
 <main>
 
-  <!-- ホーム（説明なし・3つの大きいタブのみ） -->
+  <!-- ホーム：でかい3タブだけ -->
   <section id="home" class="page active">
-
     <div class="large-feature-buttons">
-      <button class="large-feature" data-go="generation">
-        🌱 世代別ノート
-      </button>
-
-      <button class="large-feature" data-go="knowledge">
-        📘 教養ノート
-      </button>
-
-      <button class="large-feature" data-go="catchup">
-        ⚡ キャッチアップノート
-      </button>
+      <button class="large-feature" data-go="generation">🌱 世代別ノート</button>
+      <button class="large-feature" data-go="knowledge">📘 教養ノート</button>
+      <button class="large-feature" data-go="catchup">⚡ キャッチアップノート</button>
     </div>
-
   </section>
 
   <!-- 世代別ノート -->
   <section id="generation" class="page">
     <div class="page-header-row">
       <h2>世代別ノート</h2>
-      <button class="back-home" data-go="home">← ホームに戻る</button>
+      <button class="back-home">← ホームに戻る</button>
     </div>
 
     <div class="generation-tabs">
@@ -71,7 +61,7 @@
   <section id="knowledge" class="page">
     <div class="page-header-row">
       <h2>教養ノート</h2>
-      <button class="back-home" data-go="home">← ホームに戻る</button>
+      <button class="back-home">← ホームに戻る</button>
     </div>
 
     <div class="card">
@@ -95,7 +85,7 @@
   <section id="catchup" class="page">
     <div class="page-header-row">
       <h2>キャッチアップノート</h2>
-      <button class="back-home" data-go="home">← ホームに戻る</button>
+      <button class="back-home">← ホームに戻る</button>
     </div>
 
     <div class="card">
@@ -200,6 +190,9 @@
     })
   );
 
+  // 初期表示
+  // （小学生のテーマを描画しておく）
+  document.querySelector(".generation-tabs button.gen-active").click();
 </script>
 
 </body>
