@@ -17,13 +17,6 @@
   <p class="subtitle">人生をかしこく、後悔しないために</p>
 </header>
 
-<nav class="tabbar">
-  <button data-page="home" class="active">ホーム</button>
-  <button data-page="generation">世代別</button>
-  <button data-page="knowledge">教養</button>
-  <button data-page="catchup">変化を追う</button>
-</nav>
-
 <main>
 
   <!-- ホーム：でかい3タブだけ -->
@@ -111,29 +104,25 @@
 <script>
   /* -------- ページ切り替え -------- */
   const pages = document.querySelectorAll(".page");
-  const tabButtons = document.querySelectorAll(".tabbar button");
 
   function switchPage(pageId) {
     pages.forEach(p => p.classList.remove("active"));
-    document.getElementById(pageId).classList.add("active");
-
-    tabButtons.forEach(b =>
-      b.classList.toggle("active", b.dataset.page === pageId)
-    );
+    const target = document.getElementById(pageId);
+    if (target) target.classList.add("active");
   }
 
-  tabButtons.forEach(btn =>
-    btn.addEventListener("click", () => switchPage(btn.dataset.page))
-  );
+  /* -------- ホームの巨大3タブ -------- */
+  document.querySelectorAll(".large-feature").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const targetPage = btn.dataset.go;
+      if (targetPage) switchPage(targetPage);
+    });
+  });
 
-  /* -------- ホームの大タブ -------- */
-  document.querySelectorAll(".large-feature").forEach(btn =>
-    btn.addEventListener("click", () => switchPage(btn.dataset.go))
-  );
-
-  document.querySelectorAll(".back-home").forEach(btn =>
-    btn.addEventListener("click", () => switchPage("home"))
-  );
+  /* -------- 各ページの「ホームに戻る」 -------- */
+  document.querySelectorAll(".back-home").forEach(btn => {
+    btn.addEventListener("click", () => switchPage("home"));
+  });
 
   /* -------- 世代別ノート -------- */
   const generationData = {
@@ -171,28 +160,30 @@
 
   const genTitle = document.getElementById("gen-title");
   const genList  = document.getElementById("gen-list");
+  const genButtons = document.querySelectorAll(".generation-tabs button");
 
-  document.querySelectorAll(".generation-tabs button").forEach(btn =>
+  function renderGeneration(gen) {
+    if (!genTitle || !genList) return;
+    genTitle.textContent = gen + "のテーマ";
+    genList.innerHTML = "";
+    (generationData[gen] || []).forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      genList.appendChild(li);
+    });
+  }
+
+  // 初期表示（小学生）
+  renderGeneration("小学生");
+
+  genButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const gen = btn.dataset.gen;
-      genTitle.textContent = gen + "のテーマ";
-
-      genList.innerHTML = "";
-      generationData[gen].forEach(item => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        genList.appendChild(li);
-      });
-
-      document.querySelectorAll(".generation-tabs button")
-        .forEach(b => b.classList.remove("gen-active"));
+      genButtons.forEach(b => b.classList.remove("gen-active"));
       btn.classList.add("gen-active");
-    })
-  );
-
-  // 初期表示
-  // （小学生のテーマを描画しておく）
-  document.querySelector(".generation-tabs button.gen-active").click();
+      renderGeneration(gen);
+    });
+  });
 </script>
 
 </body>
