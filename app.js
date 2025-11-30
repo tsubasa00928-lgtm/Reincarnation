@@ -5,9 +5,11 @@ document.querySelectorAll(".tabbar button").forEach(btn => {
   btn.addEventListener("click", () => {
     const page = btn.dataset.page;
 
+    // ページの表示切替
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.getElementById(page).classList.add("active");
 
+    // タブの見た目切替
     document.querySelectorAll(".tabbar button").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
   });
@@ -52,14 +54,14 @@ const generationData = {
 let currentGen = "小学生";
 
 const genTitle = document.getElementById("gen-title");
-const genList = document.getElementById("gen-list");
+const genList  = document.getElementById("gen-list");
 
 function renderGeneration(gen) {
   currentGen = gen;
   genTitle.textContent = `${gen}のテーマ`;
   genList.innerHTML = "";
 
-  generationData[gen].forEach(item => {
+  (generationData[gen] || []).forEach(item => {
     const li = document.createElement("li");
     li.textContent = item;
     genList.appendChild(li);
