@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>人生二周目ノート</title>
 
+  <!-- フォント：Inter + Noto Sans JP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Material Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+
   <link rel="stylesheet" href="style.css">
   <meta name="theme-color" content="#b8f5c8">
   <link rel="manifest" href="manifest.webmanifest">
@@ -22,44 +30,101 @@
 </header>
 
 <section class="hero-section">
-  <h1 class="hero-title">人生二周目ノート</h1>
-  <p class="hero-sub1">人生をかしこく、後悔しないために</p>
-  <p class="hero-sub2">二周目視点で、人生をアップデートする。</p>
+  <div class="hero-inner">
+    <h1 class="hero-title">人生二周目ノート</h1>
+    <p class="hero-sub1">人生をかしこく、後悔しないために</p>
+    <p class="hero-sub2">二周目視点で、人生をアップデートする。</p>
+  </div>
 </section>
 
 <main>
 
+  <!-- コンセプト帯 -->
+  <section class="concept-strip">
+    <div class="concept-item">
+      <h3>01 世代別</h3>
+      <p>年齢ごとの“つまずき”を心理・テーマで整理。</p>
+    </div>
+    <div class="concept-item">
+      <h3>02 教養</h3>
+      <p>歴史・科学・社会を二周目視点で読み替える。</p>
+    </div>
+    <div class="concept-item">
+      <h3>03 実践</h3>
+      <p>体験記・ロードマップ・ストックで行動に変える。</p>
+    </div>
+  </section>
+
+  <!-- 導線帯：おすすめの始め方 -->
+  <section class="flow-strip">
+    <h2 class="flow-title">おすすめの始め方</h2>
+    <div class="flow-steps">
+      <button class="flow-step" data-go="generation">
+        <span class="step-label">STEP 1</span>
+        <span class="step-body">自分の年代を押して<br>「いまの悩みマップ」を見る</span>
+      </button>
+      <button class="flow-step" data-go="roadmap">
+        <span class="step-label">STEP 2</span>
+        <span class="step-body">3年・5年先の<br>ざっくり人生ロードマップを書く</span>
+      </button>
+      <button class="flow-step" data-go="stock">
+        <span class="step-label">STEP 3</span>
+        <span class="step-body">刺さった言葉や記事を<br>ユーザーストックに貯める</span>
+      </button>
+    </div>
+  </section>
+
   <!-- ホーム：6つの巨大タブ -->
   <section id="home" class="page active">
-    <div class="large-feature-buttons">
+    <h2 class="section-heading">6つのノートから選ぶ</h2>
+
+    <div class="home-grid">
       <button class="large-feature" data-go="generation">
-        <span class="feature-title">🌱 世代別ノート</span>
-        <span class="feature-sub">年代ごとの悩み・心理・テーマを整理</span>
+        <span class="feature-icon material-symbols-rounded">diversity_3</span>
+        <div class="feature-text">
+          <span class="feature-title">世代別ノート</span>
+          <span class="feature-sub">年代ごとの悩み・心理・テーマを整理</span>
+        </div>
       </button>
 
       <button class="large-feature" data-go="knowledge">
-        <span class="feature-title">📘 教養ノート</span>
-        <span class="feature-sub">歴史・科学・心理・社会を二周目視点で理解</span>
+        <span class="feature-icon material-symbols-rounded">psychology</span>
+        <div class="feature-text">
+          <span class="feature-title">教養ノート</span>
+          <span class="feature-sub">歴史・科学・心理・社会を二周目視点で理解</span>
+        </div>
       </button>
 
       <button class="large-feature" data-go="catchup">
-        <span class="feature-title">⚡ キャッチアップノート</span>
-        <span class="feature-sub">社会変化・AI・ニュースを素早く把握</span>
+        <span class="feature-icon material-symbols-rounded">bolt</span>
+        <div class="feature-text">
+          <span class="feature-title">キャッチアップノート</span>
+          <span class="feature-sub">社会変化・AI・ニュースを素早く把握</span>
+        </div>
       </button>
 
       <button class="large-feature" data-go="experiences">
-        <span class="feature-title">📚 人生体験記</span>
-        <span class="feature-sub">いろんな人生のストーリーを要約で読む</span>
+        <span class="feature-icon material-symbols-rounded">menu_book</span>
+        <div class="feature-text">
+          <span class="feature-title">人生体験記</span>
+          <span class="feature-sub">いろんな人生のストーリーを要約で読む</span>
+        </div>
       </button>
 
       <button class="large-feature" data-go="roadmap">
-        <span class="feature-title">🗺️ 人生ロードマップ</span>
-        <span class="feature-sub">3年・5年・10年のマイルストーンを描く</span>
+        <span class="feature-icon material-symbols-rounded">map</span>
+        <div class="feature-text">
+          <span class="feature-title">人生ロードマップ</span>
+          <span class="feature-sub">3年・5年・10年のマイルストーンを描く</span>
+        </div>
       </button>
 
       <button class="large-feature" data-go="stock">
-        <span class="feature-title">⭐ ユーザーストック</span>
-        <span class="feature-sub">自分に刺さった言葉・記事・メモを貯める</span>
+        <span class="feature-icon material-symbols-rounded">grade</span>
+        <div class="feature-text">
+          <span class="feature-title">ユーザーストック</span>
+          <span class="feature-sub">自分に刺さった言葉・記事・メモを貯める</span>
+        </div>
       </button>
     </div>
   </section>
@@ -239,8 +304,8 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  /* -------- ホームの巨大6タブ -------- */
-  document.querySelectorAll(".large-feature").forEach(btn => {
+  /* -------- ホームの巨大6タブ・導線ボタン -------- */
+  document.querySelectorAll(".large-feature, .flow-step").forEach(btn => {
     btn.addEventListener("click", () => {
       const targetPage = btn.dataset.go;
       if (targetPage) switchPage(targetPage);
