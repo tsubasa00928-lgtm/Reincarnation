@@ -127,7 +127,7 @@ main {
   gap: 16px;
 }
 
-/* PCでは少しだけ非対称だが、シンプルさ優先 */
+/* PCでは少し非対称 */
 @media (min-width: 840px) {
   .home-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -242,6 +242,32 @@ main {
   margin: 4px 0 0;
   padding-left: 18px;
   font-size: 14px;
+}
+
+/* Markdownブロック用 */
+.markdown-block {
+  line-height: 1.6;
+}
+
+.markdown-block h1,
+.markdown-block h2,
+.markdown-block h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.markdown-block p {
+  margin: 6px 0;
+}
+
+.markdown-block ul {
+  margin: 6px 0 0;
+  padding-left: 20px;
+}
+
+.markdown-placeholder {
+  opacity: 0.6;
+  font-size: 13px;
 }
 
 /* =========================
