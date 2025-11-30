@@ -3,7 +3,7 @@
    ========================= */
 
 const pages = document.querySelectorAll(".page");
-const hero = document.getElementById("hero");
+const hero = document.getElementById("hero"); // ← ヒーロー要素
 
 function switchPage(pageId) {
   // ページ表示切り替え
@@ -11,12 +11,12 @@ function switchPage(pageId) {
   const target = document.getElementById(pageId);
   if (target) target.classList.add("active");
 
-  // ✅ ヒーローの表示/非表示（ホームだけ表示）
+  // ✅ ホームだけヒーロー表示、それ以外は非表示
   if (hero) {
     if (pageId === "home") {
-      hero.style.display = "";
+      hero.style.display = "";       // 初期状態（block扱い）
     } else {
-      hero.style.display = "none";
+      hero.style.display = "none";   // 完全に消す
     }
   }
 
@@ -144,6 +144,6 @@ genButtons.forEach(btn => {
   });
 });
 
-// 初期表示：小学生（elementary）を読み込む & ホーム表示
+// 初期表示：小学生（elementary）とホーム
 loadGeneration("elementary");
 switchPage("home");
