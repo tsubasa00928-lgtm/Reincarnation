@@ -1,4 +1,7 @@
-/* -------- ページ切り替え -------- */
+/* =========================
+   ページ切り替え
+   ========================= */
+
 const pages = document.querySelectorAll(".page");
 
 function switchPage(pageId) {
@@ -6,9 +9,19 @@ function switchPage(pageId) {
   const target = document.getElementById(pageId);
   if (target) target.classList.add("active");
   window.scrollTo({ top: 0, behavior: "smooth" });
+
+  // ページごとのMarkdown読み込み（1回目だけ）
+  if (pageId in sectionMarkdownMap && !loadedSections.has(pageId)) {
+    const info = sectionMarkdownMap[pageId];
+    loadMarkdown(info.path, info.targetId);
+    loadedSections.add(pageId);
+  }
 }
 
-/* -------- ホームの6ノート -------- */
+/* =========================
+   ホームの6ノート
+   ========================= */
+
 document.querySelectorAll(".large-feature").forEach(btn => {
   btn.addEventListener("click", () => {
     const targetPage = btn.dataset.go;
@@ -16,68 +29,108 @@ document.querySelectorAll(".large-feature").forEach(btn => {
   });
 });
 
-/* -------- 各ページの「ホーム」ボタン -------- */
+/* =========================
+   「ホーム」ボタン
+   ========================= */
+
 document.querySelectorAll(".back-home").forEach(btn => {
   btn.addEventListener("click", () => switchPage("home"));
 });
 
-/* -------- 世代別ノート -------- */
-const generationData = {
-  "小学生": [
-    "友だち関係、仲間外れへの不安",
-    "怒られる恐怖と承認欲求",
-    "勉強より“遊び”の優先順位問題"
-  ],
-  "中学生": [
-    "自分のキャラづくり問題",
-    "SNSと比較で自信が揺らぐ",
-    "進路への漠然とした不安"
-  ],
-  "高校生": [
-    "進路選択のストレス",
-    "模試の結果で自己評価が上下",
-    "親の期待とのズレ"
-  ],
-  "大学生": [
-    "就活・キャリア不安",
-    "周りがうまくいって見える問題",
-    "自分が何者かわからない感覚"
-  ],
-  "社会人": [
-    "仕事量と責任の増加による疲労",
-    "キャリアの方向に迷う",
-    "同期との比較"
-  ],
-  "定年後": [
-    "役割の喪失とアイデンティティ問題",
-    "健康と老後資金への不安",
-    "地域・家族の関係変化"
-  ]
-};
+/* =========================
+   Markdown 読み込み共通関数
+   ========================= */
 
-const genTitle = document.getElementById("gen-title");
-const genList  = document.getElementById("gen-list");
-const genButtons = document.querySelectorAll(".generation-tabs button");
+function loadMarkdown(path, targetId) {
+  const targetEl = document.getElementById(targetId);
+  if (!targetEl) return;
 
-function renderGeneration(gen) {
-  if (!genTitle || !genList) return;
-  genTitle.textContent = gen + "のテーマ";
-  genList.innerHTML = "";
-  (generationData[gen] || []).forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    genList.appendChild(li);
-  });
+  targetEl.innerHTML = `<p class="markdown-placeholder">読み込み中...</p>`;
+
+  fetch(path)
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`Failed to load ${path}`);
+      }
+      return res.text();
+    })
+    .then(text => {
+      const html = marked.parse(text);
+      targetEl.innerHTML = html;
+    })
+    .catch(err => {
+      console.error(err);
+      targetEl.innerHTML = `
+        <p class="markdown-placeholder">
+          コンテンツを読み込めませんでした。<br>
+          (${path} が存在するか確認してください)
+        </p>
+      `;
+    });
 }
 
-// 初期表示（小学生）
-renderGeneration("小学生");
+/* =========================
+   各ページ用のMarkdownパス設定
+   ========================= */
+
+const sectionMarkdownMap = {
+  knowledge: {
+    path: "contents/knowledge/overview.md",
+    targetId: "knowledge-content"
+  },
+  catchup: {
+    path: "contents/catchup/overview.md",
+    targetId: "catchup-content"
+  },
+  experiences: {
+    path: "contents/experiences/overview.md",
+    targetId: "experiences-content"
+  },
+  roadmap: {
+    path: "contents/roadmap/overview.md",
+    targetId: "roadmap-content"
+  },
+  stock: {
+    path: "contents/stock/overview.md",
+    targetId: "stock-content"
+  }
+};
+
+// 一度読み込んだセクションを記録（無駄な再fetch防止）
+const loadedSections = new Set();
+
+/* =========================
+   世代別ノート：ボタン → md読み込み
+   ========================= */
+
+// 世代 → ファイルパス マップ
+const generationMarkdownMap = {
+  elementary: "contents/generation/elementary.md",
+  junior: "contents/generation/junior.md",
+  high: "contents/generation/high.md",
+  university: "contents/generation/university.md",
+  worker: "contents/generation/worker.md",
+  senior: "contents/generation/senior.md"
+};
+
+const genButtons = document.querySelectorAll(".generation-tabs button");
+const generationContentId = "generation-content";
+
+function loadGeneration(genKey) {
+  const path = generationMarkdownMap[genKey];
+  if (!path) return;
+
+  loadMarkdown(path, generationContentId);
+}
 
 genButtons.forEach(btn => {
   btn.addEventListener("click", () => {
-    const gen = btn.dataset.gen;
+    const genKey = btn.dataset.gen;
     genButtons.forEach(b => b.classList.remove("gen-active"));
     btn.classList.add("gen-active");
-    renderGeneration(gen);
+    loadGeneration(genKey);
   });
 });
+
+// 初期表示：小学生（elementary）を読み込む
+loadGeneration("elementary");
