@@ -3,11 +3,23 @@
    ========================= */
 
 const pages = document.querySelectorAll(".page");
+const hero = document.getElementById("hero");
 
 function switchPage(pageId) {
+  // ページ表示切り替え
   pages.forEach(p => p.classList.remove("active"));
   const target = document.getElementById(pageId);
   if (target) target.classList.add("active");
+
+  // ✅ ヒーローの表示/非表示（ホームだけ表示）
+  if (hero) {
+    if (pageId === "home") {
+      hero.style.display = "";
+    } else {
+      hero.style.display = "none";
+    }
+  }
+
   window.scrollTo({ top: 0, behavior: "smooth" });
 
   // ページごとのMarkdown読み込み（1回目だけ）
@@ -132,5 +144,6 @@ genButtons.forEach(btn => {
   });
 });
 
-// 初期表示：小学生（elementary）を読み込む
+// 初期表示：小学生（elementary）を読み込む & ホーム表示
 loadGeneration("elementary");
+switchPage("home");
