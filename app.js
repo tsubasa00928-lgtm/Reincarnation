@@ -1,9 +1,8 @@
 // app.js
 
-// すべての処理を DOMContentLoaded の中にまとめる
 document.addEventListener("DOMContentLoaded", () => {
   //----------------------------------
-  // タブナビゲーション
+  // 下タブ：ページ切り替え
   //----------------------------------
   const tabButtons = document.querySelectorAll(".tabbar button");
   const pages = document.querySelectorAll(".page");
@@ -12,16 +11,37 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       const pageId = btn.dataset.page;
 
-      // ページ表示切り替え
       pages.forEach(p => p.classList.remove("active"));
       const target = document.getElementById(pageId);
-      if (target) {
-        target.classList.add("active");
-      }
+      if (target) target.classList.add("active");
 
-      // タブの見た目切り替え
       tabButtons.forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
+    });
+  });
+
+  //----------------------------------
+  // ホーム：3つの大ボタン → デモ内容切替
+  //----------------------------------
+  const featureButtons = document.querySelectorAll(".home-feature");
+  const featureSections = document.querySelectorAll(".home-demo");
+
+  featureButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.dataset.target;
+
+      // ボタンの見た目切り替え
+      featureButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      // デモセクションの切り替え
+      featureSections.forEach(sec => {
+        if (sec.id === targetId) {
+          sec.classList.remove("hidden");
+        } else {
+          sec.classList.add("hidden");
+        }
+      });
     });
   });
 
@@ -67,7 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderGeneration(gen) {
     if (!genTitle || !genList) return;
-
     genTitle.textContent = `${gen}のテーマ`;
     genList.innerHTML = "";
 
@@ -81,7 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // 初期表示（小学生）
   renderGeneration("小学生");
 
-  // 世代タブのクリック処理
   genButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const gen = btn.dataset.gen;
