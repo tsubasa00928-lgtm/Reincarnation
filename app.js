@@ -3,7 +3,7 @@
    ========================= */
 
 const pages = document.querySelectorAll(".page");
-const hero = document.getElementById("hero"); // ← ヒーロー要素
+const hero = document.getElementById("hero");
 
 function switchPage(pageId) {
   // ページ表示切り替え
@@ -11,12 +11,12 @@ function switchPage(pageId) {
   const target = document.getElementById(pageId);
   if (target) target.classList.add("active");
 
-  // ✅ ホームだけヒーロー表示、それ以外は非表示
+  // ホームだけヒーロー表示
   if (hero) {
     if (pageId === "home") {
-      hero.style.display = "";       // 初期状態（block扱い）
+      hero.style.display = "";
     } else {
-      hero.style.display = "none";   // 完全に消す
+      hero.style.display = "none";
     }
   }
 
@@ -37,7 +37,10 @@ function switchPage(pageId) {
 document.querySelectorAll(".large-feature").forEach(btn => {
   btn.addEventListener("click", () => {
     const targetPage = btn.dataset.go;
-    if (targetPage) switchPage(targetPage);
+    if (targetPage) {
+      switchPage(targetPage);
+      closeMenuIfOpen();
+    }
   });
 });
 
@@ -46,8 +49,46 @@ document.querySelectorAll(".large-feature").forEach(btn => {
    ========================= */
 
 document.querySelectorAll(".back-home").forEach(btn => {
-  btn.addEventListener("click", () => switchPage("home"));
+  btn.addEventListener("click", () => {
+    switchPage("home");
+    closeMenuIfOpen();
+  });
 });
+
+/* =========================
+   ヘッダーメニュー（アコーディオン）
+   ========================= */
+
+const menuToggle = document.getElementById("menu-toggle");
+const headerMenu = document.getElementById("header-menu");
+
+function closeMenuIfOpen() {
+  if (!headerMenu) return;
+  if (headerMenu.classList.contains("open")) {
+    headerMenu.classList.remove("open");
+    headerMenu.setAttribute("aria-hidden", "true");
+    if (menuToggle) menuToggle.setAttribute("aria-expanded", "false");
+  }
+}
+
+if (menuToggle && headerMenu) {
+  menuToggle.addEventListener("click", () => {
+    const isOpen = headerMenu.classList.toggle("open");
+    headerMenu.setAttribute("aria-hidden", String(!isOpen));
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  // メニュー内のナビアイテム
+  headerMenu.querySelectorAll(".nav-item").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const targetPage = btn.dataset.go;
+      if (targetPage) {
+        switchPage(targetPage);
+        closeMenuIfOpen();
+      }
+    });
+  });
+}
 
 /* =========================
    Markdown 読み込み共通関数
