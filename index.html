@@ -19,12 +19,16 @@
 
 <main>
 
-  <!-- ホーム：でかい3タブだけ -->
+  <!-- ホーム：6つの巨大タブ -->
   <section id="home" class="page active">
     <div class="large-feature-buttons">
       <button class="large-feature" data-go="generation">🌱 世代別ノート</button>
       <button class="large-feature" data-go="knowledge">📘 教養ノート</button>
       <button class="large-feature" data-go="catchup">⚡ キャッチアップノート</button>
+
+      <button class="large-feature" data-go="experiences">📚 人生体験記</button>
+      <button class="large-feature" data-go="roadmap">🗺️ 人生ロードマップ</button>
+      <button class="large-feature" data-go="stock">⭐ ユーザーストック</button>
     </div>
   </section>
 
@@ -99,6 +103,79 @@
     </div>
   </section>
 
+  <!-- 人生体験記 -->
+  <section id="experiences" class="page">
+    <div class="page-header-row">
+      <h2>人生体験記</h2>
+      <button class="back-home">← ホームに戻る</button>
+    </div>
+
+    <div class="card">
+      <h3>体験記ライブラリ（デモ）</h3>
+      <p>
+        人生の岐路・挫折・転職・病気・留学など、<br>
+        さまざまな人のストーリーを「年代 × テーマ」で整理して読むためのスペース。
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>今日のピックアップ（デモ）</h3>
+      <p>
+        「20代で一度会社を辞めて、30代でやり直した人」の体験記。<br>
+        不安・後悔・再スタートのプロセスにフォーカス。
+      </p>
+    </div>
+  </section>
+
+  <!-- 人生ロードマップ -->
+  <section id="roadmap" class="page">
+    <div class="page-header-row">
+      <h2>人生ロードマップ</h2>
+      <button class="back-home">← ホームに戻る</button>
+    </div>
+
+    <div class="card">
+      <h3>マイルストーン整理（デモ）</h3>
+      <p>
+        「3年・5年・10年」スパンで、<br>
+        仕事・お金・健康・人間関係・学びをざっくり設計するためのページ。
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>今日の問い（デモ）</h3>
+      <p>
+        「もし人生が二周目だったら、今の自分にどんな助言をする？」<br>
+        その答えをヒントに、次の一歩を言語化する。
+      </p>
+    </div>
+  </section>
+
+  <!-- ユーザーストック -->
+  <section id="stock" class="page">
+    <div class="page-header-row">
+      <h2>ユーザーストック</h2>
+      <button class="back-home">← ホームに戻る</button>
+    </div>
+
+    <div class="card">
+      <h3>自分だけのストック（デモ）</h3>
+      <p>
+        心に刺さった言葉・記事・動画・ツイートなどを、<br>
+        「タグ」と「ひと言メモ」と一緒にストックしていくエリア。
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>最近のストック例（デモ）</h3>
+      <ul>
+        <li>「焦らなくていい。でも止まるとしんどくなる。」</li>
+        <li>AI×キャリアのインタビュー記事</li>
+        <li>将来の自分宛てに書いたメモ</li>
+      </ul>
+    </div>
+  </section>
+
 </main>
 
 <script>
@@ -111,7 +188,7 @@
     if (target) target.classList.add("active");
   }
 
-  /* -------- ホームの巨大3タブ -------- */
+  /* -------- ホームの巨大タブ（6つ） -------- */
   document.querySelectorAll(".large-feature").forEach(btn => {
     btn.addEventListener("click", () => {
       const targetPage = btn.dataset.go;
