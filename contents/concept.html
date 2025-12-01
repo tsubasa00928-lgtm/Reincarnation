@@ -8,7 +8,10 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
 
   <!-- 共通スタイル（ホームと同じ） -->
   <link rel="stylesheet" href="../style.css" />
@@ -16,40 +19,21 @@
 </head>
 
 <body>
-  <!-- ================= HEADER（ホームと同じ） ================= -->
+  <!-- ================= HEADER（index.html と同一構造） ================= -->
   <header class="site-header">
-    <div class="header-inner">
-      <!-- Logo block -->
-      <a href="../index.html" class="logo-block">
-        <div class="logo-icon">∞</div>
-        <div class="logo-texts">
-          <span class="logo-title">人生二周目ノート</span>
-          <span class="logo-sub">二周目視点で、人生をアップデートするノート</span>
-        </div>
-      </a>
+    <div class="header-inner container">
+      <div class="logo-block">
+        <div class="logo-title">人生二周目ノート</div>
+        <div class="logo-sub">二周目視点で、人生をアップデートするノート</div>
+      </div>
 
-      <!-- Main navigation -->
-      <nav class="main-nav" aria-label="メインナビゲーション">
-        <a href="generation-notes.html" class="nav-link">
-          <span class="nav-index">1</span>
-          <span>世代別ノート</span>
-        </a>
-        <a href="knowledge-notes.html" class="nav-link">
-          <span class="nav-index">2</span>
-          <span>教養ノート</span>
-        </a>
-        <a href="life-stories.html" class="nav-link">
-          <span class="nav-index">3</span>
-          <span>人生体験記ノート</span>
-        </a>
-        <a href="user-notes.html" class="nav-link">
-          <span class="nav-index">4</span>
-          <span>ユーザー機能</span>
-        </a>
-        <a href="concept.html" class="nav-link nav-link-active">
-          <span class="nav-index">5</span>
-          <span>コンセプト</span>
-        </a>
+      <nav class="header-nav">
+        <a href="../index.html" class="nav-link">ホーム</a>
+        <a href="generations.html" class="nav-link">世代別ノート</a>
+        <a href="knowledge-notes.html" class="nav-link">教養ノート</a>
+        <a href="life-stories.html" class="nav-link">人生体験記ノート</a>
+        <a href="user-notes.html" class="nav-link">ユーザー機能</a>
+        <a href="concept.html" class="nav-link is-current">コンセプト</a>
       </nav>
     </div>
   </header>
@@ -125,7 +109,9 @@
   </main>
 
   <footer class="site-footer">
-    <small>© 人生二周目ノート</small>
+    <div class="container footer-inner">
+      <p class="footer-copy">© 人生二周目ノート</p>
+    </div>
   </footer>
 </body>
 </html>
