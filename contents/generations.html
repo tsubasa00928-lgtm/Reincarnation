@@ -8,17 +8,18 @@
   <!-- フォント -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
 
-  <!-- 共通スタイル（ホームと共有） -->
-  <link rel="stylesheet" href="../style.css">
-
-  <!-- ページ固有CSS -->
+  <!-- 共通スタイル（ホームと同じ） -->
+  <link rel="stylesheet" href="style.css">
+  <!-- 世代別ノート専用スタイル -->
   <link rel="stylesheet" href="generations.css">
 </head>
-<body>
-
-  <!-- ========== ヘッダー（index.html と統一） ========== -->
+<body class="home-body">
+  <!-- ================= HEADER（index.html と同一構造） ================= -->
   <header class="site-header">
     <div class="header-inner container">
       <div class="logo-block">
@@ -27,7 +28,7 @@
       </div>
 
       <nav class="header-nav">
-        <a href="../index.html" class="nav-link">ホーム</a>
+        <a href="index.html" class="nav-link">ホーム</a>
         <a href="generations.html" class="nav-link is-current">世代別ノート</a>
         <a href="knowledge-notes.html" class="nav-link">教養ノート</a>
         <a href="life-stories.html" class="nav-link">人生体験記ノート</a>
@@ -37,48 +38,40 @@
     </div>
   </header>
 
-  <main class="page">
-    <div class="page-inner">
+  <main class="site-main">
+    <div class="container gen-page-inner">
 
       <!-- ページヘッダー -->
-      <section class="page-header">
-        <div class="page-header-main">
-          <h1 class="page-title">世代別ノート</h1>
-          <p class="page-subtitle">
-            人生を 8 つのチャプターに分けて、<br class="sp-only">それぞれの「詰まりやすい構造」を見える化します。
+      <section class="section gen-page-header">
+        <div class="gen-page-header-main">
+          <h1 class="gen-page-title">世代別ノート</h1>
+          <p class="gen-page-subtitle">
+            人生を 8 つのステージに分けて、<br class="sp-only" />
+            それぞれの「詰まりやすい構造」と「乗り越え方」を見える化します。
           </p>
         </div>
-        <!-- ステージタブ（クエリパラメータで切り替え） -->
-        <div class="stage-tabs" aria-label="世代選択タブ">
-          <a href="generations.html?stage=elementary" class="stage-tab" data-stage="elementary">小学生</a>
-          <a href="generations.html?stage=middle" class="stage-tab" data-stage="middle">中学生</a>
-          <a href="generations.html?stage=high" class="stage-tab" data-stage="high">高校生</a>
-          <a href="generations.html?stage=university" class="stage-tab" data-stage="university">大学・専門期</a>
-          <a href="generations.html?stage=earlyCareer" class="stage-tab" data-stage="earlyCareer">社会人前期</a>
-          <a href="generations.html?stage=midCareer" class="stage-tab" data-stage="midCareer">社会人中期</a>
-          <a href="generations.html?stage=lateCareer" class="stage-tab" data-stage="lateCareer">社会人後期</a>
-          <a href="generations.html?stage=secondCareer" class="stage-tab" data-stage="secondCareer">セカンドキャリア</a>
+      </section>
+
+      <!-- ステージタブ -->
+      <section class="section gen-tabs-section" aria-label="世代タブ">
+        <div class="gen-tabs-wrapper">
+          <button class="gen-tab gen-tab-active" data-stage="top">≪トップ≫</button>
+          <button class="gen-tab" data-stage="elementary">小学生</button>
+          <button class="gen-tab" data-stage="middle">中学生</button>
+          <button class="gen-tab" data-stage="high">高校生</button>
+          <button class="gen-tab" data-stage="university">大学・専門期</button>
+          <button class="gen-tab" data-stage="earlyCareer">社会人前期</button>
+          <button class="gen-tab" data-stage="midCareer">社会人中期</button>
+          <button class="gen-tab" data-stage="lateCareer">社会人後期</button>
+          <button class="gen-tab" data-stage="secondCareer">セカンドキャリア</button>
         </div>
       </section>
 
-      <!-- 概要（常時表示） -->
-      <section class="section section-overview">
-        <div class="overview-label">現在のステージ</div>
-        <div class="overview-main">
-          <h2 class="stage-title" id="stageTitle">ロード中...</h2>
-          <p class="overview-text" id="overviewText"></p>
+      <!-- コンテンツルート：ここを書き換える -->
+      <section class="section gen-content-section">
+        <div id="genContentRoot">
+          <!-- JS で 「トップ用人生マップ」 or 各世代ノート を描画 -->
         </div>
-      </section>
-
-      <!-- ②〜⑥ アコーディオンリスト（Essence / Paths / Pains / Insights / Choices） -->
-      <section class="section section-accordion" id="accordionRoot">
-        <!-- JS で生成 -->
-      </section>
-
-      <!-- ⑦ 指針一言 -->
-      <section class="section section-final">
-        <p class="final-label">指針一言</p>
-        <p class="final-line" id="finalLine"></p>
       </section>
 
     </div>
@@ -90,6 +83,7 @@
     </div>
   </footer>
 
+  <!-- 世代別ノート用JS -->
   <script src="generations.js"></script>
 </body>
 </html>
