@@ -226,4 +226,77 @@ body {
     grid-template-columns: 1fr;
   }
 }
+/* =========================
+   Concept page
+   ========================= */
+
+.concept-hero {
+  text-align: left;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.concept-title {
+  margin: 0 0 8px;
+  font-size: 26px;
+}
+
+.concept-lead {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.concept-card {
+  padding-top: 28px; /* バッジ分だけ少し余白 */
+  background: var(--card-bg-soft);
+}
+
+.concept-card-title {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.concept-card-text {
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-sub);
+}
+
+.concept-card-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--accent-dark);
+}
+
+/* スマホ向けレイアウト調整 */
+.sp-only {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .concept-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .concept-title {
+    font-size: 22px;
+  }
+  .concept-lead {
+    font-size: 12px;
+  }
+  .sp-only {
+    display: inline;
+  }
+}
+
 
