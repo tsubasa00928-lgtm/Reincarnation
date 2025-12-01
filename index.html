@@ -1,327 +1,152 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>人生二周目ノート</title>
 
-  <!-- フォント：Inter + Noto Sans JP -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
 
-  <!-- Material Icons -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
-
-  <link rel="stylesheet" href="style.css">
-  <meta name="theme-color" content="#b8f5c8">
-  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#c8f5d8" />
 </head>
-
 <body>
-
-<header>
-  <div class="header-inner">
-    <!-- 左端：メニューボタン（オーバーレイ） -->
-    <button id="menu-toggle" class="menu-toggle" aria-expanded="false" aria-controls="menu-overlay">
-      <span class="material-symbols-rounded">menu</span>
-    </button>
-
-    <!-- ロゴ + キャッチ -->
-    <div class="header-left">
-      <div class="logo-area">
-        <span class="logo-mark">∞</span>
-        <span class="logo-text">人生二周目ノート</span>
-      </div>
-      <p class="header-tagline">二周目視点で、人生をアップデートするノート</p>
-    </div>
-
-    <!-- 右側：世界観SVG -->
-    <div class="header-right">
-      <div class="header-orbit">
-        <svg viewBox="0 0 120 60" aria-hidden="true">
-          <defs>
-            <linearGradient id="orbitGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#a5f3c7" />
-              <stop offset="50%" stop-color="#4ade80" />
-              <stop offset="100%" stop-color="#22c55e" />
-            </linearGradient>
-          </defs>
-          <ellipse cx="60" cy="30" rx="45" ry="16" fill="none" stroke="url(#orbitGrad)" stroke-width="2.4" />
-          <ellipse cx="60" cy="30" rx="30" ry="10" fill="none" stroke="rgba(34,197,94,0.4)" stroke-width="1.6" />
-          <circle cx="30" cy="30" r="4" fill="#22c55e" />
-          <circle cx="90" cy="30" r="3" fill="#bbf7d0" />
-        </svg>
-      </div>
-    </div>
-  </div>
-</header>
-
-<!-- 左から出てくるオーバーレイメニュー -->
-<div id="menu-overlay" class="menu-overlay" aria-hidden="true">
-  <div class="menu-panel">
-    <div class="menu-panel-header">
-      <span class="menu-title">人生二周目ノート</span>
-      <button id="menu-close" class="menu-close" aria-label="メニューを閉じる">
-        <span class="material-symbols-rounded">close</span>
-      </button>
-    </div>
-
-    <div class="menu-panel-body">
-      <!-- ホームだけ内部遷移 -->
-      <button class="nav-item" data-go="home">
-        <span class="material-symbols-rounded">home</span>
-        <span>ホーム</span>
-      </button>
-
-      <!-- 以降はURL遷移（5タブ構成） -->
-      <a class="nav-item" href="contents/generation-notes.html">
-        <span class="material-symbols-rounded">diversity_3</span>
-        <span>世代別ノート</span>
+  <!-- ================= HEADER ================= -->
+  <header class="site-header">
+    <div class="header-inner">
+      <!-- Logo block -->
+      <a href="index.html" class="logo-block">
+        <div class="logo-icon">∞</div>
+        <div class="logo-texts">
+          <span class="logo-title">人生二周目ノート</span>
+          <span class="logo-sub">二周目視点で、人生をアップデートするノート</span>
+        </div>
       </a>
 
-      <a class="nav-item" href="contents/knowledge-notes.html">
-        <span class="material-symbols-rounded">psychology</span>
-        <span>教養ノート</span>
-      </a>
-
-      <a class="nav-item" href="contents/life-stories.html">
-        <span class="material-symbols-rounded">menu_book</span>
-        <span>人生体験記ノート</span>
-      </a>
-
-      <a class="nav-item" href="contents/user-notes.html">
-        <span class="material-symbols-rounded">person</span>
-        <span>ユーザーノート</span>
-      </a>
-    </div>
-  </div>
-</div>
-
-<!-- ホーム専用ヒーロー -->
-<section id="hero" class="hero-section">
-  <div class="hero-inner">
-    <h1 class="hero-title">人生二周目ノート</h1>
-    <p class="hero-sub1">人生をかしこく、後悔しないために</p>
-    <p class="hero-sub2">二周目視点で、人生をアップデートする。</p>
-  </div>
-</section>
-
-<main>
-
-  <!-- ホーム：サイドバー + 中央コンテンツ -->
-  <section id="home" class="page active">
-    <div class="home-layout">
-      <!-- 左サイドバー：ホーム + 4ノート -->
-      <aside class="home-sidebar">
-        <h2 class="sidebar-title">ノート一覧</h2>
-
-        <button class="sidebar-nav-item" data-go="home">
-          <span class="material-symbols-rounded">home</span>
-          <span>ホーム</span>
-        </button>
-
-        <a class="sidebar-nav-item" href="contents/generation-notes.html">
-          <span class="material-symbols-rounded">diversity_3</span>
+      <!-- Main navigation -->
+      <nav class="main-nav" aria-label="メインナビゲーション">
+        <a href="contents/generation-notes.html" class="nav-link">
+          <span class="nav-index">1</span>
           <span>世代別ノート</span>
         </a>
-
-        <a class="sidebar-nav-item" href="contents/knowledge-notes.html">
-          <span class="material-symbols-rounded">psychology</span>
+        <a href="contents/knowledge-notes.html" class="nav-link">
+          <span class="nav-index">2</span>
           <span>教養ノート</span>
         </a>
-
-        <a class="sidebar-nav-item" href="contents/life-stories.html">
-          <span class="material-symbols-rounded">menu_book</span>
+        <a href="contents/life-stories.html" class="nav-link">
+          <span class="nav-index">3</span>
           <span>人生体験記ノート</span>
         </a>
-
-        <a class="sidebar-nav-item" href="contents/user-notes.html">
-          <span class="material-symbols-rounded">person</span>
-          <span>ユーザーノート</span>
+        <a href="contents/user-notes.html" class="nav-link">
+          <span class="nav-index">4</span>
+          <span>ユーザー機能</span>
         </a>
-      </aside>
+        <a href="contents/concept.html" class="nav-link">
+          <span class="nav-index">5</span>
+          <span>コンセプト</span>
+        </a>
+      </nav>
+    </div>
+  </header>
 
-      <!-- 中央〜右：キャッチコピー・ストーリー・機能・デイリーメッセージ -->
-      <div class="home-main">
-        <!-- キャッチコピー -->
-        <section class="home-block">
-          <h2 class="home-heading">迷ったときに戻る「二周目の地図」</h2>
-          <p class="home-text">
-            人生は一度きりだけど、考え方は何度でもアップデートできる。<br>
-            人生二周目ノートは、世代・教養・人生パターン・自分の記録の4つの視点で、今の自分を整理するための個人用OSです。
+  <main class="page">
+    <div class="page-inner">
+      <!-- ========== 今日の本質3つ ========== -->
+      <section class="section essentials">
+        <div class="section-header">
+          <h2 class="section-title">今日の本質3つ（1分で世界がわかる）</h2>
+          <p class="section-lead">
+            毎日変わるニュースより、「変わらない構造」を3つだけ。
           </p>
-        </section>
+        </div>
+        <div class="card-grid essentials-grid">
+          <article class="card essentials-card">
+            <h3 class="card-title">長期で見ると、変化はゆっくり</h3>
+            <p class="card-text">
+              一年単位では大きく見える変化も、十年スパンで見ると意外と滑らかな曲線。焦りすぎず、でも止まらないことが大事。
+            </p>
+          </article>
+          <article class="card essentials-card">
+            <h3 class="card-title">人は「物語」で意思決定する</h3>
+            <p class="card-text">
+              数字よりも、「どんな人生を歩みたいか」というストーリーが行動を決める。自分の物語を意識してみる。
+            </p>
+          </article>
+          <article class="card essentials-card">
+            <h3 class="card-title">今の自分も、過去の選択の積み重ね</h3>
+            <p class="card-text">
+              後悔よりも、「次の一手」をどう選ぶかに集中する。二周目視点とは、そのための距離感をもつこと。
+            </p>
+          </article>
+        </div>
+      </section>
 
-        <!-- ストーリー性 -->
-        <section class="home-block">
-          <h3 class="home-subheading">ストーリー</h3>
-          <p class="home-text">
-            「もし今の知識と視点を持ったまま、もう一度やり直せるとしたら？」<br>
-            そんな二周目視点を、世代別ノート・教養ノート・人生体験記・ユーザーノートとして整理していきます。
+      <!-- ========== 上段：ユーザー機能＋コンセプト ========== -->
+      <section class="section utilities">
+        <div class="utilities-grid">
+          <a href="contents/user-notes.html" class="card utility-card">
+            <div class="card-badge">4</div>
+            <h3 class="card-title">ユーザー機能</h3>
+            <p class="card-text">
+              自分の価値観や気づきをストックし、二周目視点のコメントと一緒に振り返れる「マイノート機能」。未来の自分へのメモ帳として。
+            </p>
+          </a>
+          <a href="contents/concept.html" class="card utility-card">
+            <div class="card-badge">5</div>
+            <h3 class="card-title">コンセプト</h3>
+            <p class="card-text">
+              なぜこのサイトが生まれたのか。人生二周目視点とは何か。背景にある考え方を、短いストーリーとしてまとめています。
+            </p>
+          </a>
+        </div>
+      </section>
+
+      <!-- ========== メイン3カード ========== -->
+      <section class="section features">
+        <div class="section-header">
+          <h2 class="section-title">入口は3つのノートから</h2>
+          <p class="section-lead">
+            迷ったときは、まずこの3つのどれかを開けばOKです。
           </p>
-        </section>
+        </div>
 
-        <!-- 機能紹介：4つのノートカード -->
-        <section class="home-block">
-          <h3 class="home-subheading">4つのノート機能</h3>
-          <p class="home-text">人生を「全体で見て」「自分ごととして編集する」ための4ノートです。</p>
+        <div class="card-grid feature-grid">
+          <a href="contents/generation-notes.html" class="card feature-card">
+            <div class="card-badge">1</div>
+            <h3 class="card-title">世代別ノート</h3>
+            <p class="card-text">
+              人生を「小学生〜セカンドキャリア」までの8ステージで整理し、
+              それぞれの時期で迷いやすいポイントと、超え方のヒントをまとめたノート。
+            </p>
+          </a>
 
-          <div class="home-grid">
-            <a class="large-feature" href="contents/generation-notes.html">
-              <span class="feature-icon material-symbols-rounded">diversity_3</span>
-              <div class="feature-text">
-                <span class="feature-title">世代別ノート</span>
-                <span class="feature-sub">年代ごとの悩み・心理・テーマ</span>
-              </div>
-            </a>
+          <a href="contents/knowledge-notes.html" class="card feature-card">
+            <div class="card-badge">2</div>
+            <h3 class="card-title">教養ノート</h3>
+            <p class="card-text">
+              心理学・人間関係・キャリア・社会の構造など、
+              実生活で使える教養だけを厳選して整理したノート。必要なときにすぐ開ける辞書代わりに。
+            </p>
+          </a>
 
-            <a class="large-feature" href="contents/knowledge-notes.html">
-              <span class="feature-icon material-symbols-rounded">psychology</span>
-              <div class="feature-text">
-                <span class="feature-title">教養ノート</span>
-                <span class="feature-sub">人間関係・心理・ビジネス・AI活用術</span>
-              </div>
-            </a>
-
-            <a class="large-feature" href="contents/life-stories.html">
-              <span class="feature-icon material-symbols-rounded">menu_book</span>
-              <div class="feature-text">
-                <span class="feature-title">人生体験記ノート</span>
-                <span class="feature-sub">典型パターンから人生を俯瞰する</span>
-              </div>
-            </a>
-
-            <a class="large-feature" href="contents/user-notes.html">
-              <span class="feature-icon material-symbols-rounded">person</span>
-              <div class="feature-text">
-                <span class="feature-title">ユーザーノート</span>
-                <span class="feature-sub">自分だけのメモ・相談ログ</span>
-              </div>
-            </a>
-          </div>
-        </section>
-
-        <!-- デイリーメッセージ（デモ） -->
-        <section class="home-block">
-          <h3 class="home-subheading">今日のメッセージ（デモ）</h3>
-          <p class="home-text">
-            「一周目の自分を責めなくていい。<br>
-            二周目の自分が、ただ静かに道を整えていけばいい。」
-          </p>
-        </section>
-      </div>
+          <a href="contents/life-stories.html" class="card feature-card">
+            <div class="card-badge">3</div>
+            <h3 class="card-title">人生体験記ノート</h3>
+            <p class="card-text">
+              さまざまな人の人生ストーリーから共通パターンを抽出し、
+              「どんな選択をすると、どんな景色が見えるのか」をコンパクトに読めるノート。
+            </p>
+          </a>
+        </div>
+      </section>
     </div>
-  </section>
+  </main>
 
-  <!-- 以下のセクション（generation / knowledge / catchup / experiences / roadmap / stock）は
-       既存コードとの互換のため残しているが、ナビからは飛ばない想定 -->
-
-  <!-- 世代別ノート（内部版：今は使わない） -->
-  <section id="generation" class="page">
-    <div class="page-header-row">
-      <div class="page-title-block">
-        <h2>世代別ノート</h2>
-        <p class="page-subtitle">年代ごとの“詰まりポイント”をすばやく確認。</p>
-      </div>
-      <button class="back-home">← ホーム</button>
-    </div>
-
-    <div class="generation-tabs">
-      <button data-gen="elementary" class="gen-active">小学生</button>
-      <button data-gen="junior">中学生</button>
-      <button data-gen="high">高校生</button>
-      <button data-gen="university">大学生</button>
-      <button data-gen="worker">社会人</button>
-      <button data-gen="senior">定年後</button>
-    </div>
-
-    <div id="generation-content" class="card markdown-block">
-      <p class="markdown-placeholder">年代を選ぶと、ここにノートが表示されます。</p>
-    </div>
-  </section>
-
-  <!-- 教養ノート（内部版：今は使わない） -->
-  <section id="knowledge" class="page">
-    <div class="page-header-row">
-      <div class="page-title-block">
-        <h2>教養ノート</h2>
-        <p class="page-subtitle">世界のルールをざっくり押さえる。</p>
-      </div>
-      <button class="back-home">← ホーム</button>
-    </div>
-
-    <div id="knowledge-content" class="card markdown-block">
-      <p class="markdown-placeholder">教養ノートの内容がここに表示されます。</p>
-    </div>
-  </section>
-
-  <!-- キャッチアップノート（未使用） -->
-  <section id="catchup" class="page">
-    <div class="page-header-row">
-      <div class="page-title-block">
-        <h2>キャッチアップノート</h2>
-        <p class="page-subtitle">“今何が起きているか”だけ見るページ。</p>
-      </div>
-      <button class="back-home">← ホーム</button>
-    </div>
-
-    <div id="catchup-content" class="card markdown-block">
-      <p class="markdown-placeholder">キャッチアップノートの内容がここに表示されます。</p>
-    </div>
-  </section>
-
-  <!-- 人生体験記（内部版：今は使わない） -->
-  <section id="experiences" class="page">
-    <div class="page-header-row">
-      <div class="page-title-block">
-        <h2>人生体験記</h2>
-        <p class="page-subtitle">他人の一周目から学ぶメモ置き場。</p>
-      </div>
-      <button class="back-home">← ホーム</button>
-    </div>
-
-    <div id="experiences-content" class="card markdown-block">
-      <p class="markdown-placeholder">人生体験記の内容がここに表示されます。</p>
-    </div>
-  </section>
-
-  <!-- 人生ロードマップ（未使用） -->
-  <section id="roadmap" class="page">
-    <div class="page-header-row">
-      <div class="page-title-block">
-        <h2>人生ロードマップ</h2>
-        <p class="page-subtitle">3〜10年先をざっくり言語化。</p>
-      </div>
-      <button class="back-home">← ホーム</button>
-    </div>
-
-    <div id="roadmap-content" class="card markdown-block">
-      <p class="markdown-placeholder">ロードマップの内容がここに表示されます。</p>
-    </div>
-  </section>
-
-  <!-- ユーザーストック（内部版：今は使わない） -->
-  <section id="stock" class="page">
-    <div class="page-header-row">
-      <div class="page-title-block">
-        <h2>ユーザーストック</h2>
-        <p class="page-subtitle">あとで見返したいものだけ集める。</p>
-      </div>
-      <button class="back-home">← ホーム</button>
-    </div>
-
-    <div id="stock-content" class="card markdown-block">
-      <p class="markdown-placeholder">ユーザーストックの内容がここに表示されます。</p>
-    </div>
-  </section>
-
-</main>
-
-<!-- Markdownパーサ（marked.js） -->
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<!-- アプリ本体JS -->
-<script src="app.js"></script>
-
+  <footer class="site-footer">
+    <small>© 人生二周目ノート</small>
+  </footer>
 </body>
 </html>
