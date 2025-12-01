@@ -4,123 +4,147 @@
   <meta charset="utf-8">
   <title>人生二周目ノート</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="人生を二周目視点で整理するためのノート群。世代別ノート・教養ノート・人生体験記ノートなど。">
+  <meta name="description" content="情報過多の時代を終わらせるための“人生OS”。世代別ノート・教養ノート・人生体験記ノートで、二周目視点から人生を整理する Web ノートです。">
 
-  <!-- フォント（必要なら好みで変更OK） -->
+  <!-- フォント -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <!-- メインCSS -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="home-body">
   <!-- ========== ヘッダー ========== -->
   <header class="site-header">
-    <div class="header-inner">
-      <!-- ロゴブロック -->
-      <div class="logo-area">
-        <div class="logo-mark">∞</div>
-        <div class="logo-text-group">
-          <div class="logo-title">人生二周目ノート</div>
-          <div class="logo-subtitle">二周目視点で、人生をアップデートするノート</div>
-        </div>
+    <div class="header-inner container">
+      <div class="logo-block">
+        <div class="logo-title">人生二周目ノート</div>
+        <div class="logo-sub">二周目視点で、人生をアップデートするノート</div>
       </div>
 
-      <!-- ナビゲーション -->
-      <nav class="main-nav">
-        <a class="nav-link" href="contents/generations.html">
-          <span class="nav-index">1</span>
-          <span>世代別ノート</span>
-        </a>
-        <a class="nav-link" href="contents/knowledge-notes.html">
-          <span class="nav-index">2</span>
-          <span>教養ノート</span>
-        </a>
-        <a class="nav-link" href="contents/life-stories.html">
-          <span class="nav-index">3</span>
-          <span>人生体験記ノート</span>
-        </a>
-        <a class="nav-link" href="contents/user-notes.html">
-          <span class="nav-index">4</span>
-          <span>ユーザー機能</span>
-        </a>
-        <a class="nav-link" href="contents/concept.html">
-          <span class="nav-index">5</span>
-          <span>コンセプト</span>
-        </a>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link is-current">ホーム</a>
+        <a href="contents/generations.html" class="nav-link">世代別ノート</a>
+        <a href="contents/knowledge-notes.html" class="nav-link">教養ノート</a>
+        <a href="contents/life-stories.html" class="nav-link">人生体験記ノート</a>
+        <a href="contents/user-notes.html" class="nav-link">ユーザー機能</a>
+        <a href="contents/concept.html" class="nav-link">コンセプト</a>
       </nav>
     </div>
   </header>
 
-  <main class="page-main">
-    <div class="content-wrap">
-      <!-- ========== 今日の本質3つ ========== -->
-      <section class="section section-essence">
-        <h2 class="section-title">今日の本質3つ（1分で世界がわかる）</h2>
-        <p class="section-lead">
-          毎日変わるニュースより、「変わらない構造」を3つだけ。
+  <main class="site-main">
+    <div class="container">
+      <!-- ========== ① 二周目の知恵 一行コピー ========== -->
+      <section class="hero-copy">
+        <p class="hero-text">
+          情報過多の時代を終わらせる。二周目視点で、人生の本質だけを残すノート。
         </p>
+      </section>
 
-        <div class="card-row card-row-3">
-          <article class="card essence-card">
-            <h3 class="card-title">長期で見ると、変化はゆっくり</h3>
-            <p class="card-text">
-              一年単位では大きく見える変化も、十年スパンで見ると意外と滑らかな曲線。焦りすぎず、でも止まらないことが大事。
-            </p>
-          </article>
+      <!-- ========== ② できること（目的別導線） ========== -->
+      <section class="section section-actions">
+        <div class="section-header">
+          <h2 class="section-title">できること</h2>
+          <p class="section-sub">
+            今の自分がやりたいことから、入口を選んでください。
+          </p>
+        </div>
 
-          <article class="card essence-card">
-            <h3 class="card-title">人は「物語」で意思決定する</h3>
-            <p class="card-text">
-              数字よりも、「どんな人生を歩みたいか」というストーリーが行動を決める。自分の物語を意識してみる。
+        <div class="card-grid three">
+          <!-- カード1 -->
+          <a class="card action-card" href="contents/generations.html">
+            <h3 class="card-heading">人生の攻略法を知りたい</h3>
+            <p class="card-body">
+              ライフステージごとの「つまずき」と「乗り越え方」を俯瞰できる。
             </p>
-          </article>
+            <p class="card-tag">#世代別ノート</p>
+          </a>
 
-          <article class="card essence-card">
-            <h3 class="card-title">今の自分も、過去の選択の積み重ね</h3>
-            <p class="card-text">
-              後悔よりも、「次の一手」をどう選ぶかに集中する。二周目視点とは、そのための距離感をもつこと。
+          <!-- カード2 -->
+          <a class="card action-card" href="contents/knowledge-notes.html">
+            <h3 class="card-heading">人間関係・心理の本質を知りたい</h3>
+            <p class="card-body">
+              対人関係・感情・キャリアなど、実生活で使える教養をまとめたノート。
             </p>
-          </article>
+            <p class="card-tag">#教養ノート</p>
+          </a>
+
+          <!-- カード3 -->
+          <a class="card action-card" href="contents/life-stories.html">
+            <h3 class="card-heading">他人の人生から学びたい</h3>
+            <p class="card-body">
+              さまざまな人生ストーリーから、選択と結果のパターンを読み解く。
+            </p>
+            <p class="card-tag">#人生体験記ノート</p>
+          </a>
         </div>
       </section>
 
-      <!-- ========== 入口3つのノート ========== -->
-      <section class="section section-entry">
-        <h2 class="section-title">入口は3つのノートから</h2>
-        <p class="section-lead">
-          迷ったときは、まずこの3つのどれかを開けばOKです。
-        </p>
+      <!-- ========== ③ 3つのノートを「でかいタイル」にする ========== -->
+      <section class="section section-tiles">
+        <div class="section-header">
+          <h2 class="section-title">3つのノート</h2>
+          <p class="section-sub">ここから先は、それぞれのノートの世界に入っていきます。</p>
+        </div>
 
-        <div class="card-row card-row-3">
-          <!-- 1. 世代別ノート -->
-          <a class="card feature-card" href="contents/generations.html">
-            <div class="feature-badge">1</div>
-            <h3 class="card-title">世代別ノート</h3>
-            <p class="card-text">
-              人生を「小学生〜セカンドキャリア」までのステージごとに整理し、
-              迷いやすいポイントと乗り越え方をまとめたノート。
+        <div class="tile-list">
+          <!-- 世代別ノート -->
+          <a class="tile-card" href="contents/generations.html">
+            <span class="tile-badge">1</span>
+            <div class="tile-text">
+              <h3 class="tile-title">世代別ノート</h3>
+              <p class="tile-sub">
+                人生を、小学生〜セカンドキャリアまでのステージで整理した「人生の攻略マップ」。
+              </p>
+            </div>
+          </a>
+
+          <!-- 教養ノート -->
+          <a class="tile-card" href="contents/knowledge-notes.html">
+            <span class="tile-badge">2</span>
+            <div class="tile-text">
+              <h3 class="tile-title">教養ノート</h3>
+              <p class="tile-sub">
+                心理学・人間関係・働き方・社会の構造など、「実用的な教養」だけを厳選して要約。
+              </p>
+            </div>
+          </a>
+
+          <!-- 人生体験記ノート -->
+          <a class="tile-card" href="contents/life-stories.html">
+            <span class="tile-badge">3</span>
+            <div class="tile-text">
+              <h3 class="tile-title">人生体験記ノート</h3>
+              <p class="tile-sub">
+                さまざまな人の人生の分岐と結果から、「こう生きるとこうなる」をコンパクトに学ぶ。
+              </p>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- ========== ④ 補助コンテンツ（ユーザー機能・コンセプト） ========== -->
+      <section class="section section-subcards">
+        <div class="section-header">
+          <h2 class="section-title">補助ノート</h2>
+          <p class="section-sub">自分だけのログと、このノートが生まれた背景。</p>
+        </div>
+
+        <div class="card-grid two">
+          <!-- ユーザー機能 -->
+          <a class="card sub-card" href="contents/user-notes.html">
+            <h3 class="card-heading">ユーザー機能</h3>
+            <p class="card-body">
+              自分の気づきや価値観をストックし、二周目視点のコメントと一緒に振り返れるマイノート機能。
             </p>
           </a>
 
-          <!-- 2. 教養ノート -->
-          <a class="card feature-card" href="contents/knowledge-notes.html">
-            <div class="feature-badge">2</div>
-            <h3 class="card-title">教養ノート</h3>
-            <p class="card-text">
-              心理学・人間関係・キャリア・社会の構造など、
-              実生活で使える教養だけを厳選して整理したノート。
-            </p>
-          </a>
-
-          <!-- 3. 人生体験記ノート -->
-          <a class="card feature-card" href="contents/life-stories.html">
-            <div class="feature-badge">3</div>
-            <h3 class="card-title">人生体験記ノート</h3>
-            <p class="card-text">
-              さまざまな人の人生ストーリーから共通パターンを抽出し、
-              「選択と結果」をコンパクトに読めるノート。
+          <!-- コンセプト -->
+          <a class="card sub-card" href="contents/concept.html">
+            <h3 class="card-heading">コンセプト</h3>
+            <p class="card-body">
+              なぜこのノートが生まれたのか、二周目視点とは何かをまとめた解説ページ。
             </p>
           </a>
         </div>
@@ -129,7 +153,9 @@
   </main>
 
   <footer class="site-footer">
-    <p class="footer-text">© 人生二周目ノート</p>
+    <div class="container footer-inner">
+      <p class="footer-copy">© 人生二周目ノート</p>
+    </div>
   </footer>
 </body>
 </html>
