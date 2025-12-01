@@ -32,15 +32,10 @@ body {
 
 body {
   min-height: 100vh;
-  font-family: "Inter", "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
+  font-family: "Inter", "Noto Sans JP", sans-serif;
   color: var(--text-main);
   background: radial-gradient(circle at top left, #f0fff7 0, var(--bg-grad-start) 40%, var(--bg-grad-end) 100%);
 }
-
-/* =========================
-   Layout
-   ========================= */
 
 .page {
   padding: 96px 16px 64px;
@@ -60,12 +55,9 @@ body {
   top: 0;
   z-index: 20;
   backdrop-filter: blur(18px);
-  background: linear-gradient(
-    to bottom,
-    rgba(230, 255, 242, 0.96),
-    rgba(200, 245, 216, 0.9)
-  );
-  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(to bottom,
+      rgba(230, 255, 242, 0.96),
+      rgba(200, 245, 216, 0.9));
 }
 
 .header-inner {
@@ -78,7 +70,6 @@ body {
   flex-wrap: wrap;
 }
 
-/* Logo */
 .logo-block {
   display: inline-flex;
   align-items: center;
@@ -96,20 +87,12 @@ body {
   background: radial-gradient(circle at 30% 20%, #bbf7d0, #22c55e);
   color: #f8fff9;
   font-weight: 700;
-  font-size: 18px;
   box-shadow: 0 8px 18px rgba(34, 197, 94, 0.45);
-}
-
-.logo-texts {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
 }
 
 .logo-title {
   font-size: 16px;
   font-weight: 600;
-  letter-spacing: 0.04em;
 }
 
 .logo-sub {
@@ -117,11 +100,10 @@ body {
   color: var(--text-sub);
 }
 
-/* Nav */
+/* Navigation */
 .main-nav {
   margin-left: auto;
   display: flex;
-  align-items: center;
   gap: 10px;
   flex-wrap: wrap;
 }
@@ -131,62 +113,48 @@ body {
   align-items: center;
   gap: 4px;
   padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   font-size: 12px;
   color: var(--text-main);
-  transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
-}
-
-.nav-index {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  font-size: 10px;
-  font-weight: 600;
-  background: var(--accent-soft);
-  color: var(--accent-dark);
+  transition: 0.2s;
 }
 
 .nav-link:hover {
   background: #ffffff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
 }
 
-/* =========================
-   Sections
-   ========================= */
+.nav-index {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  background: var(--accent-soft);
+  font-size: 10px;
+  font-weight: 600;
+}
 
+/* Sections */
 .section {
   margin-top: 32px;
 }
 
-.section-header {
-  margin-bottom: 18px;
-}
-
 .section-title {
-  font-size: 20px;
-  letter-spacing: 0.03em;
-  margin: 0 0 4px;
+  margin: 0 0 6px;
 }
 
 .section-lead {
-  margin: 0;
   font-size: 13px;
+  margin: 0;
   color: var(--text-sub);
 }
 
-/* =========================
-   Cards
-   ========================= */
-
+/* Cards */
 .card-grid {
   display: grid;
   gap: 16px;
@@ -194,25 +162,20 @@ body {
 
 .card {
   position: relative;
-  padding: 18px 18px 16px;
-  background: linear-gradient(145deg, var(--card-bg), var(--card-bg-soft));
+  padding: 18px;
+  background: var(--card-bg);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  transition: 0.25s;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 46px rgba(0, 0, 0, 0.08);
-  background: #ffffff;
+  box-shadow: 0 16px 46px rgba(0,0,0,0.08);
 }
 
 .card-title {
-  margin: 0 0 6px;
-  font-size: 16px;
-  font-weight: 600;
+  margin: 0 0 8px;
 }
 
 .card-text {
@@ -222,122 +185,45 @@ body {
   color: var(--text-sub);
 }
 
-/* Number badge */
 .card-badge {
   position: absolute;
-  top: 12px;
-  left: 16px;
+  top: 14px;
+  left: 14px;
   width: 24px;
   height: 24px;
-  border-radius: var(--radius-pill);
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
   font-weight: 600;
-  color: var(--accent-dark);
-  background: rgba(187, 247, 208, 0.95);
-  box-shadow: 0 6px 14px rgba(34, 197, 94, 0.35);
 }
 
-/* Shift title when badge present */
-.card-badge + .card-title,
-.card .card-badge + h3 {
-  margin-top: 18px;
-}
-
-/* Essentials specific */
+/* Layout for essentials */
 .essentials-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-/* Utilities (user feature + concept) */
-.utilities-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.utility-card {
-  min-height: 150px;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 /* Feature cards (main 3) */
 .feature-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: stretch;
+  grid-template-columns: repeat(3, 1fr);
 }
 
-.feature-card {
-  display: flex;
-  flex-direction: column;
-  min-height: 180px;
-}
-
-/* =========================
-   Footer
-   ========================= */
-
+/* Footer */
 .site-footer {
   padding: 16px;
   text-align: center;
   font-size: 11px;
   color: var(--text-sub);
-  opacity: 0.9;
 }
 
-/* =========================
-   Responsive
-   ========================= */
-
-@media (max-width: 900px) {
-  .page {
-    padding-top: 80px;
-  }
-
-  .header-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .main-nav {
-    margin-left: 0;
-  }
-}
-
+/* Responsive */
 @media (max-width: 768px) {
   .essentials-grid,
-  .utilities-grid,
   .feature-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .card {
-    padding: 16px 16px 14px;
-  }
-
-  .card-badge {
-    top: 10px;
-    left: 14px;
-  }
-
-  .section {
-    margin-top: 28px;
+    grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 480px) {
-  .logo-title {
-    font-size: 14px;
-  }
-
-  .logo-sub {
-    font-size: 10px;
-  }
-
-  .nav-link {
-    padding-inline: 8px;
-    font-size: 11px;
-  }
-}
