@@ -1,123 +1,452 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <title>人生二周目ノート – 世代別ノート</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <title>世代別ノート | 人生二周目ノート</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- フォント -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap"
-    rel="stylesheet"
-  />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Material Icons -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
 
-  <!-- 共通CSS + ページCSS -->
-  <link rel="stylesheet" href="base.css" />
-  <link rel="stylesheet" href="generation-notes.css" />
+  <link rel="stylesheet" href="generation-notes.css">
 </head>
-
 <body>
 
-  <!-- ▼ 共通ヘッダー -->
-  <header class="site-header">
-    <div class="site-header-inner">
+<header class="site-header">
+  <div class="header-inner">
+    <!-- メニュー（オーバーレイ用） -->
+    <button class="menu-toggle" id="menuToggle" aria-label="メニューを開く">
+      <span class="material-symbols-rounded">menu</span>
+    </button>
 
-      <!-- 左：メニュー -->
-      <button class="menu-toggle" aria-expanded="false" aria-controls="menu-overlay">
-        <span class="material-symbols-rounded">menu</span>
+    <!-- ロゴ -->
+    <div class="logo-block">
+      <div class="logo-mark">∞</div>
+      <div class="logo-texts">
+        <div class="logo-title">人生二周目ノート</div>
+        <div class="logo-sub">二周目視点で、人生をアップデートするノート</div>
+      </div>
+    </div>
+
+    <!-- ヘッダーナビ（簡易） -->
+    <nav class="header-nav">
+      <a href="../index.html" class="header-nav-item">ホーム</a>
+      <span class="header-nav-item current">世代別ノート</span>
+      <a href="knowledge-notes.html" class="header-nav-item">教養ノート</a>
+      <a href="life-stories.html" class="header-nav-item">人生体験記ノート</a>
+      <a href="user-notes.html" class="header-nav-item">ユーザー機能</a>
+      <a href="concept.html" class="header-nav-item">コンセプト</a>
+    </nav>
+  </div>
+</header>
+
+<!-- オーバーレイメニュー -->
+<div class="menu-overlay" id="menuOverlay" aria-hidden="true">
+  <div class="menu-panel">
+    <div class="menu-panel-header">
+      <span class="menu-title">人生二周目ノート</span>
+      <button class="menu-close" id="menuClose" aria-label="メニューを閉じる">
+        <span class="material-symbols-rounded">close</span>
       </button>
+    </div>
+    <nav class="menu-links">
+      <a href="../index.html" class="menu-link">
+        <span class="material-symbols-rounded">home</span>
+        <span>ホーム</span>
+      </a>
+      <a href="generation-notes.html" class="menu-link menu-link-current">
+        <span class="material-symbols-rounded">diversity_3</span>
+        <span>世代別ノート</span>
+      </a>
+      <a href="knowledge-notes.html" class="menu-link">
+        <span class="material-symbols-rounded">psychology</span>
+        <span>教養ノート</span>
+      </a>
+      <a href="life-stories.html" class="menu-link">
+        <span class="material-symbols-rounded">menu_book</span>
+        <span>人生体験記ノート</span>
+      </a>
+      <a href="user-notes.html" class="menu-link">
+        <span class="material-symbols-rounded">person</span>
+        <span>ユーザー機能</span>
+      </a>
+      <a href="concept.html" class="menu-link">
+        <span class="material-symbols-rounded">lightbulb</span>
+        <span>コンセプト</span>
+      </a>
+    </nav>
+  </div>
+</div>
 
-      <!-- ロゴ -->
-      <div class="header-logo">
-        <div class="logo-symbol">∞</div>
-        <div>
-          <div class="logo-text-main">人生二周目ノート</div>
-          <div class="logo-text-sub">人生のステージを俯瞰する、8チャプター構造</div>
+<main class="page-main">
+
+  <!-- ページタイトル -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <h1 class="page-title">世代別ノート</h1>
+      <p class="page-subtitle">
+        人生を 8 つのチャプターに分解し、<br class="sp-only">迷いの構造を見える化するページ。
+      </p>
+    </div>
+  </section>
+
+  <!-- タブ（トップ + 8ステージ） -->
+  <section class="tabs-wrapper">
+    <div class="tabs-inner">
+      <button class="stage-tab active" data-stage="overview">トップ</button>
+      <button class="stage-tab" data-stage="elementary">小学生（6〜12歳）</button>
+      <button class="stage-tab" data-stage="junior">中学生（12〜15歳）</button>
+      <button class="stage-tab" data-stage="high">高校生（15〜18歳）</button>
+      <button class="stage-tab" data-stage="college">大学・専門期（18〜22歳）</button>
+      <button class="stage-tab" data-stage="early">社会人前期（22〜28歳）</button>
+      <button class="stage-tab" data-stage="mid">社会人中期（29〜35歳）</button>
+      <button class="stage-tab" data-stage="late">社会人後期（36〜64歳）</button>
+      <button class="stage-tab" data-stage="second">セカンドキャリア（65歳〜）</button>
+    </div>
+  </section>
+
+  <!-- ▼▼ コンテンツ：トップ（人生ステージの可視化） ▼▼ -->
+  <section class="stage-panel active" id="stage-overview">
+    <div class="content-container">
+
+      <!-- 人生ステージグラフ -->
+      <div class="card stage-graph-card">
+        <h2 class="card-title">人生ステージの全体図</h2>
+        <p class="card-text">
+          人生の 80 年を、8 つのチャプターとしてタイムラインで俯瞰します。<br>
+          どの年代でどんなテーマが前面に出てきやすいのかをざっくり掴むための “人生航路マップ” です。
+        </p>
+
+        <div class="timeline">
+          <div class="timeline-row">
+            <div class="timeline-segment seg-1">小学生<br><span>6〜12</span></div>
+            <div class="timeline-segment seg-2">中学生<br><span>12〜15</span></div>
+            <div class="timeline-segment seg-3">高校生<br><span>15〜18</span></div>
+            <div class="timeline-segment seg-4">大学・専門<br><span>18〜22</span></div>
+            <div class="timeline-segment seg-5">社会人前期<br><span>22〜28</span></div>
+            <div class="timeline-segment seg-6">社会人中期<br><span>29〜35</span></div>
+            <div class="timeline-segment seg-7">社会人後期<br><span>36〜64</span></div>
+            <div class="timeline-segment seg-8">セカンドキャリア<br><span>65〜</span></div>
+          </div>
+          <div class="timeline-axis-label">年齢</div>
         </div>
       </div>
 
-      <!-- 右：説明 -->
-      <div class="header-right">
-        人生のステージ（6〜80歳）を、二周目視点で体系化したノート。
+      <!-- トップの説明カード -->
+      <div class="card-grid-2">
+        <div class="card">
+          <h3 class="card-title">二周目視点で見る「時間の流れ」</h3>
+          <p class="card-text">
+            一周目のときは、その瞬間の悩みだけが大きく見える。<br>
+            しかし、人生全体の流れを俯瞰すると「これはこのステージ特有のノイズだ」と分かることも多い。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">各ステージに共通するもの・変わるもの</h3>
+          <p class="card-text">
+            どの年代でも変わらない “人間のベース” と、ステージごとに変化する “環境・役割・期待値”。<br>
+            世代別ノートでは、この二つを切り分けて整理していきます。
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- ▲▲ トップ終わり ▲▲ -->
+
+  <!-- ▼▼ 以下、各ステージ用パネル ▼▼ -->
+
+  <!-- 小学生 -->
+  <section class="stage-panel" id="stage-elementary">
+    <div class="content-container">
+      <h2 class="stage-title">小学生（6〜12歳）</h2>
+      <p class="stage-lead">自己形成の最初期。成功体験・安心感・興味の芽が育つ時期。</p>
+
+      <div class="card-grid-3">
+        <div class="card">
+          <h3 class="card-subtitle">本質1：環境の影響をもっとも強く受ける</h3>
+          <p class="card-text">
+            家庭・学校・先生との相性が、そのまま「自分はできる / できない」の感覚に直結しやすいフェーズ。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質2：承認と安心が行動のベースを作る</h3>
+          <p class="card-text">
+            ほめられた経験・受け入れられた経験が、のちの挑戦・学習意欲の土台となる。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質3：興味の芽が方向性の原型になる</h3>
+          <p class="card-text">
+            まだ「仕事」とは結びつかないが、「なぜか楽しい」「ずっとやっていられる」は後年の専門性の種。
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-subtitle">よくある分岐</h3>
+        <ul class="bullet-list">
+          <li>勉強よりも友人関係・遊びが中心になる</li>
+          <li>習い事・スポーツで成功体験を積む</li>
+          <li>家庭環境の影響で「自己肯定感のベース」が分かれる</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3 class="card-subtitle">迷い・つまずき</h3>
+        <ul class="bullet-list">
+          <li>友だち関係・仲間外れへの不安</li>
+          <li>怒られることへの恐怖と、承認欲求のアンバランス</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3 class="card-subtitle">処世術（How to Survive）</h3>
+        <ul class="bullet-list">
+          <li>「できる・できない」より「楽しい・安心できる」を優先して経験を増やす。</li>
+          <li>先生や大人に「助けを求める練習」をしておく。</li>
+        </ul>
+      </div>
+
+      <div class="card wisdom">
+        <p class="wisdom-text">「小学生のときの世界は狭い。でも、その狭い世界で得た安心感は、一生分の土台になる。」</p>
       </div>
     </div>
-  </header>
-
-  <!-- ▼ 共通オーバーレイメニュー -->
-  <div class="menu-overlay" aria-hidden="true">
-    <div class="menu-panel">
-      <div class="menu-panel-header">
-        <span class="menu-title">人生二周目ノート</span>
-        <button class="menu-close"><span class="material-symbols-rounded">close</span></button>
-      </div>
-
-      <div class="menu-panel-body">
-
-        <a class="nav-item" href="../index.html">
-          <span class="material-symbols-rounded">home</span>
-          <span>ホーム</span>
-        </a>
-
-        <a class="nav-item" href="generation-notes.html">
-          <span class="material-symbols-rounded">diversity_3</span>
-          <span>世代別ノート</span>
-        </a>
-
-        <a class="nav-item" href="knowledge-notes.html">
-          <span class="material-symbols-rounded">psychology</span>
-          <span>教養ノート</span>
-        </a>
-
-        <a class="nav-item" href="life-stories.html">
-          <span class="material-symbols-rounded">menu_book</span>
-          <span>人生体験記ノート</span>
-        </a>
-
-        <a class="nav-item" href="user-notes.html">
-          <span class="material-symbols-rounded">person</span>
-          <span>ユーザーノート</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ▼ ヒーロー -->
-  <section class="hero">
-    <h1 class="hero-title">世代別ノート</h1>
-    <p class="hero-sub1">人生を8チャプターに分解し、迷いの構造を見抜く</p>
-    <p class="hero-sub2">
-      小学生 → 中学生 → 高校生 → 大学/専門 → 社会人前期 → 中期 → 後期 → セカンドキャリア。<br>
-      各ステージの「心理・分岐・つまずき・生存戦略」を整理したノートです。
-    </p>
   </section>
 
-  <!-- ▼ 横スクロールの世代バー（8ステージ） -->
-  <div class="stage-bar-wrapper">
-    <div class="stage-bar" id="genStageTabs"></div>
+  <!-- 中学生 -->
+  <section class="stage-panel" id="stage-junior">
+    <div class="content-container">
+      <h2 class="stage-title">中学生（12〜15歳）</h2>
+      <p class="stage-lead">自我と比較が強まり、「自分は何者か」をぼんやり問い始める時期。</p>
+
+      <div class="card-grid-3">
+        <div class="card">
+          <h3 class="card-subtitle">本質1：比較のステージ</h3>
+          <p class="card-text">
+            成績・運動・容姿・コミュ力など、あらゆる要素が同年代と比較される。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質2：仲間と孤立の揺れ幅</h3>
+          <p class="card-text">
+            承認の主戦場が家庭から同級生へ移り、「所属していたい気持ち」が強くなる。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質3：将来像の“仮決め”</h3>
+          <p class="card-text">
+            まだ本気ではないが、「文系・理系」「進学・就職」の第一印象が形作られ始める。
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-subtitle">よくある分岐</h3>
+        <ul class="bullet-list">
+          <li>部活・受験・遊びのどこにエネルギーを振るか</li>
+          <li>不登校・学校との相性問題</li>
+        </ul>
+      </div>
+
+      <div class="card wisdom">
+        <p class="wisdom-text">「中学生の違和感は、たいてい ‘環境との相性’ の問題であって、人格の問題ではない。」</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 高校生 -->
+  <section class="stage-panel" id="stage-high">
+    <div class="content-container">
+      <h2 class="stage-title">高校生（15〜18歳）</h2>
+      <p class="stage-lead">将来の選択が、初めて「入試」「進路」という形で現れるステージ。</p>
+
+      <div class="card-grid-3">
+        <div class="card">
+          <h3 class="card-subtitle">本質1：選択の入口</h3>
+          <p class="card-text">
+            文理選択・大学か専門か・地元か県外かなど、人生の航路が分かれ始めるタイミング。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質2：努力の構造を体感する</h3>
+          <p class="card-text">
+            「やれば伸びる」「やらないと落ちる」を初めてリアルに感じる。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質3：他人の期待との距離感</h3>
+          <p class="card-text">
+            親・教師の期待と、自分の感覚のズレをどう扱うかがテーマになる。
+          </p>
+        </div>
+      </div>
+
+      <div class="card wisdom">
+        <p class="wisdom-text">「高校の選択は ‘一生の決定’ ではなく、‘最初のスタート位置’ を決めるだけ。」</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 大学・専門期 -->
+  <section class="stage-panel" id="stage-college">
+    <div class="content-container">
+      <h2 class="stage-title">大学・専門期（18〜22歳）</h2>
+      <p class="stage-lead">自由度が急に高まり、「自分で時間を設計する力」が問われるフェーズ。</p>
+
+      <div class="card-grid-3">
+        <div class="card">
+          <h3 class="card-subtitle">本質1：時間の使い方が将来に直結し始める</h3>
+          <p class="card-text">
+            学び・遊び・アルバイト・インターンなど、何に時間を投資したかが後々の選択肢を変える。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質2：「肩書き」から「中身」への移行期</h3>
+          <p class="card-text">
+            学歴だけではなく、「何ができるか」「何に興味を持っているか」が問われ始める。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質3：将来像の再定義</h3>
+          <p class="card-text">
+            子どもの頃に思っていた将来像が、一度リセットされるタイミング。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 社会人前期 -->
+  <section class="stage-panel" id="stage-early">
+    <div class="content-container">
+      <h2 class="stage-title">社会人前期（22〜28歳）</h2>
+      <p class="stage-lead">仕事のリアルを学びながら、「働くとは何か」を身体で理解していく時期。</p>
+
+      <div class="card-grid-3">
+        <div class="card">
+          <h3 class="card-subtitle">本質1：環境に染まりやすい期間</h3>
+          <p class="card-text">
+            配属された会社・上司・同僚のスタイルが、そのまま “仕事観” の原型になりやすい。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質2：キャリアの「最初の分岐」</h3>
+          <p class="card-text">
+            定着・転職・専門職へのシフト・大学院・フリーランスなど、最初の大きな分かれ道が現れる。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質3：自己効力感の揺れ</h3>
+          <p class="card-text">
+            「思っていたよりできない」「思ったよりやれる」が混ざり合い、自信が増えたり削れたりするフェーズ。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 社会人中期 -->
+  <section class="stage-panel" id="stage-mid">
+    <div class="content-container">
+      <h2 class="stage-title">社会人中期（29〜35歳）</h2>
+      <p class="stage-lead">仕事・生活・人間関係が固定化し、「このままでいいのか」が浮上し始めるタイミング。</p>
+
+      <div class="card-grid-3">
+        <div class="card">
+          <h3 class="card-subtitle">本質1：役割が重なり始める</h3>
+          <p class="card-text">
+            プレイヤー・リーダー・家庭・親との関係など、担う役割が増え、時間の奪い合いが起きる。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質2：キャリアの「中間決算」</h3>
+          <p class="card-text">
+            20代の選択の結果が、ポジション・年収・スキルとして見え始める。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質3：再スタートの可否</h3>
+          <p class="card-text">
+            「ここから方向転換できるか？」という現実的な問いが浮かぶフェーズ。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 社会人後期 -->
+  <section class="stage-panel" id="stage-late">
+    <div class="content-container">
+      <h2 class="stage-title">社会人後期（36〜64歳）</h2>
+      <p class="stage-lead">積み上げてきたものの意味を問い直し、次世代とのバトンの受け渡しがテーマになる時間。</p>
+
+      <div class="card-grid-3">
+        <div class="card">
+          <h3 class="card-subtitle">本質1：維持と変化のせめぎ合い</h3>
+          <p class="card-text">
+            経験値が増える一方で、新しい技術や価値観へのキャッチアップが課題になる。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質2：役割の再編成</h3>
+          <p class="card-text">
+            親として・組織の中で・地域で、どの役割を続け、どの役割を手放すかが問われる。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質3：セカンドキャリアの準備</h3>
+          <p class="card-text">
+            収入・健康・人間関係をどう次のステージにつなげるかを設計するフェーズ。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- セカンドキャリア -->
+  <section class="stage-panel" id="stage-second">
+    <div class="content-container">
+      <h2 class="stage-title">セカンドキャリア（65歳〜）</h2>
+      <p class="stage-lead">「役割のために生きる」から「自分のために生きる」へと比重が変わっていく時間。</p>
+
+      <div class="card-grid-3">
+        <div class="card">
+          <h3 class="card-subtitle">本質1：時間の再定義</h3>
+          <p class="card-text">
+            働き方・関わり方・暮らし方を、自分で再設計できる自由度の高いステージ。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質2：経験の編集</h3>
+          <p class="card-text">
+            これまでの経験を「誰のために・どのように活かすか」という問いが中心になる。
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-subtitle">本質3：心身のマネジメント</h3>
+          <p class="card-text">
+            健康・孤立・経済のバランスを取りながら、「静かな満足感」をどう作るかがテーマ。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- トップに戻るミニボタン（モバイル用補助） -->
+  <div class="back-to-top-wrapper">
+    <button class="back-to-top" data-stage="overview">
+      トップに戻る
+    </button>
   </div>
 
-  <!-- ▼ メインコンテンツ -->
-  <main>
-    <div class="page-inner">
+</main>
 
-      <!-- JSで全セクションを描画 -->
-      <section id="genContent" class="card"></section>
-
-    </div>
-  </main>
-
-  <!-- Feather Icons -->
-  <script src="https://unpkg.com/feather-icons"></script>
-
-  <!-- 共通JS + ページJS -->
-  <script src="menu.js"></script>
-  <script src="generation-notes.js"></script>
-
+<script src="generation-notes.js"></script>
 </body>
 </html>
