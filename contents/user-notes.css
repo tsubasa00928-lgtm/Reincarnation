@@ -1,46 +1,19 @@
-/* ヒーロー */
+/* =========================
+   レイアウト（ホームと統一）
+   ========================= */
 
-.hero {
-  background: linear-gradient(135deg, #dcfce7 0%, #ecfdf5 45%, #ffffff 100%);
-  border-radius: 24px;
-  box-shadow: var(--shadow-soft);
-  margin: 6px auto 12px;
-  padding: 24px 20px 20px;
-  text-align: center;
-  max-width: 1400px;
-}
-
-.hero-title {
-  font-size: 32px;
-  font-weight: 800;
-  margin: 0 0 6px;
-}
-
-.hero-sub1 {
-  font-size: 18px;
-  margin: 0 0 4px;
-  color: var(--text-sub);
-  font-weight: 600;
-}
-
-.hero-sub2 {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text-muted);
-}
-
-/* メインレイアウト */
-
-main {
-  padding: 8px 8px 32px;
+.page-user-notes .site-main {
+  padding-top: 16px;
+  padding-bottom: 40px;
 }
 
 .page-inner {
   margin: 0 auto;
-  max-width: 1400px;
+  max-width: 1120px;
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
   gap: 18px;
+  padding: 0 24px 24px;
 }
 
 @media (max-width: 960px) {
@@ -49,7 +22,23 @@ main {
   }
 }
 
-/* 心に留めたい言葉 */
+/* セクションタイトル・説明（カード内） */
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.section-desc {
+  font-size: 0.85rem;
+  color: var(--text-sub);
+  margin: 0 0 10px;
+}
+
+/* =========================
+   心に留めたい言葉
+   ========================= */
 
 .quote-input-row {
   display: flex;
@@ -111,7 +100,9 @@ main {
   font-size: 11px;
 }
 
-/* チャット */
+/* =========================
+   チャット
+   ========================= */
 
 .chat-window {
   border-radius: 16px;
