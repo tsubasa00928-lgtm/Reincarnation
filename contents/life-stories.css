@@ -1,48 +1,16 @@
 /* ==============================
-   ヒーロー（knowledge-notes.css と同じデザイン）
+   レイアウト（ホームとトーンを統一）
    ============================== */
 
-/* ヒーロー */
-.hero {
-  background: linear-gradient(135deg, #dcfce7 0%, #ecfdf5 45%, #ffffff 100%);
-  border-radius: 24px;
-  box-shadow: var(--shadow-soft);
-  margin: 6px auto 12px;
-  padding: 24px 20px 20px;
-  text-align: center;
-  max-width: 1400px;
-}
-
-.hero-title {
-  font-size: 32px;
-  font-weight: 800;
-  margin: 0 0 6px;
-}
-
-.hero-sub1 {
-  font-size: 18px;
-  margin: 0 0 4px;
-  color: var(--text-sub);
-  font-weight: 600;
-}
-
-.hero-sub2 {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text-muted);
-}
-
-/* ==============================
-   メインレイアウト（knowledge-notes を踏襲）
-   ============================== */
-
-main {
-  padding: 8px 8px 32px;
+.page-life-stories .site-main {
+  padding-top: 16px;
+  padding-bottom: 40px;
 }
 
 .page-inner {
   margin: 0 auto;
-  max-width: 1400px;
+  max-width: 1120px;
+  padding: 0 24px 24px;
 }
 
 /* ==============================
@@ -66,8 +34,12 @@ main {
   font-size: 12px;
   cursor: pointer;
   color: var(--text-muted);
-  transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease,
-    transform 0.12s ease, border-color 0.18s ease;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease,
+    border-color 0.18s ease;
 }
 
 .chapter-tab:hover {
@@ -157,7 +129,10 @@ main {
   background: #ffffff;
   box-shadow: var(--shadow-soft);
   overflow: hidden;
-  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .pattern-card-header {
@@ -206,7 +181,9 @@ main {
   font-size: 13px;
   color: #16a34a;
   background-color: #f0fdf4;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .pattern-card-summary {
@@ -312,7 +289,10 @@ main {
   font-size: 11px;
   color: #1e3a8a;
   cursor: pointer;
-  transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease,
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease,
     border-color 0.18s ease;
   white-space: nowrap;
 }
