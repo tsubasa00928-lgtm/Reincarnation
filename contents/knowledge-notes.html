@@ -20,8 +20,7 @@
 
 <body class="home-body page-knowledge-notes">
   <!-- ======================
-       ヘッダー（ホームと統一）
-       ※仕様により変更禁止
+       ヘッダー（ホームと統一・変更禁止）
        ====================== -->
   <header class="site-header">
     <div class="header-inner container">
@@ -54,14 +53,14 @@
             <div class="hero-section-underline second"></div>
           </div>
           <p class="hero-text">
-            人生を賢く、したたかに。<br>
-            情報が多すぎる時代に必要なのは、「断片的な知識」ではなく「構造化された知恵」。
+            人生を賢く、したたかに。世の教訓は5つのOSに構造化される。<br>
+            情報が多すぎる時代に必要なのは、「断片的な知識」ではなく「生き抜くための知恵」。
           </p>
         </div>
       </section>
 
       <!-- ======================
-           HEROより下：今回の改修範囲
+           HEROより下：処世術禄 専用UI
            ====================== -->
       <div class="page-inner">
 
@@ -102,11 +101,10 @@
               <span class="kn-sidebar-toggle-label">処世術禄一覧</span>
             </button>
 
-            <!-- 総合検索バー（全タブ共通） -->
+            <!-- 共通：総合検索バー（トップ・OS共通） -->
             <section class="kn-section kn-search-section" aria-label="処世術の総合検索">
               <div class="kn-search-inner">
                 <div class="kn-search-icon" aria-hidden="true">
-                  <!-- シンプルなSVG虫眼鏡 -->
                   <svg viewBox="0 0 24 24" class="kn-search-svg">
                     <circle cx="11" cy="11" r="6" stroke-width="2" fill="none"></circle>
                     <line x1="15" y1="15" x2="20" y2="20" stroke-width="2"></line>
@@ -123,55 +121,58 @@
             </section>
 
             <!-- ======================
-                 トップ専用モード
+                 トップモード（≪トップ≫専用）
                  ====================== -->
+            <section id="top-mode" aria-label="処世術禄トップモード">
+              <!-- 今日の処世術 -->
+              <section class="kn-section kn-today-section" aria-label="今日の処世術">
+                <div class="kn-section-header kn-today-header">
+                  <div>
+                    <h2 class="kn-section-title">今日の処世術</h2>
+                    <p class="kn-section-subtitle">
+                      ページを開くたび、または「更新」を押すたびにランダムで1つだけ表示します。
+                    </p>
+                  </div>
+                  <button id="kn-today-refresh" class="kn-today-refresh-btn" type="button">
+                    ↻ 更新
+                  </button>
+                </div>
+                <div id="kn-today-card" class="kn-today-card-container">
+                  <p class="kn-loading-text">処世術カードを読み込み中です…</p>
+                </div>
+              </section>
 
-            <!-- 今日の処世術（おすすめカード）※トップのみ表示 -->
-            <section class="kn-section kn-today-section kn-top-only" aria-label="今日の処世術">
-              <div class="kn-section-header kn-today-header">
-                <div>
-                  <h2 class="kn-section-title">今日の処世術</h2>
+              <!-- 今の悩みから探す -->
+              <section class="kn-section kn-shortcuts-section" aria-label="今の悩みから探す">
+                <div class="kn-section-header kn-shortcuts-header">
+                  <h2 class="kn-section-title">今の悩みから探す →</h2>
                   <p class="kn-section-subtitle">
-                    ページを開くたび、または「更新」を押すたびにランダムで1つだけ表示します。
+                    いま気になっているテーマに近いボタンを押すと、そのキーワードで検索欄がセットされます。
                   </p>
                 </div>
-                <button id="kn-today-refresh" class="kn-today-refresh-btn" type="button">
-                  ↻ 更新
-                </button>
-              </div>
-              <div id="kn-today-card" class="kn-today-card-container">
-                <p class="kn-loading-text">処世術カードを読み込み中です…</p>
-              </div>
-            </section>
-
-            <!-- 今の悩みから探す（シチュエーション別ショートカット）※トップのみ表示 -->
-            <section class="kn-section kn-shortcuts-section kn-top-only" aria-label="今の悩みから探す">
-              <div class="kn-section-header kn-shortcuts-header">
-                <h2 class="kn-section-title">今の悩みから探す →</h2>
-                <p class="kn-section-subtitle">
-                  いま気になっているテーマに近いボタンを押すと、そのキーワードで検索欄がセットされます。
-                </p>
-              </div>
-              <div class="kn-shortcut-list">
-                <button class="kn-shortcut" type="button" data-keyword="職場">🔘 職場</button>
-                <button class="kn-shortcut" type="button" data-keyword="恋愛">🔘 恋愛</button>
-                <button class="kn-shortcut" type="button" data-keyword="将来">🔘 将来</button>
-                <button class="kn-shortcut" type="button" data-keyword="メンタル">🔘 メンタル</button>
-                <button class="kn-shortcut" type="button" data-keyword="お金">🔘 お金</button>
-              </div>
+                <div class="kn-shortcut-list">
+                  <button class="kn-shortcut" type="button" data-keyword="職場">🔘 職場</button>
+                  <button class="kn-shortcut" type="button" data-keyword="恋愛">🔘 恋愛</button>
+                  <button class="kn-shortcut" type="button" data-keyword="将来">🔘 将来</button>
+                  <button class="kn-shortcut" type="button" data-keyword="メンタル">🔘 メンタル</button>
+                  <button class="kn-shortcut" type="button" data-keyword="お金">🔘 お金</button>
+                </div>
+              </section>
             </section>
 
             <!-- ======================
-                 OSタブ専用モード（≪トップ≫以外）
+                 OSモード（≪トップ≫以外のタブ専用）
                  ====================== -->
-            <section class="kn-section kn-results-section" aria-label="処世術カード一覧">
-              <div class="kn-section-header kn-results-header">
-                <h2 class="kn-section-title">処世術カード一覧</h2>
-                <p id="kn-results-meta" class="kn-results-meta">
-                  データを読み込み中です…
-                </p>
-              </div>
-              <div id="kn-results-container" class="kn-card-grid" aria-live="polite"></div>
+            <section id="os-mode" aria-label="処世術カード一覧モード" hidden>
+              <section class="kn-section kn-results-section">
+                <div class="kn-section-header kn-results-header">
+                  <h2 class="kn-section-title">処世術カード一覧</h2>
+                  <p id="kn-results-meta" class="kn-results-meta">
+                    データを読み込み中です…
+                  </p>
+                </div>
+                <div id="kn-results-container" class="kn-card-grid" aria-live="polite"></div>
+              </section>
             </section>
 
             <footer class="page-footer">
@@ -183,8 +184,7 @@
     </div>
   </main>
 
-  <!-- JS：このページ専用だけ -->
+  <!-- このページ専用JS -->
   <script src="knowledge-notes.js" defer></script>
 </body>
 </html>
-
