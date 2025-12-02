@@ -13,19 +13,13 @@
     rel="stylesheet"
   />
 
-  <!-- Material Icons -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
-
   <!-- 共通CSS ＋ このページ専用CSS -->
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="life-stories.css" />
 </head>
 <body class="home-body page-life-stories">
 
-  <!-- ======================
-       ヘッダー（index.html と同一構造）
-       ====================== -->
+  <!-- ヘッダー -->
   <header class="site-header">
     <div class="header-inner container">
       <div class="logo-block">
@@ -44,37 +38,23 @@
     </div>
   </header>
 
-  <!-- オーバーレイメニュー（構造は従来どおり、文言のみ調整） -->
+  <!-- SPメニュー（アイコン削除版） -->
   <div class="menu-overlay" aria-hidden="true">
     <div class="menu-panel">
       <div class="menu-panel-header">
         <span class="menu-title">人生二周目ノート</span>
         <button class="menu-close" aria-label="メニューを閉じる">
-          <span class="material-symbols-rounded">close</span>
+          ✕
         </button>
       </div>
 
       <div class="menu-panel-body">
-        <a class="nav-item" href="../index.html">
-          <span class="material-symbols-rounded">home</span>
-          <span>ホーム</span>
-        </a>
-        <a class="nav-item" href="generations.html">
-          <span class="material-symbols-rounded">diversity_3</span>
-          <span>世代別ノート</span>
-        </a>
-        <a class="nav-item" href="knowledge-notes.html">
-          <span class="material-symbols-rounded">psychology</span>
-          <span>処世術ノート</span>
-        </a>
-        <a class="nav-item" href="life-stories.html">
-          <span class="material-symbols-rounded">menu_book</span>
-          <span>人生体験記ノート</span>
-        </a>
-        <a class="nav-item" href="user-notes.html">
-          <span class="material-symbols-rounded">person</span>
-          <span>ユーザー機能</span>
-        </a>
+        <a class="nav-item" href="../index.html">ホーム</a>
+        <a class="nav-item" href="generations.html">世代別ノート</a>
+        <a class="nav-item" href="knowledge-notes.html">処世術ノート</a>
+        <a class="nav-item" href="life-stories.html">人生体験記ノート</a>
+        <a class="nav-item" href="user-notes.html">ユーザー機能</a>
+        <a class="nav-item" href="concept.html">コンセプト</a>
       </div>
     </div>
   </div>
@@ -82,9 +62,7 @@
   <main class="site-main">
     <div class="container">
 
-      <!-- ======================
-           HERO（ホームと同じ2カラム構造）
-           ====================== -->
+      <!-- HERO（コンセプトと同じ高さ・左寄せ） -->
       <section class="hero-copy">
         <div class="hero-inner">
           <div class="hero-heading-block">
@@ -99,12 +77,10 @@
         </div>
       </section>
 
-      <!-- ======================
-           ページ本体
-           ====================== -->
+      <!-- 本体コンテンツ -->
       <div class="page-inner main-content">
 
-        <!-- 3チャプタータブ -->
+        <!-- チャプタータブ -->
         <div class="chapter-tabs" role="tablist" aria-label="人生体験記ノートのチャプター">
           <button
             type="button"
@@ -178,9 +154,8 @@
               </p>
             </div>
 
-            <!-- JSでカード（2列グリッド）を動的生成 -->
             <div class="pattern-card-grid" id="pattern-card-grid" aria-live="polite">
-              <!-- JavaScriptにより挿入 -->
+              <!-- JSでカードを挿入 -->
             </div>
           </section>
         </section>
@@ -198,23 +173,16 @@
 
             <div class="jobs-intro">
               <p>
-                上のタブで<strong>「職業図鑑」</strong>を選ぶと、このエリアに職業タグが並びます。<br>
-                気になる職業タグをタップすると、下に概要カードが開きます。
-              </p>
-              <p>
-                「なり方」「日々のルーティン」「よくある悩み」「この仕事ならではの喜び」を、<br>
-                一枚のカードに整理しています。
+                このエリアに職業タグが並びます。気になるタグをタップすると、下に概要カードが開きます。
               </p>
             </div>
 
-            <!-- タグ風ボタンを並べるエリア -->
             <div class="job-tag-container" id="job-tag-container" aria-label="職業タグ一覧">
-              <!-- JavaScriptで挿入 -->
+              <!-- JSで挿入 -->
             </div>
 
-            <!-- 選択された職業の詳細カード -->
             <div class="job-detail-container" id="job-detail-container" aria-live="polite">
-              <!-- JavaScriptで挿入 -->
+              <!-- JSで挿入 -->
             </div>
           </section>
         </section>
@@ -226,7 +194,7 @@
     </div>
   </main>
 
-  <!-- 共通メニューJS ＋ このページ用JS -->
+  <!-- JS -->
   <script src="menu.js"></script>
   <script src="life-stories.js"></script>
 </body>
