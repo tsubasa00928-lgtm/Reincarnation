@@ -5,40 +5,35 @@
 ========================================= */
 
 .concept-body {
-  background-color: #f4fbf7; /* ほんのり淡いグリーンで「静けさ」 */
+  /* 背景は共通の body グラデーション＋コンパスをそのまま使う */
   color: #111827;
   font-family: "Inter", "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .concept-main {
-  padding: 40px 0 80px;
+  padding-top: 16px;
+  padding-bottom: 40px;
 }
 
-.concept-container {
-  max-width: 1040px;
+/* メインコンテンツ幅：他タブと同じ 1120px 中央寄せ */
+.concept-inner {
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 24px 24px;
 }
 
-/* ---------- ヒーロー ---------- */
-.concept-hero {
-  margin-bottom: 32px;
+/* ---------- HERO（ホームと同じ構造の軽い調整） ---------- */
+
+.concept-hero-copy {
+  padding-top: 40px;      /* ホームより少し浅めスタートでもOK */
+  padding-bottom: 24px;
 }
 
-.concept-title {
-  font-size: 2.1rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  margin-bottom: 8px;
+.concept-hero-text {
+  max-width: 720px;
 }
 
-.concept-lead {
-  font-size: 1.05rem;
-  line-height: 1.9;
-  color: #374151;
-}
-
-/* スマホだけ改行を効かせるクラス（既存HTMLと同じ想定） */
+/* スマホだけ改行を効かせるクラス（他ページとは独立運用） */
 .sp-only {
   display: none;
 }
@@ -48,12 +43,9 @@
     display: inline;
   }
 
-  .concept-title {
-    font-size: 1.7rem;
-  }
-
-  .concept-lead {
-    font-size: 0.98rem;
+  .concept-hero-copy {
+    padding-top: 32px;
+    padding-bottom: 18px;
   }
 }
 
@@ -144,6 +136,10 @@
 
 /* タブレット以下で少し余白を広めに */
 @media (max-width: 959px) {
+  .concept-inner {
+    padding: 0 16px 24px;
+  }
+
   .concept-card {
     padding: 20px 18px 20px;
   }
