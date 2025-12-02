@@ -1,5 +1,7 @@
 // knowledge-notes.js
-// 処世術禄：サイドOSタブ / 総合検索 / 今日の処世術（ランダムカード） / ショートカット連動
+// モード分離：
+//  - ≪トップ≫(activeCategory === "all") → #top-mode だけ表示
+//  - その他OSタブ → #os-mode だけ表示（カード一覧）
 
 (function () {
   // ============================================================
@@ -7,12 +9,12 @@
   // ============================================================
   const state = {
     loaded: false,
-    topics: [], // { title, summary, tags, essence, ... , _category }
-    activeCategory: "all", // all | mind | relation | work | habit | future
+    topics: [],         // { title, summary, tags, essence, traps, actionTips, _category }
+    activeCategory: "all",
     search: ""
   };
 
-  // カテゴリごとのJSON設定
+  // カテゴリ設定
   const categoryConfigs = {
     mind: {
       jsonPath: "data/shoseijutsu/mind.json",
@@ -37,36 +39,39 @@
   };
 
   // DOM参照
-  const sidebarEl = document.getElementById("kn-sidebar");
+  const sidebarEl        = document.getElementById("kn-sidebar");
   const sidebarToggleBtn = document.querySelector(".kn-sidebar-toggle");
-  const osTabButtons = sidebarEl
-    ? sidebarEl.querySelectorAll(".kn-os-tab")
-    : [];
-  const searchInput = document.getElementById("kn-search-input");
+  const osTabButtons     = sidebarEl ? sidebarEl.querySelectorAll(".kn-os-tab") : [];
+
+  const searchInput      = document.getElementById("kn-search-input");
+
+  const topModeSection   = document.getElementById("top-mode");
+  const osModeSection    = document.getElementById("os-mode");
+
   const todayCardContainer = document.getElementById("kn-today-card");
-  const resultsContainer = document.getElementById("kn-results-container");
-  const resultsMetaEl = document.getElementById("kn-results-meta");
-  const shortcutButtons = document.querySelectorAll(".kn-shortcut");
+  const todayRefreshBtn    = document.getElementById("kn-today-refresh");
+
+  const shortcutButtons    = document.querySelectorAll(".kn-shortcut");
+
+  const resultsContainer   = document.getElementById("kn-results-container");
+  const resultsMetaEl      = document.getElementById("kn-results-meta");
 
   // ============================================================
   // 初期化
   // ============================================================
-
   function init() {
-    // イベントの紐付け
     setupSidebarToggle();
     setupOsTabs();
     setupSearchInput();
     setupShortcuts();
+    setupTodayRefresh();
 
-    // データのロード
     loadAllCategories()
       .then(() => {
         state.loaded = true;
-        // 今日の処世術カード
-        renderTodayCard();
-        // 検索結果（初期はランダムピックアップ）
-        renderResults();
+        renderTodayCard();   // トップモード用
+        renderResults();     // OSモード用（トップでは一覧非表示）
+        updateModeVisibility();
       })
       .catch((err) => {
         console.error(err);
@@ -79,21 +84,21 @@
             "データの読み込み中にエラーが発生しました。";
         }
       });
+
+    // 初期状態：≪トップ≫
+    updateModeVisibility();
   }
 
   // ============================================================
   // データロード
   // ============================================================
-
   function loadAllCategories() {
     const entries = Object.entries(categoryConfigs);
     const promises = entries.map(([categoryId, config]) => {
       return fetch(config.jsonPath)
         .then((res) => {
           if (!res.ok) {
-            throw new Error(
-              `failed to load ${config.jsonPath} (${res.status})`
-            );
+            throw new Error(`failed to load ${config.jsonPath} (${res.status})`);
           }
           return res.json();
         })
@@ -114,7 +119,6 @@
   // ============================================================
   // サイドバー（OSタブ）
   // ============================================================
-
   function setupSidebarToggle() {
     if (!sidebarToggleBtn || !sidebarEl) return;
 
@@ -131,7 +135,8 @@
       btn.addEventListener("click", () => {
         const categoryId = btn.getAttribute("data-category") || "all";
         setActiveCategory(categoryId);
-        // スマホ：タブ選択後はサイドバーを閉じる
+
+        // スマホ時：タブ選択後はサイドバーを閉じる
         if (sidebarEl && sidebarEl.classList.contains("is-open")) {
           sidebarEl.classList.remove("is-open");
           if (sidebarToggleBtn) {
@@ -145,7 +150,7 @@
   function setActiveCategory(categoryId) {
     state.activeCategory = categoryId;
 
-    // ボタンの見た目更新
+    // タブの見た目更新
     if (osTabButtons && osTabButtons.length > 0) {
       osTabButtons.forEach((btn) => {
         const target = btn.getAttribute("data-category");
@@ -153,14 +158,28 @@
       });
     }
 
-    // 再描画
+    // モード切り替え
+    updateModeVisibility();
+
+    // OSモードのときだけ一覧を再描画
     renderResults();
+  }
+
+  // トップモード / OSモード切り替え
+  function updateModeVisibility() {
+    const isTop = state.activeCategory === "all";
+
+    if (topModeSection) {
+      topModeSection.hidden = !isTop;
+    }
+    if (osModeSection) {
+      osModeSection.hidden = isTop;
+    }
   }
 
   // ============================================================
   // 検索入力
   // ============================================================
-
   function setupSearchInput() {
     if (!searchInput) return;
 
@@ -171,7 +190,6 @@
 
     searchInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
-        // Enterで軽くフォーカスを外してもいいが、とりあえず検索結果更新のみ
         state.search = searchInput.value || "";
         renderResults();
       }
@@ -181,7 +199,6 @@
   // ============================================================
   // ショートカット（シチュエーション別）
   // ============================================================
-
   function setupShortcuts() {
     if (!shortcutButtons || shortcutButtons.length === 0) return;
 
@@ -189,21 +206,31 @@
       btn.addEventListener("click", () => {
         const keyword = btn.getAttribute("data-keyword") || "";
         if (!searchInput) return;
+
         searchInput.value = keyword;
         state.search = keyword;
+
         renderResults();
-        // 必要ならスクロール
-        const resultsSection = document.querySelector(".kn-results-section");
-        if (resultsSection && typeof resultsSection.scrollIntoView === "function") {
-          resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        // OSモードが表示されている場合はそこまでスクロール
+        if (osModeSection && !osModeSection.hidden) {
+          osModeSection.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       });
     });
   }
 
   // ============================================================
-  // 今日の処世術（ランダムカード）
+  // 今日の処世術（ランダムカード）＋更新ボタン
   // ============================================================
+  function setupTodayRefresh() {
+    if (!todayRefreshBtn) return;
+
+    todayRefreshBtn.addEventListener("click", () => {
+      if (!state.loaded) return;
+      renderTodayCard();
+    });
+  }
 
   function renderTodayCard() {
     if (!todayCardContainer) return;
@@ -224,7 +251,7 @@
     const card = createShoseiCard(topic);
     card.classList.add("is-today");
 
-    // カテゴリラベルを追加しても良い
+    // カテゴリラベル
     const catLabel = document.createElement("span");
     catLabel.className = "tag-chip tag-chip-category";
     const categoryLabel = categoryConfigs[topic._category]
@@ -241,11 +268,18 @@
   }
 
   // ============================================================
-  // 検索結果のレンダリング
+  // 検索結果のレンダリング（OSモード専用）
   // ============================================================
-
   function renderResults() {
     if (!resultsContainer || !resultsMetaEl) return;
+
+    // ≪トップ≫モードのときは一覧不要
+    if (state.activeCategory === "all") {
+      resultsContainer.innerHTML = "";
+      resultsMetaEl.textContent =
+        "≪トップ≫では処世術カード一覧は表示していません。OSタブを選ぶと、そのOSのカードが一覧できます。";
+      return;
+    }
 
     resultsContainer.innerHTML = "";
 
@@ -261,12 +295,12 @@
       return;
     }
 
-    const keyword = (state.search || "").trim().toLowerCase();
+    const keyword   = (state.search || "").trim().toLowerCase();
     const activeCat = state.activeCategory;
 
     let filtered = allTopics;
 
-    // カテゴリフィルタ
+    // カテゴリフィルタ（all 以外しかここには来ない）
     if (activeCat && activeCat !== "all") {
       filtered = filtered.filter((t) => t._category === activeCat);
     }
@@ -274,7 +308,7 @@
     // キーワードフィルタ
     if (keyword) {
       filtered = filtered.filter((topic) => {
-        const title = (topic.title || "").toLowerCase();
+        const title   = (topic.title   || "").toLowerCase();
         const summary = (topic.summary || "").toLowerCase();
         return title.includes(keyword) || summary.includes(keyword);
       });
@@ -282,25 +316,17 @@
 
     const totalCount = filtered.length;
 
-    // メタ情報表示
     const catLabelText =
-      activeCat === "all"
-        ? "すべてのOS"
-        : categoryConfigs[activeCat]
+      activeCat && categoryConfigs[activeCat]
         ? categoryConfigs[activeCat].label
         : "不明カテゴリ";
 
-    if (!keyword && activeCat === "all") {
-      resultsMetaEl.textContent = `全カテゴリからランダムに最大6件をピックアップして表示しています（登録総数：${allTopics.length}件）。`;
-    } else if (!keyword && activeCat !== "all") {
+    if (!keyword) {
       resultsMetaEl.textContent = `${catLabelText} から ${totalCount}件を表示中。`;
-    } else if (keyword && activeCat === "all") {
-      resultsMetaEl.textContent = `「${keyword}」で全カテゴリから ${totalCount}件ヒットしました。`;
     } else {
       resultsMetaEl.textContent = `${catLabelText} × 「${keyword}」で ${totalCount}件ヒットしました。`;
     }
 
-    // ヒットなし
     if (filtered.length === 0) {
       const p = document.createElement("p");
       p.className = "kn-loading-text";
@@ -309,16 +335,9 @@
       return;
     }
 
-    // 初期表示（キーワードなし・カテゴリall）の場合は上限6件ランダム表示
-    if (!keyword && activeCat === "all") {
-      const shuffled = shuffleArray(filtered.slice());
-      filtered = shuffled.slice(0, 6);
-    }
-
     filtered.forEach((topic) => {
       const card = createShoseiCard(topic);
 
-      // カテゴリラベルチップ
       const catLabel = document.createElement("span");
       catLabel.className = "tag-chip tag-chip-category";
       const categoryLabel = categoryConfigs[topic._category]
@@ -336,38 +355,20 @@
   }
 
   // ============================================================
-  // ユーティリティ：配列シャッフル
+  // カード生成
   // ============================================================
-
-  function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const tmp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = tmp;
-    }
-    return arr;
-  }
-
-  // ============================================================
-  // 処世術カード生成（概要＋アコーディオン詳細）
-  // ============================================================
-
   function createShoseiCard(topic) {
     const card = document.createElement("article");
     card.className = "shosei-card";
 
-    // タイトル
     const titleEl = document.createElement("h3");
     titleEl.className = "shosei-title";
     titleEl.textContent = topic.title || "タイトル未設定";
 
-    // サマリー
     const summaryEl = document.createElement("p");
     summaryEl.className = "shosei-summary";
     summaryEl.textContent = topic.summary || "";
 
-    // タグ列
     const tagsWrap = document.createElement("div");
     tagsWrap.className = "shosei-tags";
     if (Array.isArray(topic.tags)) {
@@ -379,26 +380,24 @@
       });
     }
 
-    // 詳細（アコーディオン部）
     const detailWrapper = document.createElement("div");
     detailWrapper.className = "shosei-detail";
 
     const detailInner = document.createElement("div");
     detailInner.className = "shosei-detail-inner";
 
-    // essence
     if (Array.isArray(topic.essence) && topic.essence.length > 0) {
       detailInner.appendChild(
         createDetailBlock("本質ポイント", topic.essence)
       );
     }
 
-    // traps
     if (Array.isArray(topic.traps) && topic.traps.length > 0) {
-      detailInner.appendChild(createDetailBlock("よくある罠", topic.traps));
+      detailInner.appendChild(
+        createDetailBlock("よくある罠", topic.traps)
+      );
     }
 
-    // actionTips
     if (Array.isArray(topic.actionTips) && topic.actionTips.length > 0) {
       detailInner.appendChild(
         createDetailBlock("行動ヒント", topic.actionTips)
@@ -409,7 +408,7 @@
       detailWrapper.appendChild(detailInner);
     }
 
-    // カードクリックで詳細開閉
+    // クリックで詳細開閉
     let isOpen = false;
     card.addEventListener("click", () => {
       isOpen = !isOpen;
@@ -422,7 +421,6 @@
       }
     });
 
-    // 構成を組み立て
     card.appendChild(titleEl);
     card.appendChild(summaryEl);
     card.appendChild(tagsWrap);
@@ -456,7 +454,5 @@
   // ============================================================
   // 実行
   // ============================================================
-
-  // defer で読み込まれる前提なので、そのまま init を叩いて問題ない
   init();
 })();
