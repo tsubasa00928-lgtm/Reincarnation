@@ -13,12 +13,18 @@
     rel="stylesheet"
   />
 
-  <!-- 共通スタイル（ホームと同じ） -->
+  <!-- 共通スタイル -->
   <link rel="stylesheet" href="../style.css" />
+  <!-- コンセプト専用スタイル -->
+  <link rel="stylesheet" href="concept.css" />
+
   <meta name="theme-color" content="#c8f5d8" />
+
+  <!-- コンセプト専用スクリプト -->
+  <script src="concept.js" defer></script>
 </head>
 
-<body>
+<body class="concept-body">
   <!-- ================= HEADER（index.html と同一構造） ================= -->
   <header class="site-header">
     <div class="header-inner container">
@@ -30,7 +36,7 @@
       <nav class="header-nav">
         <a href="../index.html" class="nav-link">ホーム</a>
         <a href="generations.html" class="nav-link">世代別ノート</a>
-        <a href="knowledge-notes.html" class="nav-link">教養ノート</a>
+        <a href="knowledge-notes.html" class="nav-link">処世術ノート</a>
         <a href="life-stories.html" class="nav-link">人生体験記ノート</a>
         <a href="user-notes.html" class="nav-link">ユーザー機能</a>
         <a href="concept.html" class="nav-link is-current">コンセプト</a>
@@ -38,8 +44,8 @@
     </div>
   </header>
 
-  <main class="page">
-    <div class="page-inner">
+  <main class="site-main concept-main">
+    <div class="container concept-container">
 
       <!-- コンセプト ヘッダー -->
       <section class="section concept-hero">
@@ -50,8 +56,8 @@
         </p>
       </section>
 
-      <!-- 3つのコンセプトカード -->
-      <section class="section">
+      <!-- 3つのコンセプトカード（3カードレイアウト） -->
+      <section class="section concept-section">
         <div class="concept-grid">
 
           <!-- ① 人生の雑音をしずめる -->
