@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8" />
-  <title>人生二周目ノート – 教養ノート</title>
+  <title>処世術ノート｜人生二周目ノート</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- フォント -->
@@ -14,17 +14,19 @@
   />
 
   <!-- Material Icons -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
 
-  <!-- 共通CSS ＋ ページCSS -->
-  <link rel="stylesheet" href="base.css" />
-  <link rel="stylesheet" href="knowledge-notes.css" />
-  <!-- ホームと共通のヘッダーデザイン -->
+  <!-- 共通CSS / このページ専用CSS -->
   <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="knowledge-notes.css" />
 </head>
-<body>
 
-  <!-- ヘッダー（index.html と統一） -->
+<body class="page-knowledge-notes">
+
+  <!-- ======================
+       ■ ヘッダー（完全統一）
+       ====================== -->
   <header class="site-header">
     <div class="header-inner container">
       <div class="logo-block">
@@ -35,7 +37,7 @@
       <nav class="header-nav">
         <a href="../index.html" class="nav-link">ホーム</a>
         <a href="generations.html" class="nav-link">世代別ノート</a>
-        <a href="knowledge-notes.html" class="nav-link is-current">教養ノート</a>
+        <a href="knowledge-notes.html" class="nav-link is-current">処世術ノート</a>
         <a href="life-stories.html" class="nav-link">人生体験記ノート</a>
         <a href="user-notes.html" class="nav-link">ユーザー機能</a>
         <a href="concept.html" class="nav-link">コンセプト</a>
@@ -43,7 +45,7 @@
     </div>
   </header>
 
-  <!-- オーバーレイメニュー（5タブ） -->
+  <!-- メニュー（SP用） -->
   <div class="menu-overlay" aria-hidden="true">
     <div class="menu-panel">
       <div class="menu-panel-header">
@@ -55,59 +57,185 @@
 
       <div class="menu-panel-body">
         <a class="nav-item" href="../index.html">
-          <span class="material-symbols-rounded">home</span>
-          <span>ホーム</span>
+          <span class="material-symbols-rounded">home</span> ホーム
         </a>
         <a class="nav-item" href="generations.html">
-          <span class="material-symbols-rounded">diversity_3</span>
-          <span>世代別ノート</span>
+          <span class="material-symbols-rounded">diversity_3</span> 世代別ノート
         </a>
         <a class="nav-item" href="knowledge-notes.html">
-          <span class="material-symbols-rounded">psychology</span>
-          <span>教養ノート</span>
+          <span class="material-symbols-rounded">psychology</span> 処世術ノート
         </a>
         <a class="nav-item" href="life-stories.html">
-          <span class="material-symbols-rounded">menu_book</span>
-          <span>人生体験記ノート</span>
+          <span class="material-symbols-rounded">auto_stories</span> 人生体験記ノート
         </a>
         <a class="nav-item" href="user-notes.html">
-          <span class="material-symbols-rounded">person</span>
-          <span>ユーザーノート</span>
+          <span class="material-symbols-rounded">person</span> ユーザー機能
         </a>
       </div>
     </div>
   </div>
 
-  <!-- ヒーロー -->
+  <!-- ======================
+       ■ ヒーロー
+       ====================== -->
   <section class="hero">
-    <h1 class="hero-title">教養ノート</h1>
-    <p class="hero-sub1">人生のベーススキルを4つの軸で整理する</p>
+    <h1 class="hero-title">処世術ノート</h1>
+    <p class="hero-sub1">人生を賢く、したたかに。</p>
     <p class="hero-sub2">
-      人間関係・心理学・ビジネス・AI活用。<br>
-      一度身につければ、どの時代・どの職業でも使える「二周目用の教養」をここにまとめていきます。
+      情報が多すぎる時代に必要なのは、「知識」ではなく「生き抜くための構造」。
     </p>
   </section>
 
-  <!-- カテゴリタブ -->
-  <div class="category-bar-wrapper">
-    <div class="category-bar">
-      <div class="category-list" id="knCategoryTabs"></div>
-    </div>
-  </div>
-
-  <!-- メイン -->
   <main>
     <div class="page-inner">
-      <section class="card" id="knCategoryContent">
-        <!-- JSでカテゴリ＆カードを描画 -->
+
+      <!-- ======================
+           ■ 6タブナビゲーション
+           ====================== -->
+      <div class="notes-tabs" role="tablist">
+        <button class="notes-tab is-active" data-target="tab-top">≪トップ≫</button>
+        <button class="notes-tab" data-target="tab-mind">心の扱い方<br><span class="tab-os">内部OS</span></button>
+        <button class="notes-tab" data-target="tab-relation">人との関わり方<br><span class="tab-os">対人OS</span></button>
+        <button class="notes-tab" data-target="tab-work">仕事と社会での立ち回り<br><span class="tab-os">社会OS</span></button>
+        <button class="notes-tab" data-target="tab-habit">習慣と学びの技術<br><span class="tab-os">行動OS</span></button>
+        <button class="notes-tab" data-target="tab-future">AI・情報の捌き方<br><span class="tab-os">未来OS</span></button>
+      </div>
+
+      <!-- ======================
+           ■ ≪トップ≫タブ
+           ====================== -->
+      <section id="tab-top" class="tab-panel is-active">
+
+        <!-- タイトル -->
+        <section class="section intro-section">
+          <h2 class="section-title">処世術ノート</h2>
+          <p class="section-subtitle">
+            情報が多すぎる時代、必要なのは「知識」ではなく「生き抜くための構造」です。<br>
+            このノートは、実社会を賢く・したたかに生きるための“処世術OS”を整理したものです。
+          </p>
+        </section>
+
+        <!-- 構造マップ -->
+        <section class="section structure-map">
+          <h3 class="map-title">処世術ノートの構造（5つのOS）</h3>
+
+          <div class="map-grid">
+            <div class="map-card">
+              <h4>心の扱い方</h4>
+              <p class="os-label">内部OS</p>
+              <p class="map-desc">メンタル・認知のクセを理解し、心を整える。</p>
+            </div>
+
+            <div class="map-card">
+              <h4>人との関わり方</h4>
+              <p class="os-label">対人OS</p>
+              <p class="map-desc">距離感・信頼・期待値のバランスを整える。</p>
+            </div>
+
+            <div class="map-card">
+              <h4>仕事と社会の立ち回り</h4>
+              <p class="os-label">社会OS</p>
+              <p class="map-desc">組織と評価の構造を理解し、現実的に立ち回る。</p>
+            </div>
+
+            <div class="map-card">
+              <h4>習慣と学び</h4>
+              <p class="os-label">行動OS</p>
+              <p class="map-desc">続く仕組みで行動を最適化する。</p>
+            </div>
+
+            <div class="map-card">
+              <h4>AI・情報の捌き方</h4>
+              <p class="os-label">未来OS</p>
+              <p class="map-desc">情報洪水の中で頭を守りつつ活用する。</p>
+            </div>
+          </div>
+        </section>
       </section>
+
+      <!-- ======================
+           ■ カテゴリタブ（共通構造）
+           ====================== -->
+
+      <!-- 心（内部OS） -->
+      <section id="tab-mind" class="tab-panel" hidden>
+        <div class="category-header">
+          <h2>心の扱い方 <span class="small-label">内部OS</span></h2>
+          <p class="category-desc">メンタル・認知のクセを理解し、心を整えるための処世術。</p>
+        </div>
+
+        <input type="text" class="search-input" placeholder="キーワード検索…" data-category="mind">
+
+        <div class="tag-area" id="tags-mind"></div>
+
+        <div class="card-grid" id="cards-mind"></div>
+      </section>
+
+      <!-- 対人OS -->
+      <section id="tab-relation" class="tab-panel" hidden>
+        <div class="category-header">
+          <h2>人との関わり方 <span class="small-label">対人OS</span></h2>
+          <p class="category-desc">距離感・信頼・期待値のバランスを整える。</p>
+        </div>
+
+        <input type="text" class="search-input" placeholder="キーワード検索…" data-category="relation">
+
+        <div class="tag-area" id="tags-relation"></div>
+
+        <div class="card-grid" id="cards-relation"></div>
+      </section>
+
+      <!-- 社会OS -->
+      <section id="tab-work" class="tab-panel" hidden>
+        <div class="category-header">
+          <h2>仕事と社会での立ち回り <span class="small-label">社会OS</span></h2>
+          <p class="category-desc">組織の構造・評価・お金を理解して賢く動く。</p>
+        </div>
+
+        <input type="text" class="search-input" placeholder="キーワード検索…" data-category="work">
+
+        <div class="tag-area" id="tags-work"></div>
+
+        <div class="card-grid" id="cards-work"></div>
+      </section>
+
+      <!-- 行動OS -->
+      <section id="tab-habit" class="tab-panel" hidden>
+        <div class="category-header">
+          <h2>習慣と学びの技術 <span class="small-label">行動OS</span></h2>
+          <p class="category-desc">続ける仕組みを作り、行動を改善する。</p>
+        </div>
+
+        <input type="text" class="search-input" placeholder="キーワード検索…" data-category="habit">
+
+        <div class="tag-area" id="tags-habit"></div>
+
+        <div class="card-grid" id="cards-habit"></div>
+      </section>
+
+      <!-- 未来OS -->
+      <section id="tab-future" class="tab-panel" hidden>
+        <div class="category-header">
+          <h2>AI・情報の捌き方 <span class="small-label">未来OS</span></h2>
+          <p class="category-desc">情報洪水の中で必要なものを選び、AIを味方につける。</p>
+        </div>
+
+        <input type="text" class="search-input" placeholder="キーワード検索…" data-category="future">
+
+        <div class="tag-area" id="tags-future"></div>
+
+        <div class="card-grid" id="cards-future"></div>
+      </section>
+
+      <footer class="page-footer">
+        <p>人生二周目ノート — 処世術OSを手に入れるノート</p>
+      </footer>
+
     </div>
   </main>
 
-  <!-- Feather Icons -->
-  <script src="https://unpkg.com/feather-icons"></script>
-  <!-- 共通メニューJS ＋ ページJS -->
+  <!-- JS -->
   <script src="menu.js"></script>
-  <script src="knowledge-notes.js"></script>
+  <script src="knowledge-notes.js" defer></script>
 </body>
 </html>
