@@ -12,10 +12,11 @@
   --color-text-sub: #5f7463;
   --color-tag-bg: #e8f4ee;
   --color-tag-border: #b9d8c6;
-  --shadow-soft: 0 12px 30px rgba(9, 40, 26, 0.06);
-  --radius-card: 18px;
+  --shadow-soft: 0 16px 40px rgba(9, 40, 26, 0.08);
+  --radius-card: 22px;
   --radius-pill: 999px;
-  --font-main: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-main: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
 }
 
 *,
@@ -44,7 +45,7 @@ body.page-life-stories {
 }
 
 /* ==============================
-   共通ヘッダー
+   共通ヘッダー（他ページと統一）
    ============================== */
 
 .site-header {
@@ -95,7 +96,8 @@ body.page-life-stories {
   color: var(--color-text-main);
   background-color: #f5faf7;
   border: 1px solid rgba(196, 220, 205, 0.8);
-  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .nav-link:hover {
@@ -115,28 +117,29 @@ body.page-life-stories {
 
 .main-content {
   flex: 1;
-  padding: 20px 16px 48px;
+  padding: 24px 16px 56px;
 }
 
-/* タブ */
+/* タブ（教養ノートのサブタブと合わせたチップ風） */
 
 .chapter-tabs {
   max-width: 1040px;
-  margin: 0 auto 18px;
+  margin: 0 auto 16px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
 .chapter-tab {
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(196, 220, 205, 0.9);
   background-color: #ffffff;
   font-size: 12px;
   cursor: pointer;
   color: var(--color-text-main);
-  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease, transform 0.1s ease;
 }
 
 .chapter-tab:hover {
@@ -161,43 +164,47 @@ body.page-life-stories {
 }
 
 /* ==============================
-   トップ（ヒーロー）
+   トップ（教養ノートのヒーローに揃えたデザイン）
    ============================== */
 
 .hero {
-  padding: 28px 0 8px;
-  background: radial-gradient(circle at top left, rgba(123, 191, 155, 0.18), transparent 55%),
-              radial-gradient(circle at bottom right, rgba(204, 231, 216, 0.7), transparent 60%);
+  max-width: 1040px;
+  margin: 8px auto 20px;
+  padding: 42px 28px 46px;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(123, 191, 155, 0.23), transparent 55%),
+    radial-gradient(circle at 88% 100%, rgba(204, 231, 216, 0.8), transparent 60%),
+    #f3fbf7;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(215, 232, 221, 0.95);
+  position: relative;
+  overflow: hidden;
 }
 
 .hero-inner {
-  max-width: 840px;
+  max-width: 640px;
   margin: 0 auto;
   text-align: center;
-  padding: 36px 24px 40px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 32px;
-  box-shadow: var(--shadow-soft);
-  border: 1px solid rgba(215, 232, 221, 0.8);
 }
 
 .hero-label {
   display: inline-block;
   padding: 4px 14px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-accent);
   border-radius: var(--radius-pill);
-  background-color: rgba(229, 243, 235, 0.8);
+  background-color: rgba(229, 243, 235, 0.9);
 }
 
 .hero-title {
   margin: 0 0 16px;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
 }
 
 .hero-copy-line {
@@ -207,15 +214,15 @@ body.page-life-stories {
 }
 
 /* ==============================
-   セクション共通
+   セクション共通（カード型）
    ============================== */
 
 .section {
   max-width: 1040px;
   margin: 0 auto 32px;
-  padding: 24px 20px 28px;
+  padding: 24px 22px 28px;
   background-color: rgba(255, 255, 255, 0.96);
-  border-radius: 24px;
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow-soft);
   border: 1px solid rgba(215, 232, 221, 0.9);
 }
@@ -261,9 +268,9 @@ body.page-life-stories {
 
 .pattern-card {
   background-color: var(--color-bg-card);
-  border-radius: var(--radius-card);
+  border-radius: 18px;
   border: 1px solid var(--color-border-soft);
-  box-shadow: 0 10px 22px rgba(18, 56, 36, 0.04);
+  box-shadow: 0 10px 22px rgba(18, 56, 36, 0.06);
   overflow: hidden;
   transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
@@ -274,7 +281,11 @@ body.page-life-stories {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  background: linear-gradient(90deg, rgba(229, 243, 235, 0.9), rgba(245, 250, 247, 1));
+  background: linear-gradient(
+    90deg,
+    rgba(229, 243, 235, 0.92),
+    rgba(245, 250, 247, 1)
+  );
   border: none;
   width: 100%;
 }
@@ -309,7 +320,7 @@ body.page-life-stories {
   justify-content: center;
   font-size: 13px;
   color: var(--color-accent);
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.95);
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
@@ -318,10 +329,11 @@ body.page-life-stories {
   font-size: 12px;
   color: var(--color-text-sub);
   border-top: 1px solid rgba(230, 240, 234, 0.9);
-  background-color: rgba(250, 252, 251, 0.9);
+  background-color: rgba(250, 252, 251, 0.96);
 }
 
 /* アコーディオン本体 */
+
 .pattern-card-details-wrapper {
   overflow: hidden;
   max-height: 0;
@@ -385,8 +397,8 @@ body.page-life-stories {
 /* カード開閉時 */
 
 .pattern-card.is-open {
-  border-color: rgba(123, 191, 155, 0.6);
-  box-shadow: 0 16px 40px rgba(15, 54, 35, 0.11);
+  border-color: rgba(123, 191, 155, 0.65);
+  box-shadow: 0 18px 44px rgba(15, 54, 35, 0.16);
   transform: translateY(-1px);
 }
 
@@ -417,7 +429,8 @@ body.page-life-stories {
   color: var(--color-text-main);
   cursor: pointer;
   outline: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.12s ease, box-shadow 0.12s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    transform 0.12s ease, box-shadow 0.12s ease;
   white-space: nowrap;
 }
 
@@ -440,9 +453,9 @@ body.page-life-stories {
 
 .job-card {
   background-color: var(--color-bg-card);
-  border-radius: var(--radius-card);
+  border-radius: 18px;
   border: 1px solid var(--color-border-soft);
-  box-shadow: 0 12px 28px rgba(14, 52, 34, 0.09);
+  box-shadow: 0 12px 28px rgba(14, 52, 34, 0.1);
   padding: 16px 16px 18px;
   font-size: 12px;
 }
@@ -535,25 +548,16 @@ body.page-life-stories {
   }
 
   .main-content {
-    padding: 24px 24px 72px;
+    padding: 28px 24px 72px;
   }
 
   .hero {
-    padding-top: 32px;
-    padding-bottom: 12px;
-  }
-
-  .hero-inner {
-    padding: 40px 40px 44px;
+    margin-top: 12px;
+    padding: 46px 40px 50px;
   }
 
   .hero-title {
-    font-size: 28px;
-  }
-
-  .chapter-tabs {
-    margin-top: 10px;
-    margin-bottom: 20px;
+    font-size: 30px;
   }
 
   .section {
