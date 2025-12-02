@@ -171,9 +171,11 @@
 
     if (topModeSection) {
       topModeSection.hidden = !isTop;
+      topModeSection.style.display = isTop ? "" : "none"; // ← 確実に消す
     }
     if (osModeSection) {
       osModeSection.hidden = isTop;
+      osModeSection.style.display = isTop ? "none" : ""; // ← 確実に出す
     }
   }
 
