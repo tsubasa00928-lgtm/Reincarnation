@@ -1,11 +1,11 @@
 /* ======================================
    世代別ノート専用スタイル
-   （ヘッダー関連は index.html と共通のため上書きしない）
+   （ヘッダー・HERO は index.html と共通レイアウト）
    ====================================== */
 
 /* ページ全体のレイアウト微調整 */
 .generation-body {
-  /* すでに home-body で flex 縦並びになっているので、ここでは色味などを軽く調整する程度に留める */
+  /* 背景は style.css の body / body::before で共通管理 */
 }
 
 .generation-main {
@@ -13,21 +13,23 @@
   padding-bottom: 40px;
 }
 
+/* コンテンツ幅：ホームと同じくフル画面寄せ + 中央カラム */
 .generation-container {
   position: relative;
   z-index: 1;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px 32px;
 }
 
-/* 一行コピー */
+/* HERO（テキストは HTML 側、レイアウトは style.css の hero-* に準拠） */
 .generation-hero-copy {
-  padding-top: 28px;
+  padding-top: 40px;   /* ホームより少し浅めに開始 */
   padding-bottom: 16px;
 }
 
 .generation-hero-text {
   max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* ==============================
@@ -486,6 +488,10 @@
    ============================== */
 
 @media (max-width: 960px) {
+  .generation-container {
+    padding: 0 16px 28px;
+  }
+
   .life-map-phases {
     grid-template-columns: 1fr;
   }
