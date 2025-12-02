@@ -1,40 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>人生体験記ノート | 人生二周目ノート</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <title>人生二周目ノート – 人生体験記ノート</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <!-- フォント -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <!-- ページ専用CSS -->
-  <link rel="stylesheet" href="life-stories.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Material Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+  <!-- 共通CSS ＋ ページCSS -->
+  <link rel="stylesheet" href="base.css" />
+  <link rel="stylesheet" href="life-stories.css" />
+  <!-- ホームと共通のヘッダーデザイン -->
+  <link rel="stylesheet" href="../style.css" />
 </head>
 <body class="page-life-stories">
-  <div class="page-wrapper">
 
-    <!-- サイト共通ヘッダー（ホーム等と統一） -->
-    <header class="site-header">
-      <div class="site-header-inner">
-        <div class="site-brand">
-          <a href="../index.html" class="site-title">人生二周目ノート</a>
-          <p class="site-tagline">二周目視点で、人生をアップデートするノート</p>
-        </div>
-        <nav class="site-nav">
-          <a href="../index.html" class="nav-link">ホーム</a>
-          <a href="generations.html" class="nav-link">世代別ノート</a>
-          <a href="knowledge-notes.html" class="nav-link">教養ノート</a>
-          <a href="life-stories.html" class="nav-link is-current">人生体験記ノート</a>
-          <a href="user-notes.html" class="nav-link">ユーザー機能</a>
-          <a href="../concept.html" class="nav-link">コンセプト</a>
-        </nav>
+  <!-- ヘッダー（knowledge-notes.html と完全同一構造） -->
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="logo-block">
+        <div class="logo-title">人生二周目ノート</div>
+        <div class="logo-sub">二周目視点で、人生をアップデートするノート</div>
       </div>
-    </header>
 
-    <main class="main-content">
+      <nav class="header-nav">
+        <a href="../index.html" class="nav-link">ホーム</a>
+        <a href="generations.html" class="nav-link">世代別ノート</a>
+        <a href="knowledge-notes.html" class="nav-link">教養ノート</a>
+        <a href="life-stories.html" class="nav-link is-current">人生体験記ノート</a>
+        <a href="user-notes.html" class="nav-link">ユーザー機能</a>
+        <a href="concept.html" class="nav-link">コンセプト</a>
+      </nav>
+    </div>
+  </header>
 
-      <!-- 3チャプターのタブ -->
+  <!-- オーバーレイメニュー（knowledge-notes.html と同じ構造） -->
+  <div class="menu-overlay" aria-hidden="true">
+    <div class="menu-panel">
+      <div class="menu-panel-header">
+        <span class="menu-title">人生二周目ノート</span>
+        <button class="menu-close" aria-label="メニューを閉じる">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+
+      <div class="menu-panel-body">
+        <a class="nav-item" href="../index.html">
+          <span class="material-symbols-rounded">home</span>
+          <span>ホーム</span>
+        </a>
+        <a class="nav-item" href="generations.html">
+          <span class="material-symbols-rounded">diversity_3</span>
+          <span>世代別ノート</span>
+        </a>
+        <a class="nav-item" href="knowledge-notes.html">
+          <span class="material-symbols-rounded">psychology</span>
+          <span>教養ノート</span>
+        </a>
+        <a class="nav-item" href="life-stories.html">
+          <span class="material-symbols-rounded">menu_book</span>
+          <span>人生体験記ノート</span>
+        </a>
+        <a class="nav-item" href="user-notes.html">
+          <span class="material-symbols-rounded">person</span>
+          <span>ユーザーノート</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ヒーロー（教養ノートと同じ .hero デザインを流用） -->
+  <section class="hero">
+    <h1 class="hero-title">人生体験記ノート</h1>
+    <p class="hero-sub1">人生10人10色。</p>
+    <p class="hero-sub2">それぞれの人生に迷いと喜びがある。</p>
+  </section>
+
+  <!-- メイン：ここから下がこのページ固有 -->
+  <main>
+    <div class="page-inner">
+
+      <!-- 3チャプタータブ -->
       <div class="chapter-tabs" role="tablist" aria-label="人生体験記ノートのチャプター">
         <button
           type="button"
@@ -66,16 +121,7 @@
       </div>
 
       <!-- ① トップ -->
-      <section id="chapter-top" class="chapter chapter-top is-active" role="tabpanel" aria-labelledby="">
-        <div class="hero">
-          <div class="hero-inner">
-            <p class="hero-label">LIFE STORIES NOTE</p>
-            <h1 class="hero-title">人生体験記ノート</h1>
-            <p class="hero-copy-line">人生10人10色。</p>
-            <p class="hero-copy-line">それぞれの人生に迷いと喜びがある。</p>
-          </div>
-        </div>
-
+      <section id="chapter-top" class="chapter chapter-top is-active" role="tabpanel">
         <section class="section section-top-intro">
           <div class="section-header">
             <h2 class="section-title">このノートについて</h2>
@@ -157,13 +203,15 @@
           </div>
         </section>
       </section>
-    </main>
 
-    <footer class="page-footer">
-      <p>人生二周目ノート &mdash; 人生の構造を静かに見つめるためのノート</p>
-    </footer>
-  </div>
+      <footer class="page-footer">
+        <p>人生二周目ノート &mdash; 人生の構造を静かに見つめるためのノート</p>
+      </footer>
+    </div>
+  </main>
 
-  <script src="life-stories.js" defer></script>
+  <!-- 共通メニューJS ＋ このページ用JS -->
+  <script src="menu.js"></script>
+  <script src="life-stories.js"></script>
 </body>
 </html>
