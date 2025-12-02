@@ -37,8 +37,6 @@ body.page-life-stories {
   line-height: 1.7;
 }
 
-/* ページ全体ラッパー */
-
 .page-wrapper {
   min-height: 100vh;
   display: flex;
@@ -46,11 +44,128 @@ body.page-life-stories {
 }
 
 /* ==============================
-   ヒーロー（トップ）
+   共通ヘッダー
+   ============================== */
+
+.site-header {
+  border-bottom: 1px solid rgba(196, 220, 205, 0.9);
+  background-color: #ffffff;
+}
+
+.site-header-inner {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 14px 16px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.site-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.site-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  color: var(--color-text-main);
+}
+
+.site-tagline {
+  margin: 0;
+  font-size: 11px;
+  color: var(--color-text-sub);
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nav-link {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  color: var(--color-text-main);
+  background-color: #f5faf7;
+  border: 1px solid rgba(196, 220, 205, 0.8);
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nav-link:hover {
+  box-shadow: 0 6px 14px rgba(24, 78, 47, 0.18);
+  background-color: #ffffff;
+}
+
+.nav-link.is-current {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  border-color: var(--color-accent);
+}
+
+/* ==============================
+   メイン & チャプタータブ
+   ============================== */
+
+.main-content {
+  flex: 1;
+  padding: 20px 16px 48px;
+}
+
+/* タブ */
+
+.chapter-tabs {
+  max-width: 1040px;
+  margin: 0 auto 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chapter-tab {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(196, 220, 205, 0.9);
+  background-color: #ffffff;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--color-text-main);
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.chapter-tab:hover {
+  box-shadow: 0 6px 14px rgba(22, 70, 43, 0.15);
+  transform: translateY(-1px);
+}
+
+.chapter-tab.is-active {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  border-color: var(--color-accent);
+}
+
+/* チャプター共通 */
+
+.chapter {
+  display: block;
+}
+
+.chapter[hidden] {
+  display: none;
+}
+
+/* ==============================
+   トップ（ヒーロー）
    ============================== */
 
 .hero {
-  padding: 72px 16px 56px;
+  padding: 28px 0 8px;
   background: radial-gradient(circle at top left, rgba(123, 191, 155, 0.18), transparent 55%),
               radial-gradient(circle at bottom right, rgba(204, 231, 216, 0.7), transparent 60%);
 }
@@ -59,7 +174,7 @@ body.page-life-stories {
   max-width: 840px;
   margin: 0 auto;
   text-align: center;
-  padding: 40px 24px 56px;
+  padding: 36px 24px 40px;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 32px;
   box-shadow: var(--shadow-soft);
@@ -69,7 +184,7 @@ body.page-life-stories {
 .hero-label {
   display: inline-block;
   padding: 4px 14px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -79,44 +194,39 @@ body.page-life-stories {
 }
 
 .hero-title {
-  margin: 0 0 20px;
-  font-size: 28px;
+  margin: 0 0 16px;
+  font-size: 26px;
   font-weight: 600;
   letter-spacing: 0.12em;
 }
 
 .hero-copy-line {
   margin: 4px 0;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--color-text-sub);
 }
 
 /* ==============================
-   メインコンテンツ
+   セクション共通
    ============================== */
-
-.main-content {
-  flex: 1;
-  padding: 32px 16px 48px;
-}
 
 .section {
   max-width: 1040px;
-  margin: 0 auto 56px;
-  padding: 32px 20px 36px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 28px;
+  margin: 0 auto 32px;
+  padding: 24px 20px 28px;
+  background-color: rgba(255, 255, 255, 0.96);
+  border-radius: 24px;
   box-shadow: var(--shadow-soft);
   border: 1px solid rgba(215, 232, 221, 0.9);
 }
 
 .section-header {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .section-title {
   margin: 0 0 8px;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
   letter-spacing: 0.14em;
 }
@@ -127,13 +237,15 @@ body.page-life-stories {
   color: var(--color-text-sub);
 }
 
-/* 簡単なイントロ文 */
-
 .patterns-intro,
-.jobs-intro {
-  margin-bottom: 20px;
+.jobs-intro,
+.top-intro-body {
   font-size: 13px;
   color: var(--color-text-sub);
+}
+
+.top-intro-body p {
+  margin: 0 0 8px;
 }
 
 /* ==============================
@@ -163,6 +275,8 @@ body.page-life-stories {
   justify-content: space-between;
   cursor: pointer;
   background: linear-gradient(90deg, rgba(229, 243, 235, 0.9), rgba(245, 250, 247, 1));
+  border: none;
+  width: 100%;
 }
 
 .pattern-card-header-main {
@@ -268,7 +382,7 @@ body.page-life-stories {
   font-style: italic;
 }
 
-/* カード開閉時のスタイル */
+/* カード開閉時 */
 
 .pattern-card.is-open {
   border-color: rgba(123, 191, 155, 0.6);
@@ -284,8 +398,6 @@ body.page-life-stories {
 /* ==============================
    職業図鑑（タグボタン + 詳細カード）
    ============================== */
-
-/* タグエリア */
 
 .job-tag-container {
   display: flex;
@@ -361,8 +473,6 @@ body.page-life-stories {
   font-weight: 500;
 }
 
-/* 概要などのブロック */
-
 .job-detail-block {
   margin-top: 12px;
 }
@@ -391,8 +501,6 @@ body.page-life-stories {
   margin-bottom: 2px;
 }
 
-/* 二周目視点のブロック */
-
 .job-two-round-view {
   margin-top: 12px;
   padding: 9px 11px;
@@ -419,29 +527,37 @@ body.page-life-stories {
    ============================== */
 
 @media (min-width: 720px) {
-  .hero {
-    padding-top: 80px;
-    padding-bottom: 72px;
-  }
-
-  .hero-inner {
-    padding: 56px 40px 64px;
-  }
-
-  .hero-title {
-    font-size: 32px;
-  }
-
-  .hero-copy-line {
-    font-size: 17px;
+  .site-header-inner {
+    padding: 16px 24px 12px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .main-content {
-    padding: 40px 24px 72px;
+    padding: 24px 24px 72px;
+  }
+
+  .hero {
+    padding-top: 32px;
+    padding-bottom: 12px;
+  }
+
+  .hero-inner {
+    padding: 40px 40px 44px;
+  }
+
+  .hero-title {
+    font-size: 28px;
+  }
+
+  .chapter-tabs {
+    margin-top: 10px;
+    margin-bottom: 20px;
   }
 
   .section {
-    padding: 32px 32px 40px;
+    padding: 28px 28px 32px;
   }
 
   .pattern-card-grid {
