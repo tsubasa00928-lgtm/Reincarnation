@@ -3,16 +3,14 @@
    ============================== */
 
 .page-life-stories .site-main {
-  padding-top: 40px;
-  padding-bottom: 80px;
+  padding-top: 16px;   /* HEROをヘッダーに近づける */
+  padding-bottom: 64px;
 }
 
-/* ★ 中央カラム → フル幅寄り＋左上スタート */
 .page-life-stories .page-inner {
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0 12px 24px;
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: 0 24px 24px;
 }
 
 /* ==============================
@@ -82,7 +80,7 @@
   transform: translateY(-2px);
 }
 
-/* 完全に隠すとき用（JS が hidden 属性を付与する場合） */
+/* 完全に非表示にするとき */
 .chapter[hidden] {
   display: none;
 }
@@ -91,4 +89,5 @@
    セクション共通（カードUI）
    ============================== */
 
-/* …以下、元の life-stories.css の残り全て… */
+/* ……以下、アップしてくれた life-stories.css の残りが
+   そのまま続いています（カード／アコーディオンなど） */
