@@ -9,23 +9,22 @@
 }
 
 .generation-main {
-  padding-top: 12px;
-  padding-bottom: 36px;
+  padding-top: 10px;
+  padding-bottom: 40px;
 }
 
-/* ★ コンテンツ幅：ホームと同じ“ほぼフル幅”に寄せる */
+/* コンテンツ幅：ホームと同じくフル画面寄せ + 中央カラム */
 .generation-container {
   position: relative;
   z-index: 1;
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0 12px 32px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px 32px;
 }
 
 /* HERO（テキストは HTML 側、レイアウトは style.css の hero-* に準拠） */
 .generation-hero-copy {
-  padding-top: 24px;   /* ホームより少し浅めに開始 */
+  padding-top: 40px;   /* ホームより少し浅めに開始 */
   padding-bottom: 16px;
 }
 
@@ -90,16 +89,30 @@
 }
 
 /* ==============================
-   ビュー切り替え
+   ビュー切り替え（アニメーション付き）
    ============================== */
 
 .generation-section {
-  display: none;
   margin-top: 18px;
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  display: none;
+  transition:
+    opacity 0.18s ease-out,
+    transform 0.18s ease-out;
 }
 
 .generation-section.is-visible {
   display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.generation-section.is-leaving {
+  opacity: 0;
+  transform: translateY(-2px);
 }
 
 /* ==============================
@@ -527,5 +540,3 @@
     flex-basis: 160px;
   }
 }
-
-
