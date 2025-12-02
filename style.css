@@ -536,3 +536,28 @@ body::after {
   opacity: 1;
   transform: translateY(0);
 }
+/* =========================
+   ページ入場時の共通アニメーション
+   ========================= */
+
+/* フェード＋わずかなスライドアップ */
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 各ページで「ヘッダーの下」に来るメインコンテンツを対象 */
+.site-main,
+.generation-main,
+.page-knowledge-notes .page-inner,
+.page-life-stories .page-inner,
+.page-user-notes .page-inner {
+  animation: page-fade-in 0.2s ease-out both;
+}
+
