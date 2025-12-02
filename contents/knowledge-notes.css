@@ -8,14 +8,14 @@
 
 /* コンセプトページと同じくらいの高さ感に寄せる */
 .page-knowledge-notes .site-main {
-  padding-top: 40px;
-  padding-bottom: 80px;
+  padding-top: 16px;   /* ← 上を詰める */
+  padding-bottom: 64px;
 }
 
 /* コンテンツラッパ */
 .page-inner {
-  max-width: 1120px;
   margin: 0 auto;
+  max-width: 1120px;
   padding: 0 24px 24px;
 }
 
@@ -88,7 +88,7 @@
   transform: translateY(-2px);
 }
 
-/* 完全に隠すとき用（JS が hidden 属性を付与する場合） */
+/* 完全に非表示にするとき */
 .tab-panel[hidden] {
   display: none;
 }
@@ -185,5 +185,5 @@
   color: #6b7280;
 }
 
-/* 以下（カテゴリごとのカード定義など）はそのまま続き… */
-/* もともとの knowledge-notes.css の残り部分をすべて貼り付け */
+/* ……以下、元の knowledge-notes.css の残り（カテゴリごとのカード／リストなど）が
+   すべて続きます（アップしてもらったファイルをベースにそのまま維持） */
