@@ -1,20 +1,20 @@
 /* ==============================
-   レイアウト（ホームとトーンを統一）
+   レイアウト（コンセプトと高さを揃える）
    ============================== */
 
 .page-life-stories .site-main {
-  padding-top: 16px;
-  padding-bottom: 40px;
+  padding-top: 40px;
+  padding-bottom: 80px;
 }
 
-.page-inner {
+.page-life-stories .page-inner {
   margin: 0 auto;
   max-width: 1120px;
   padding: 0 24px 24px;
 }
 
 /* ==============================
-   チャプタータブ（このページ固有）
+   チャプタータブ
    ============================== */
 
 .chapter-tabs {
@@ -26,14 +26,14 @@
 
 .chapter-tab {
   padding: 6px 16px;
-  border-radius: var(--radius-pill);
+  border-radius: 999px;
   border: 1px solid rgba(148, 239, 193, 0.8);
   background: rgba(255, 255, 255, 0.95);
   display: inline-flex;
   align-items: center;
   font-size: 12px;
   cursor: pointer;
-  color: var(--text-muted);
+  color: var(--text-sub);
   transition:
     background 0.18s ease,
     color 0.18s ease,
@@ -91,7 +91,7 @@
 
 .section-subtitle {
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-sub);
   margin: 0;
 }
 
@@ -99,7 +99,7 @@
 .patterns-intro,
 .jobs-intro {
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-sub);
 }
 
 .top-intro-body p {
@@ -165,7 +165,7 @@
 .pattern-card-route-label {
   margin: 0;
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--text-sub);
 }
 
 .pattern-card-toggle-icon {
@@ -189,7 +189,7 @@
 .pattern-card-summary {
   padding: 8px 12px;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-sub);
   border-top: 1px solid #dcfce7;
   background: #f9fffb;
 }
@@ -224,7 +224,7 @@
   margin: 0;
   padding-left: 16px;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-sub);
 }
 
 .pattern-detail-list li {
@@ -283,7 +283,7 @@
 
 .job-tag-button {
   padding: 4px 10px;
-  border-radius: var(--radius-pill);
+  border-radius: 999px;
   border: 1px solid #bae6fd;
   background: #eff6ff;
   font-size: 11px;
@@ -337,7 +337,7 @@
 .job-card-category {
   margin: 0 0 2px;
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--text-sub);
 }
 
 .job-card-examples {
@@ -365,14 +365,14 @@
 .job-detail-text {
   margin: 0;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-sub);
 }
 
 .job-detail-list {
   margin: 0;
   padding-left: 16px;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-sub);
 }
 
 .job-detail-list li {
@@ -390,13 +390,13 @@
 }
 
 /* ==============================
-   フッター（軽め）
+   フッター
    ============================== */
 
 .page-footer {
   margin-top: 10px;
   padding: 10px 4px 0;
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--text-sub);
   text-align: center;
 }
