@@ -592,3 +592,40 @@ body.page-life-stories {
 .page-life-stories .container {
   background: transparent !important;
 }
+/* ----------------------------------------------------
+   サイドタスクバーの黒塗りをやめて、
+   処世術禄寄りの淡いOSカード風デザインに統一
+---------------------------------------------------- */
+
+.page-life-stories .ls-sidebar {
+  flex-shrink: 0;
+  width: 220px;
+  /* 黒ベタから、淡く明るいカード風へ */
+  background: #f9fffb;
+  border-radius: 0;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 18px 40px rgba(15, 118, 110, 0.12);
+  padding: 14px 10px 16px;
+  color: #0f172a;
+  position: relative;
+}
+
+/* タブの色味も少しだけ明るめに */
+.page-life-stories .ls-nav-tab {
+  color: #0f172a;
+  border-color: transparent;
+  background: transparent;
+}
+
+.page-life-stories .ls-nav-tab:hover {
+  background: #e0f2fe;
+  border-color: #bae6fd;
+  color: #0f172a;
+}
+
+.page-life-stories .ls-nav-tab.is-active {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: transparent;
+  color: #f0fdf4;
+  box-shadow: 0 12px 24px rgba(22, 163, 74, 0.4);
+}
