@@ -13,11 +13,11 @@
 
   <!-- 共通スタイル -->
   <link rel="stylesheet" href="../style.css">
-  <!-- 世代別ノート専用スタイル -->
+  <!-- 人生地図禄 専用スタイル -->
   <link rel="stylesheet" href="generations.css">
 </head>
 <body class="home-body generation-body">
-  <!-- ========== ヘッダー（index.html と完全同一構造・クラス） ========== -->
+  <!-- ========== ヘッダー（index.html と同一構造） ========== -->
   <header class="site-header">
     <div class="header-inner container">
       <div class="logo-block">
@@ -40,24 +40,25 @@
   <main class="site-main generation-main">
     <div class="container">
       <div class="generation-container">
-        <!-- HERO：ホームと同じ2カラム構造（左寄せのまま） -->
+
+        <!-- HERO：チャプター名＋二重アンダーライン（動的に切り替え） -->
         <section class="hero-copy generation-hero-copy">
           <div class="hero-inner">
             <div class="hero-heading-block">
-              <h1 class="hero-section-title">人生地図禄</h1>
+              <h1 id="chapter-title" class="hero-section-title">人生地図禄</h1>
               <div class="hero-section-underline"></div>
               <div class="hero-section-underline second"></div>
             </div>
-            <p class="hero-text generation-hero-text">
-              一歩先の人生フェーズが見えれば、賢い選択ができる。<br>
-              それぞれの人生フェーズに葛藤とつまずきがある。人生二周目視点が克服を導く。
+            <p id="chapter-subtitle" class="hero-text generation-hero-text">
+              人生を 8 つのチャプターに分けて、二周目視点で「詰まりやすい構造」を見える化します。
+              一歩先の人生フェーズが見えれば、賢い選択ができる。
             </p>
           </div>
         </section>
 
-        <!-- 左サイドタブ + 右メインの2カラムレイアウト -->
+        <!-- 左：縦タブ  / 右：トップビュー or チャプター7部構成 -->
         <div class="generation-layout">
-          <!-- 縦サイドタブバー -->
+          <!-- 左縦タブ（≪トップ≫＋人生8チャプター） -->
           <aside class="gen-sidebar" aria-label="人生のステージ">
             <div class="gen-sidebar-title">人生のステージ</div>
             <button class="stage-tab is-active" type="button" data-stage="top">
@@ -76,29 +77,28 @@
               4. 大学・専門生
             </button>
             <button class="stage-tab" type="button" data-stage="earlyCareer">
-              5. 社会人前期
+              5. 社会人前期（22〜28歳）
             </button>
             <button class="stage-tab" type="button" data-stage="midCareer">
-              6. 社会人中期
+              6. 社会人中期（28〜40歳）
             </button>
             <button class="stage-tab" type="button" data-stage="lateCareer">
-              7. 社会人後期
+              7. 社会人後期（40〜65歳）
             </button>
             <button class="stage-tab" type="button" data-stage="secondCareer">
-              8. セカンドキャリア
+              8. セカンドキャリア（65歳〜）
             </button>
           </aside>
 
-          <!-- 右側メインビュー -->
+          <!-- 右メイン -->
           <div class="gen-main">
-            <!-- ≪トップ≫ 用ビュー：人生マップ（デモ） -->
+            <!-- ≪トップ≫ビュー：人生マップ（全体俯瞰） -->
             <section id="top-view" class="generation-section is-visible" aria-hidden="false">
-              <!-- ★ここにあった「人生地図禄 / 人生を 8 つのチャプター…」カードは削除済み -->
-
               <section class="life-map card-block">
-                <h2 class="life-map-title">人生マップ（デモ）</h2>
+                <h2 class="life-map-title">人生マップ（全体デモ）</h2>
                 <p class="life-map-sub">
-                  小学生〜セカンドキャリアまでの流れを、ざっくり俯瞰できるマップです。細かい人生の違いよりも、「どんなフェーズがあるか」をつかむことを目的にしています。
+                  小学生〜セカンドキャリアまでの流れを、ざっくり俯瞰できるマップです。
+                  細かい違いよりも、「どんなフェーズがあり、どこで詰まりやすいか」をつかむことを目的にしています。
                 </p>
 
                 <!-- 横長タイムライン -->
@@ -108,37 +108,37 @@
                     <div class="timeline-step">
                       <div class="timeline-dot"></div>
                       <div class="timeline-label">小学生</div>
-                      <div class="timeline-caption">「世界のルール」をはじめて学ぶ時期</div>
+                      <div class="timeline-caption">「世界のルール」に最初に触れるフェーズ</div>
                     </div>
                     <div class="timeline-step">
                       <div class="timeline-dot"></div>
                       <div class="timeline-label">中学生</div>
-                      <div class="timeline-caption">自己意識が強まり、他人の目が気になり始める</div>
+                      <div class="timeline-caption">自己意識と他人の目が一気に立ち上がる時期</div>
                     </div>
                     <div class="timeline-step">
                       <div class="timeline-dot"></div>
                       <div class="timeline-label">高校生</div>
-                      <div class="timeline-caption">進路と「自分らしさ」をめぐって揺れる時期</div>
+                      <div class="timeline-caption">進路と「自分らしさ」をめぐる葛藤が深まる</div>
                     </div>
                     <div class="timeline-step">
                       <div class="timeline-dot"></div>
-                      <div class="timeline-label">大学・専門期</div>
-                      <div class="timeline-caption">自由度が一気に高まり、選択肢が爆発するフェーズ</div>
+                      <div class="timeline-label">大学・専門生</div>
+                      <div class="timeline-caption">自由度と選択肢が爆発し、「選ばなかった道」が増える</div>
                     </div>
                     <div class="timeline-step">
                       <div class="timeline-dot"></div>
                       <div class="timeline-label">社会人前期</div>
-                      <div class="timeline-caption">仕事のリアルに触れつつ、「この道でいいのか」を考え始める</div>
+                      <div class="timeline-caption">仕事のリアルに触れつつ、「この道でいいのか」が芽生える</div>
                     </div>
                     <div class="timeline-step">
                       <div class="timeline-dot"></div>
                       <div class="timeline-label">社会人中期</div>
-                      <div class="timeline-caption">責任・立場・生活基盤が重くなり、方向転換のハードルが上がる</div>
+                      <div class="timeline-caption">責任と生活基盤が重くなり、方向転換のハードルが上がる</div>
                     </div>
                     <div class="timeline-step">
                       <div class="timeline-dot"></div>
                       <div class="timeline-label">社会人後期</div>
-                      <div class="timeline-caption">仕事・家族・健康など、複数のテーマが交差するフェーズ</div>
+                      <div class="timeline-caption">仕事・家族・健康など複数テーマが交差するフェーズ</div>
                     </div>
                     <div class="timeline-step">
                       <div class="timeline-dot"></div>
@@ -148,43 +148,146 @@
                   </div>
                 </div>
 
-                <!-- フェーズごとのカード群 -->
+                <!-- フェーズごとの説明カード -->
                 <div class="life-map-phases">
                   <article class="phase-card">
-                    <h3 class="phase-title">成長のフェーズ</h3>
+                    <h3 class="phase-title">成長のフェーズ（1〜3章）</h3>
                     <p class="phase-body">
-                      小学生〜高校生は、「外のルール」を学びながら、自分の軸がゆっくり形になる時期。後悔は「知らなかったこと」から生まれやすい。
+                      小学生〜高校生は、「外のルール」を学びながら、自分の軸がゆっくり形になる時期。
+                      後悔は「知らなかったこと」から生まれやすい。
                     </p>
                   </article>
                   <article class="phase-card">
-                    <h3 class="phase-title">選択が増えるフェーズ</h3>
+                    <h3 class="phase-title">選択が増えるフェーズ（4〜5章）</h3>
                     <p class="phase-body">
-                      大学・専門期〜社会人前期は、選べる道が一気に増える時期。二周目視点では、「選ばなかった道」をどう整理するかがカギになる。
+                      大学・専門生〜社会人前期は、選べる道が一気に増えるフェーズ。
+                      二周目視点では、「選ばなかった道」をどう整理するかがカギになる。
                     </p>
                   </article>
                   <article class="phase-card">
-                    <h3 class="phase-title">仕事の重みが増すフェーズ</h3>
+                    <h3 class="phase-title">仕事の重みが増すフェーズ（6〜7章）</h3>
                     <p class="phase-body">
-                      社会人中期〜後期は、立場や責任が増え、いきなりの方向転換が難しくなるフェーズ。ここでの迷いは、「構造の理解不足」からも生まれる。
+                      社会人中期〜後期は、立場や責任が増え、いきなりの方向転換が難しくなるフェーズ。
+                      ここでの迷いは、「構造の理解不足」からも生まれる。
                     </p>
                   </article>
                   <article class="phase-card">
-                    <h3 class="phase-title">自由度が再び高まるフェーズ</h3>
+                    <h3 class="phase-title">自由度が再び高まるフェーズ（8章）</h3>
                     <p class="phase-body">
-                      セカンドキャリアは、「もう一度、人生を編集し直す」タイミング。制約はあるが、視点さえあれば一周目とは違う選び方ができる。
+                      セカンドキャリアは、「もう一度、人生を編集し直す」タイミング。
+                      制約はあるが、視点さえあれば一周目とは違う選び方ができる。
                     </p>
                   </article>
                 </div>
               </section>
             </section>
 
-            <!-- 各世代ステージ用ビュー（JSON描画先） -->
-            <section id="stage-view" class="generation-section" aria-hidden="true">
-              <div id="stage-content" class="stage-content">
-                <!-- JS がここにステージ UI を生成します -->
-              </div>
-              <div id="stage-meta" class="stage-meta">
-                <!-- JS がここにメタ情報を追加します（必要に応じて） -->
+            <!-- 各チャプター用：7部構成ビュー -->
+            <section id="chapter-view" class="generation-section" aria-hidden="true">
+              <div class="chapter-sections">
+                <!-- ① チャプター概要 -->
+                <section class="chapter-section chapter-overview">
+                  <h2 class="chapter-section-heading">① チャプター概要</h2>
+                  <p id="overviewText" class="chapter-section-text">
+                    （このステージの概要が入ります）
+                  </p>
+                </section>
+
+                <!-- ② 本質（アコーディオン） -->
+                <section class="chapter-section accordion" data-key="essence">
+                  <button type="button" class="accordion-header">
+                    <div class="accordion-header-main">
+                      <div class="accordion-title">② 本質</div>
+                      <div class="accordion-subtitle">この年代の「根本的な性質」</div>
+                    </div>
+                    <div class="accordion-icon">＋</div>
+                  </button>
+                  <div class="accordion-panel">
+                    <div class="accordion-inner">
+                      <p id="essenceText" class="chapter-section-text"></p>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- ③ 分岐パターン（アコーディオン） -->
+                <section class="chapter-section accordion" data-key="branches">
+                  <button type="button" class="accordion-header">
+                    <div class="accordion-header-main">
+                      <div class="accordion-title">③ 分岐パターン</div>
+                      <div class="accordion-subtitle">人生のよくある分かれ道</div>
+                    </div>
+                    <div class="accordion-icon">＋</div>
+                  </button>
+                  <div class="accordion-panel">
+                    <div class="accordion-inner">
+                      <p id="branchesText" class="chapter-section-text"></p>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- ④ 迷い・不安・つまずき（アコーディオン） -->
+                <section class="chapter-section accordion" data-key="pains">
+                  <button type="button" class="accordion-header">
+                    <div class="accordion-header-main">
+                      <div class="accordion-title">④ 迷い・不安・つまずき</div>
+                      <div class="accordion-subtitle">この年代特有の「崩れどころ」</div>
+                    </div>
+                    <div class="accordion-icon">＋</div>
+                  </button>
+                  <div class="accordion-panel">
+                    <div class="accordion-inner">
+                      <p id="painsText" class="chapter-section-text"></p>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- ⑤ 二周目視点（抽象）＋処世術（具体）（アコーディオン・中核） -->
+                <section class="chapter-section accordion chapter-core" data-key="secondRound">
+                  <button type="button" class="accordion-header">
+                    <div class="accordion-header-main">
+                      <div class="accordion-title">⑤ 二周目視点（抽象）＋ 処世術（具体）</div>
+                      <div class="accordion-subtitle">
+                        抽象と具体の両方で、このフェーズを乗り越えるための知恵
+                      </div>
+                    </div>
+                    <div class="accordion-icon">＋</div>
+                  </button>
+                  <div class="accordion-panel">
+                    <div class="accordion-inner">
+                      <h3 class="chapter-subheading">二周目視点（抽象）</h3>
+                      <p id="secondRoundText" class="chapter-section-text"></p>
+
+                      <h3 class="chapter-subheading">処世術（具体）</h3>
+                      <p id="solutionsText" class="chapter-section-text"></p>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- ⑥ 選択のコンパス（アコーディオン） -->
+                <section class="chapter-section accordion" data-key="compass">
+                  <button type="button" class="accordion-header">
+                    <div class="accordion-header-main">
+                      <div class="accordion-title">⑥ 選択のコンパス（Q&A）</div>
+                      <div class="accordion-subtitle">ありがちな二択・迷いに対する“方向性”</div>
+                    </div>
+                    <div class="accordion-icon">＋</div>
+                  </button>
+                  <div class="accordion-panel">
+                    <div class="accordion-inner">
+                      <p id="compassText" class="chapter-section-text"></p>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- ⑦ 最後の一言（常時表示） -->
+                <section class="chapter-section chapter-final">
+                  <div class="stage-final">
+                    <p class="stage-final-label">⑦ 最後の一言</p>
+                    <p id="finalLineText" class="stage-final-text">
+                      （この年代を象徴する一行の指針が入ります）
+                    </p>
+                  </div>
+                </section>
               </div>
             </section>
           </div>
