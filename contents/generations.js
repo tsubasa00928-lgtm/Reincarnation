@@ -4,18 +4,23 @@
 // ・左サイドの .stage-tab をクリックしてチャプター切り替え
 // ・≪トップ≫：全体マップ表示（JSONなし）
 // ・各チャプター：data/<stage>.json から7部構成で描画
-// ・JSON仕様：
+//
+// JSON仕様（既存ファイルに合わせる）
 //
 // {
-//   "title": "大学・専門生期",
-//   "overview": "自立と選択の幅が一気に広がる時期。",
-//   "essence": "本質テキスト",
-//   "branches": "分岐ポイントテキスト",
-//   "pains": "迷い・不安テキスト",
-//   "secondRound": "二周目視点（抽象）",
-//   "solutions": "処世術（具体）",
-//   "compass": "選択のコンパス（Q&A形式）",
-//   "finalLine": "最後の一言"
+//   "id": "university",
+//   "title": "大学・専門期（18〜22歳）",
+//   "overview": "・・・",
+//   "essence": ["...", "..."],
+//   "commonPaths": [{ "label": "...", "desc": "..." }],
+//   "pains": ["...", "..."],
+//   "insights": [
+//     { "title": "...", "abstract": "...", "action": "..." }
+//   ],
+//   "choices": [
+//     { "title": "...", "insight": "..." }
+//   ],
+//   "finalLine": "・・・"
 // }
 // =====================================================
 
@@ -205,63 +210,149 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * JSON から 7部構成ビューを描画
+   * 既存 JSON の配列・オブジェクトを「箇条書きテキスト」に変換してはめ込む
    */
   function renderChapter(data) {
     const title = data.title || DEFAULT_TITLE;
     const overview = data.overview || "";
-    const essence = data.essence || "";
-    const branches = data.branches || "";
-    const pains = data.pains || "";
-    const secondRound = data.secondRound || "";
-    const solutions = data.solutions || "";
-    const compass = data.compass || "";
+    const essenceArr = Array.isArray(data.essence) ? data.essence : [];
+    const pathsArr = Array.isArray(data.commonPaths) ? data.commonPaths : [];
+    const painsArr = Array.isArray(data.pains) ? data.pains : [];
+    const insightsArr = Array.isArray(data.insights) ? data.insights : [];
+    const choicesArr = Array.isArray(data.choices) ? data.choices : [];
     const finalLine = data.finalLine || "";
 
-    // HERO（チャプター名＋一行概要）
+    // ---------- HERO（チャプター名＋サブコメント） ----------
     if (heroTitleEl) heroTitleEl.textContent = title;
-    if (heroSubtitleEl)
+    if (heroSubtitleEl) {
       heroSubtitleEl.textContent =
         overview || "このチャプターの概要は順次追加していきます。";
+    }
 
     // ① チャプター概要
-    if (overviewTextEl)
+    if (overviewTextEl) {
       overviewTextEl.textContent =
         overview || "このステージの概要は準備中です。";
+    }
 
-    // ② 本質
-    if (essenceTextEl)
-      essenceTextEl.textContent =
-        essence || "このステージの本質は順次追記していきます。";
+    // ② 本質（配列 → 箇条書き）
+    if (essenceTextEl) {
+      if (essenceArr.length === 0) {
+        essenceTextEl.textContent =
+          "このステージの本質は順次追記していきます。";
+      } else {
+        essenceTextEl.innerHTML = essenceArr
+          .map((t) => "・" + escapeHtml(t))
+          .join("<br>");
+      }
+    }
 
-    // ③ 分岐パターン
-    if (branchesTextEl)
-      branchesTextEl.textContent =
-        branches || "このステージのよくある分岐パターンは準備中です。";
+    // ③ 分岐パターン（commonPaths[] → 箇条書き）
+    if (branchesTextEl) {
+      if (pathsArr.length === 0) {
+        branchesTextEl.textContent =
+          "このステージのよくある分岐パターンは準備中です。";
+      } else {
+        branchesTextEl.innerHTML = pathsArr
+          .map((p) => {
+            const label = p.label ? `【${escapeHtml(p.label)}】` : "";
+            const desc = p.desc ? escapeHtml(p.desc) : "";
+            return "・" + label + (label && desc ? " " : "") + desc;
+          })
+          .join("<br>");
+      }
+    }
 
-    // ④ 迷い・不安・つまずき
-    if (painsTextEl)
-      painsTextEl.textContent =
-        pains || "このステージで生まれやすい迷い・不安は順次追加します。";
+    // ④ 迷い・不安・つまずき（pains[] → 箇条書き）
+    if (painsTextEl) {
+      if (painsArr.length === 0) {
+        painsTextEl.textContent =
+          "このステージで生まれやすい迷い・不安は順次追加します。";
+      } else {
+        painsTextEl.innerHTML = painsArr
+          .map((t) => "・" + escapeHtml(t))
+          .join("<br>");
+      }
+    }
 
-    // ⑤ 二周目視点（抽象）
-    if (secondRoundTextEl)
-      secondRoundTextEl.textContent =
-        secondRound || "二周目視点での抽象的な理解は準備中です。";
+    // ⑤ 二周目視点（抽象）＋処世術（具体）
+    // insights[] 1件ごとに [タイトル / 抽象 / 具体] を束ねてカード風テキストにする
+    if (secondRoundTextEl || solutionsTextEl) {
+      if (insightsArr.length === 0) {
+        if (secondRoundTextEl) {
+          secondRoundTextEl.textContent =
+            "二周目視点での抽象的な理解は準備中です。";
+        }
+        if (solutionsTextEl) {
+          solutionsTextEl.textContent =
+            "生活レベルでの処世術は順次追加していきます。";
+        }
+      } else {
+        // 抽象側：abstract を中心に
+        if (secondRoundTextEl) {
+          const abstractLines = insightsArr.map((ins) => {
+            const title = ins.title ? `【${ins.title}】` : "";
+            const abs = ins.abstract || "";
+            return (
+              title +
+              (title && abs ? " " : "") +
+              (abs ? escapeHtml(abs) : "")
+            );
+          });
+          secondRoundTextEl.innerHTML = abstractLines
+            .filter((s) => s.trim() !== "")
+            .map((s) => "・" + s)
+            .join("<br>");
+        }
 
-    // ⑤ 処世術（具体）
-    if (solutionsTextEl)
-      solutionsTextEl.textContent =
-        solutions || "生活レベルでの処世術は順次追加していきます。";
+        // 具体側：action を中心に
+        if (solutionsTextEl) {
+          const actionLines = insightsArr.map((ins) => {
+            const title = ins.title ? `【${ins.title}】` : "";
+            const act = ins.action || "";
+            return (
+              title +
+              (title && act ? " " : "") +
+              (act ? escapeHtml(act) : "")
+            );
+          });
+          solutionsTextEl.innerHTML = actionLines
+            .filter((s) => s.trim() !== "")
+            .map((s) => "・" + s)
+            .join("<br>");
+        }
+      }
+    }
 
-    // ⑥ 選択のコンパス
-    if (compassTextEl)
-      compassTextEl.textContent =
-        compass || "代表的な二択・迷いに対するコンパスは準備中です。";
+    // ⑥ 選択のコンパス（choices[] → 箇条書き）
+    if (compassTextEl) {
+      if (choicesArr.length === 0) {
+        compassTextEl.textContent =
+          "代表的な二択・迷いに対するコンパスは準備中です。";
+      } else {
+        compassTextEl.innerHTML = choicesArr
+          .map((c) => {
+            const title = c.title ? `Q. ${escapeHtml(c.title)}` : "";
+            const insight = c.insight ? escapeHtml(c.insight) : "";
+            if (!title && !insight) return "";
+            return (
+              "・" +
+              title +
+              (title && insight ? "<br>　→ " : "") +
+              (!title && insight ? "→ " : "") +
+              insight
+            );
+          })
+          .filter((s) => s.trim() !== "")
+          .join("<br><br>");
+      }
+    }
 
     // ⑦ 最後の一言
-    if (finalLineTextEl)
+    if (finalLineTextEl) {
       finalLineTextEl.textContent =
         finalLine || "このステージの「最後の一言」はこれから整えていきます。";
+    }
   }
 
   /**
@@ -314,5 +405,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     });
+  }
+
+  /**
+   * HTMLエスケープ（ざっくり）
+   */
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
   }
 });
