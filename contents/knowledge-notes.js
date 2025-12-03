@@ -1,6 +1,6 @@
 // knowledge-notes.js
 // モード分離：
-//  - ≪トップ≫(activeCategory === "all") → #top-mode + OS構造カードを表示
+//  - ≪トップ≫(activeCategory === "all") → #top-mode だけ表示
 //  - その他OSタブ → #os-mode だけ表示（カード一覧）
 
 (function () {
@@ -9,9 +9,17 @@
   // ============================================================
   const state = {
     loaded: false,
-    topics: [],         // { title, summary, tags, essence, traps, actionTips, _category }
+    topics: [],         // { title, summary, tags, essence, traps, actionTips, _category, _subCategory }
     activeCategory: "all",
-    search: ""
+    search: "",
+    // OSごとのサブカテゴリの選択状態
+    activeSubCategory: {
+      mind: "all",
+      relation: "all",
+      work: "all",
+      habit: "all",
+      future: "all"
+    }
   };
 
   // カテゴリ設定
@@ -38,6 +46,50 @@
     }
   };
 
+  // OSごとのサブカテゴリ定義
+  const subCategoryConfigs = {
+    mind: [
+      { id: "all",       label: "すべて" },
+      { id: "emotion",   label: "感情" },
+      { id: "cognition", label: "認知" },
+      { id: "self",      label: "自己" },
+      { id: "resilience",label: "メンタル耐性" },
+      { id: "other",     label: "その他" }
+    ],
+    relation: [
+      { id: "all",       label: "すべて" },
+      { id: "close",     label: "家族・恋人" },
+      { id: "middle",    label: "友人・同僚" },
+      { id: "boss",      label: "上司・組織" },
+      { id: "boundary",  label: "境界線" },
+      { id: "other",     label: "その他" }
+    ],
+    work: [
+      { id: "all",       label: "すべて" },
+      { id: "evaluation",label: "評価" },
+      { id: "safety",    label: "安全保障" },
+      { id: "negotiation",label: "交渉" },
+      { id: "context",   label: "環境理解" },
+      { id: "other",     label: "その他" }
+    ],
+    habit: [
+      { id: "all",       label: "すべて" },
+      { id: "start",     label: "着手" },
+      { id: "continue",  label: "継続" },
+      { id: "focus",     label: "集中" },
+      { id: "decision",  label: "意思決定" },
+      { id: "other",     label: "その他" }
+    ],
+    future: [
+      { id: "all",       label: "すべて" },
+      { id: "info",      label: "情報収集" },
+      { id: "learning",  label: "学習" },
+      { id: "ai",        label: "AI活用" },
+      { id: "strategy",  label: "キャリア戦略" },
+      { id: "other",     label: "その他" }
+    ]
+  };
+
   // DOM参照
   const sidebarEl        = document.getElementById("kn-sidebar");
   const sidebarToggleBtn = document.querySelector(".kn-sidebar-toggle");
@@ -47,7 +99,6 @@
 
   const topModeSection   = document.getElementById("top-mode");
   const osModeSection    = document.getElementById("os-mode");
-  const osStructureSection = document.querySelector(".kn-os-structure-section");
 
   const todayCardContainer = document.getElementById("kn-today-card");
   const todayRefreshBtn    = document.getElementById("kn-today-refresh");
@@ -56,6 +107,7 @@
 
   const resultsContainer   = document.getElementById("kn-results-container");
   const resultsMetaEl      = document.getElementById("kn-results-meta");
+  const subTabsContainer   = document.getElementById("kn-subcategory-tabs");
 
   // ============================================================
   // 初期化
@@ -73,6 +125,7 @@
         renderTodayCard();   // トップモード用
         renderResults();     // OSモード用（トップでは一覧非表示）
         updateModeVisibility();
+        renderSubTabs();
       })
       .catch((err) => {
         console.error(err);
@@ -106,8 +159,11 @@
         .then((json) => {
           const topics = Array.isArray(json.topics) ? json.topics : [];
           topics.forEach((topic) => {
+            const rawSub = (topic.subCategory || "").trim();
+            const normalizedSub = rawSub || "other";
             const cloned = Object.assign({}, topic, {
-              _category: categoryId
+              _category: categoryId,
+              _subCategory: normalizedSub
             });
             state.topics.push(cloned);
           });
@@ -162,26 +218,92 @@
     // モード切り替え
     updateModeVisibility();
 
+    // サブカテゴリタブを更新
+    renderSubTabs();
+
     // OSモードのときだけ一覧を再描画
     renderResults();
   }
 
-  // トップモード / OSモード切り替え
+  // ============================================================
+  // モード表示切り替え
+  // ============================================================
   function updateModeVisibility() {
     const isTop = state.activeCategory === "all";
 
     if (topModeSection) {
       topModeSection.hidden = !isTop;
-      topModeSection.style.display = isTop ? "" : "none"; // 確実に消す
+      topModeSection.style.display = isTop ? "" : "none";
     }
     if (osModeSection) {
       osModeSection.hidden = isTop;
-      osModeSection.style.display = isTop ? "none" : ""; // 確実に出す
+      osModeSection.style.display = isTop ? "none" : "";
     }
-    if (osStructureSection) {
-      osStructureSection.hidden = !isTop;
-      osStructureSection.style.display = isTop ? "" : "none";
+  }
+
+  // ============================================================
+  // サブカテゴリタブ
+  // ============================================================
+  function renderSubTabs() {
+    if (!subTabsContainer) return;
+
+    const cat = state.activeCategory;
+
+    // ≪トップ≫や不明カテゴリでは非表示
+    if (!cat || cat === "all" || !subCategoryConfigs[cat]) {
+      subTabsContainer.innerHTML = "";
+      subTabsContainer.style.display = "none";
+      return;
     }
+
+    const defs = subCategoryConfigs[cat];
+    const currentSub = state.activeSubCategory[cat] || "all";
+
+    subTabsContainer.innerHTML = "";
+    subTabsContainer.style.display = "";
+
+    defs.forEach((def) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "kn-subtab";
+      if (def.id === currentSub) {
+        btn.classList.add("is-active");
+      }
+      btn.textContent = def.label;
+      btn.dataset.subcategoryId = def.id;
+
+      btn.addEventListener("click", () => {
+        setActiveSubCategory(cat, def.id);
+      });
+
+      subTabsContainer.appendChild(btn);
+    });
+  }
+
+  function setActiveSubCategory(categoryId, subId) {
+    if (!state.activeSubCategory[categoryId]) {
+      state.activeSubCategory[categoryId] = "all";
+    }
+    state.activeSubCategory[categoryId] = subId || "all";
+
+    // サブタブの見た目を更新
+    renderSubTabs();
+
+    // 結果一覧を再描画
+    renderResults();
+  }
+
+  function getCategoryLabel(categoryId) {
+    const cfg = categoryConfigs[categoryId];
+    return cfg ? cfg.label : "不明カテゴリ";
+  }
+
+  function getSubCategoryLabel(categoryId, subId) {
+    if (!subId || subId === "all") return "すべて";
+    const defs = subCategoryConfigs[categoryId];
+    if (!defs) return "";
+    const found = defs.find((d) => d.id === subId);
+    return found ? found.label : "";
   }
 
   // ============================================================
@@ -190,6 +312,7 @@
   function setupSearchInput() {
     if (!searchInput) return;
 
+    // トップモードの検索
     searchInput.addEventListener("input", () => {
       state.search = searchInput.value || "";
       renderResults();
@@ -218,11 +341,6 @@
         state.search = keyword;
 
         renderResults();
-
-        // OSモードが表示されている場合はそこまでスクロール
-        if (osModeSection && !osModeSection.hidden) {
-          osModeSection.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
       });
     });
   }
@@ -304,12 +422,21 @@
 
     const keyword   = (state.search || "").trim().toLowerCase();
     const activeCat = state.activeCategory;
+    const subId     = (state.activeSubCategory[activeCat] || "all");
 
     let filtered = allTopics;
 
     // カテゴリフィルタ（all 以外しかここには来ない）
     if (activeCat && activeCat !== "all") {
       filtered = filtered.filter((t) => t._category === activeCat);
+    }
+
+    // サブカテゴリフィルタ
+    if (activeCat && activeCat !== "all" && subId && subId !== "all") {
+      filtered = filtered.filter((t) => {
+        const topicSub = t._subCategory || "other";
+        return topicSub === subId;
+      });
     }
 
     // キーワードフィルタ
@@ -323,15 +450,21 @@
 
     const totalCount = filtered.length;
 
-    const catLabelText =
-      activeCat && categoryConfigs[activeCat]
-        ? categoryConfigs[activeCat].label
-        : "不明カテゴリ";
+    const catLabelText = getCategoryLabel(activeCat);
+    const subLabelText = getSubCategoryLabel(activeCat, subId);
 
     if (!keyword) {
-      resultsMetaEl.textContent = `${catLabelText} から ${totalCount}件を表示中。`;
+      if (subId === "all" || !subLabelText) {
+        resultsMetaEl.textContent = `${catLabelText} から ${totalCount}件を表示中。`;
+      } else {
+        resultsMetaEl.textContent = `${catLabelText}｜${subLabelText} から ${totalCount}件を表示中。`;
+      }
     } else {
-      resultsMetaEl.textContent = `${catLabelText} × 「${keyword}」で ${totalCount}件ヒットしました。`;
+      if (subId === "all" || !subLabelText) {
+        resultsMetaEl.textContent = `${catLabelText} × 「${keyword}」で ${totalCount}件ヒットしました。`;
+      } else {
+        resultsMetaEl.textContent = `${catLabelText}｜${subLabelText} × 「${keyword}」で ${totalCount}件ヒットしました。`;
+      }
     }
 
     if (filtered.length === 0) {
@@ -362,7 +495,7 @@
   }
 
   // ============================================================
-  // カード生成
+  // カード生成（詳細は今は開かない）
   // ============================================================
   function createShoseiCard(topic) {
     const card = document.createElement("article");
@@ -414,19 +547,6 @@
     if (detailInner.children.length > 0) {
       detailWrapper.appendChild(detailInner);
     }
-
-    // クリックで詳細開閉
-    let isOpen = false;
-    card.addEventListener("click", () => {
-      isOpen = !isOpen;
-      if (isOpen) {
-        card.classList.add("is-open");
-        detailWrapper.style.maxHeight = detailInner.scrollHeight + "px";
-      } else {
-        card.classList.remove("is-open");
-        detailWrapper.style.maxHeight = "0";
-      }
-    });
 
     card.appendChild(titleEl);
     card.appendChild(summaryEl);
