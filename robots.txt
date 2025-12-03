@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://roku-brand.github.io/Reincarnation/sitemap.xml
