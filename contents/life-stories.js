@@ -1,49 +1,54 @@
 // life-stories.js
-// 「人生体験記ノート」ページ用スクリプト
-// - チャプタータブ切り替え
-// - 人生パターン図鑑（JSON → カード + アコーディオン）
-// - 職業図鑑（JSON → タグボタン + 詳細カード）
+// 人生体験禄ページ用スクリプト
+// - 左タスクバーで ≪トップ≫ / 人生パターン図鑑 / 職業図鑑 を切り替え
+// - 人生パターン図鑑：JSON → カード + アコーディオン
+// - 職業図鑑：JSON → 検索 + 3分類（会社員系／専門職系／その他）＋詳細カード
 
 document.addEventListener("DOMContentLoaded", () => {
-  initChapterTabs();
+  initSidebarNavigation();
+  initJobSearch();
   loadLifePatterns();
   loadJobs();
 });
 
 /**
- * ------------- チャプタータブ -------------
+ * ------------- 左サイドバー（タブ切替） -------------
  */
+function initSidebarNavigation() {
+  const sidebar = document.getElementById("ls-sidebar");
+  const toggleBtn = document.querySelector(".ls-sidebar-toggle");
+  const navTabs = sidebar ? sidebar.querySelectorAll(".ls-nav-tab") : [];
+  const sections = document.querySelectorAll(".ls-section");
 
-function initChapterTabs() {
-  const tabs = document.querySelectorAll(".chapter-tab");
-  const chapters = document.querySelectorAll(".chapter");
+  if (navTabs.length === 0 || !sections.length) return;
 
-  if (!tabs.length || !chapters.length) return;
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      const targetId = tab.dataset.target;
+  navTabs.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.getAttribute("data-section");
       if (!targetId) return;
 
-      // タブの状態更新
-      tabs.forEach((t) => {
-        t.classList.toggle("is-active", t === tab);
-        t.setAttribute("aria-selected", t === tab ? "true" : "false");
+      // タブの見た目更新
+      navTabs.forEach((b) => {
+        b.classList.toggle("is-active", b === btn);
       });
 
-      // チャプター表示切り替え
-      chapters.forEach((chapter) => {
-        if (chapter.id === targetId) {
-          chapter.hidden = false;
-          chapter.classList.add("is-active");
-        } else {
-          chapter.hidden = true;
-          chapter.classList.remove("is-active");
+      // セクション切り替え
+      sections.forEach((sec) => {
+        const match = sec.id === targetId;
+        sec.hidden = !match;
+        sec.classList.toggle("is-active", match);
+      });
+
+      // スマホ時：選択後にサイドバーを閉じる
+      if (sidebar && sidebar.classList.contains("is-open")) {
+        sidebar.classList.remove("is-open");
+        if (toggleBtn) {
+          toggleBtn.setAttribute("aria-expanded", "false");
         }
-      });
+      }
 
-      // 画面上部へ少し戻す（見やすさ用・任意）
-      const main = document.querySelector(".main-content");
+      // 見やすさのため、メインエリアの上まで少しスクロール
+      const main = document.querySelector(".ls-main");
       if (main) {
         const rect = main.getBoundingClientRect();
         const offset = window.scrollY + rect.top - 16;
@@ -51,12 +56,18 @@ function initChapterTabs() {
       }
     });
   });
+
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener("click", () => {
+      const isOpen = sidebar.classList.toggle("is-open");
+      toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+  }
 }
 
 /**
  * ------------- 共通ユーティリティ -------------
  */
-
 function createElement(tagName, options = {}) {
   const el = document.createElement(tagName);
   const { className, text, html, attrs } = options;
@@ -84,10 +95,19 @@ function safeArray(value) {
   return [];
 }
 
+function escapeHtml(str) {
+  if (typeof str !== "string") return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 /**
  * ------------- 人生パターン図鑑 -------------
  */
-
 async function loadLifePatterns() {
   const container = document.getElementById("pattern-card-grid");
   if (!container) return;
@@ -328,11 +348,23 @@ function togglePatternCard(card, detailsWrapper, open) {
 
 let jobDataList = [];
 let activeJobId = null;
+let jobSearchKeyword = "";
+
+// 検索入力の初期化
+function initJobSearch() {
+  const input = document.getElementById("job-search-input");
+  if (!input) return;
+
+  input.addEventListener("input", () => {
+    jobSearchKeyword = (input.value || "").trim().toLowerCase();
+    renderJobGroupsAndTags();
+  });
+}
 
 async function loadJobs() {
-  const tagContainer = document.getElementById("job-tag-container");
+  const groupsContainer = document.getElementById("job-groups");
   const detailContainer = document.getElementById("job-detail-container");
-  if (!tagContainer || !detailContainer) return;
+  if (!groupsContainer || !detailContainer) return;
 
   const jobFiles = [
     "data/jobs/job1.json",
@@ -355,26 +387,8 @@ async function loadJobs() {
       )
     );
 
-    // タグボタン生成
-    jobDataList.forEach((job) => {
-      const button = createElement("button", {
-        className: "job-tag-button",
-        text: job.name || "",
-      });
-      button.type = "button";
-      button.dataset.jobId = job.id || "";
-
-      button.addEventListener("click", () => {
-        setActiveJob(job.id);
-      });
-
-      tagContainer.appendChild(button);
-    });
-
-    // 初期状態: 先頭の職業を表示
-    if (jobDataList.length > 0) {
-      setActiveJob(jobDataList[0].id);
-    }
+    // 初回描画
+    renderJobGroupsAndTags();
   } catch (error) {
     console.error("職業JSONの読み込みに失敗しました:", error);
     const errorMsg = createElement("p", {
@@ -385,8 +399,162 @@ async function loadJobs() {
   }
 }
 
+// 公務員などを含めたカテゴリ判定
+function getJobSegment(job) {
+  // JSONに segment が明示されている場合はそれを優先
+  if (job.segment === "company" || job.segment === "pro" || job.segment === "other") {
+    return job.segment;
+  }
+
+  const base = ((job.category || "") + " " + (job.name || "")).toLowerCase();
+
+  // 地方公務員・国家公務員 → 強制的に「会社員系」
+  if (base.includes("公務員")) {
+    return "company";
+  }
+
+  // 一般的な会社員系のキーワード
+  if (
+    base.includes("会社") ||
+    base.includes("商社") ||
+    base.includes("銀行") ||
+    base.includes("メーカー") ||
+    base.includes("省庁") ||
+    base.includes("庁") ||
+    base.includes("企業")
+  ) {
+    return "company";
+  }
+
+  // 専門職っぽいキーワード
+  if (
+    base.includes("弁護士") ||
+    base.includes("会計士") ||
+    base.includes("税理士") ||
+    base.includes("医師") ||
+    base.includes("看護師") ||
+    base.includes("薬剤師") ||
+    base.includes("士") ||
+    base.includes("師") ||
+    base.includes("エンジニア") ||
+    base.includes("コンサル")
+  ) {
+    return "pro";
+  }
+
+  return "other";
+}
+
+// キーワード一致チェック
+function jobMatchesKeyword(job, keyword) {
+  if (!keyword) return true;
+  const haystack = (
+    (job.name || "") +
+    " " +
+    (job.overview || "") +
+    " " +
+    (job.examples || "") +
+    " " +
+    (job.category || "")
+  ).toLowerCase();
+  return haystack.includes(keyword);
+}
+
+// 3分類グループ＋タグの描画
+function renderJobGroupsAndTags() {
+  const groupsContainer = document.getElementById("job-groups");
+  const detailContainer = document.getElementById("job-detail-container");
+  if (!groupsContainer || !detailContainer) return;
+
+  groupsContainer.innerHTML = "";
+
+  if (!jobDataList.length) {
+    detailContainer.innerHTML =
+      '<p class="job-error-message">職業データを読み込み中です…</p>';
+    return;
+  }
+
+  const groups = {
+    company: { label: "会社員系", jobs: [] },
+    pro: { label: "専門職系", jobs: [] },
+    other: { label: "その他", jobs: [] }
+  };
+
+  const keyword = jobSearchKeyword;
+
+  jobDataList.forEach((job) => {
+    if (!jobMatchesKeyword(job, keyword)) return;
+    const seg = getJobSegment(job);
+    (groups[seg] || groups.other).jobs.push(job);
+  });
+
+  let firstJobForSelection = null;
+
+  Object.keys(groups).forEach((key) => {
+    const group = groups[key];
+    if (!group.jobs.length) return;
+
+    const section = createElement("section", {
+      className: "ls-job-group",
+    });
+
+    const title = createElement("h3", {
+      className: "ls-job-group-title",
+      text: group.label,
+    });
+
+    const row = createElement("div", {
+      className: "job-tag-container",
+    });
+
+    group.jobs.forEach((job) => {
+      const button = createElement("button", {
+        className:
+          "job-tag-button" + (job.id === activeJobId ? " is-active" : ""),
+        text: job.name || "",
+      });
+      button.type = "button";
+      button.dataset.jobId = job.id || "";
+
+      button.addEventListener("click", () => {
+        setActiveJob(job.id);
+      });
+
+      row.appendChild(button);
+
+      if (!firstJobForSelection) {
+        firstJobForSelection = job;
+      }
+    });
+
+    section.appendChild(title);
+    section.appendChild(row);
+    groupsContainer.appendChild(section);
+  });
+
+  if (!firstJobForSelection) {
+    detailContainer.innerHTML =
+      '<p class="job-error-message">条件に合う職業がありませんでした。</p>';
+    return;
+  }
+
+  // すでにアクティブな職業がフィルタ後も存在するならそれを優先
+  if (
+    activeJobId &&
+    jobDataList.some(
+      (job) => job.id === activeJobId && jobMatchesKeyword(job, keyword)
+    )
+  ) {
+    setActiveJob(activeJobId);
+  } else {
+    setActiveJob(firstJobForSelection.id);
+  }
+}
+
+// アクティブ職業設定 ＋ 詳細カード描画
 function setActiveJob(jobId) {
   activeJobId = jobId;
+
   const tagButtons = document.querySelectorAll(".job-tag-button");
   tagButtons.forEach((btn) => {
     btn.classList.toggle("is-active", btn.dataset.jobId === jobId);
@@ -396,7 +564,6 @@ function setActiveJob(jobId) {
   const detailContainer = document.getElementById("job-detail-container");
   if (!job || !detailContainer) return;
 
-  // 既存の内容をクリア
   detailContainer.innerHTML = "";
   const card = buildJobCard(job);
   detailContainer.appendChild(card);
@@ -516,17 +683,4 @@ function createJobListBlock(title, items) {
   block.appendChild(list);
 
   return block;
-}
-
-/**
- * HTMLエスケープ
- */
-function escapeHtml(str) {
-  if (typeof str !== "string") return "";
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
