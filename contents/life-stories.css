@@ -51,7 +51,6 @@ body.home-body.page-life-stories {
   position: relative;
 }
 
-
 .ls-sidebar-title {
   font-size: 11px;
   letter-spacing: 0.18em;
@@ -88,10 +87,10 @@ body.home-body.page-life-stories {
 }
 
 .ls-nav-tab.is-active {
-  background: linear-gradient(135deg, #059669, #16a34a);
+  background: linear-gradient(135deg, #059669, #047857);
   border-color: rgba(190, 242, 100, 0.9);
   color: #ecfdf5;
-  box-shadow: 0 12px 24px rgba(22, 163, 74, 0.7);
+  box-shadow: 0 12px 24px rgba(5, 150, 105, 0.7);
 }
 
 /* 右メインコンテンツ */
@@ -129,27 +128,20 @@ body.home-body.page-life-stories {
 }
 
 /* セクション共通 */
+/* ▼ サブタブバーっぽく見えていた「セクション枠」をフラット化し、
+      外枠（border）＆カード感を削除 */
 
 .ls-section {
-  background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #dcfce7;
-  box-shadow: var(--shadow-soft);
-  padding: 18px 18px 22px;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  padding: 0 0 14px;
 }
 
-.ls-section + .ls-section {
-  margin-top: 14px;
-}
-
+/* ▼ セクションのタイトルバー（概要説明的に見える部分）は非表示 */
 .ls-section-header {
-  margin-bottom: 10px;
-}
-
-.ls-section-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0;
+  display: none;
 }
 
 /* ==============================
@@ -168,9 +160,10 @@ body.home-body.page-life-stories {
   }
 }
 
+/* ▼ カード外枠（border）だけ削除してフラット寄りに */
 .ls-feature-card {
   border-radius: 16px;
-  border: 1px solid #bbf7d0;
+  border: none;
   background: #f9fffb;
   padding: 14px 14px 16px;
   box-shadow: var(--shadow-soft);
@@ -205,9 +198,10 @@ body.home-body.page-life-stories {
   }
 }
 
+/* ▼ 外枠（border）だけ削除。背景と影はそのまま */
 .pattern-card {
   border-radius: 16px;
-  border: 1px solid #bbf7d0;
+  border: none;
   background: #ffffff;
   box-shadow: var(--shadow-soft);
   overflow: hidden;
@@ -397,10 +391,11 @@ body.home-body.page-life-stories {
   margin-bottom: 12px;
 }
 
+/* ▼ グループカードの外枠だけ削除 */
 .ls-job-group {
   padding: 8px 10px 10px;
   border-radius: 14px;
-  border: 1px solid #e5e7eb;
+  border: none;
   background: #f9fafb;
 }
 
@@ -452,9 +447,10 @@ body.home-body.page-life-stories {
   min-height: 80px;
 }
 
+/* ▼ 職業カードも外枠（border）のみ削除 */
 .job-card {
   border-radius: 16px;
-  border: 1px solid #dbeafe;
+  border: none;
   background: #ffffff;
   padding: 14px 14px 16px;
   box-shadow: var(--shadow-soft);
@@ -576,6 +572,7 @@ body.home-body.page-life-stories {
     display: inline-flex;
   }
 }
+
 /* ----------------------------------------------------
    背景を処世術禄と同じ淡いトーンに強制上書き
    （グローバル style.css の黒背景を無効化する）
@@ -592,6 +589,7 @@ body.page-life-stories {
 .page-life-stories .container {
   background: transparent !important;
 }
+
 /* ----------------------------------------------------
    サイドタスクバーの黒塗りをやめて、
    処世術禄寄りの淡いOSカード風デザインに統一
@@ -610,7 +608,7 @@ body.page-life-stories {
   position: relative;
 }
 
-/* タブの色味も少しだけ明るめに */
+/* タブの色味も処世術禄と同じ深緑に */
 .page-life-stories .ls-nav-tab {
   color: #0f172a;
   border-color: transparent;
@@ -618,14 +616,15 @@ body.page-life-stories {
 }
 
 .page-life-stories .ls-nav-tab:hover {
-  background: #e0f2fe;
-  border-color: #bae6fd;
-  color: #0f172a;
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+  color: #065f46;
 }
 
+/* ▼ アクティブ時は処世術禄の深緑 (#059669) に統一 */
 .page-life-stories .ls-nav-tab.is-active {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  border-color: transparent;
-  color: #f0fdf4;
-  box-shadow: 0 12px 24px rgba(22, 163, 74, 0.4);
+  background: #059669;
+  border-color: #059669;
+  color: #ecfdf5;
+  box-shadow: 0 10px 24px rgba(5, 150, 105, 0.6);
 }
