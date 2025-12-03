@@ -47,13 +47,6 @@ function initSidebarNavigation() {
         }
       }
 
-      // 見やすさのため、メインエリアの上まで少しスクロール
-      const main = document.querySelector(".ls-main");
-      if (main) {
-        const rect = main.getBoundingClientRect();
-        const offset = window.scrollY + rect.top - 16;
-        window.scrollTo({ top: offset, behavior: "smooth" });
-      }
     });
   });
 
@@ -684,3 +677,4 @@ function createJobListBlock(title, items) {
 
   return block;
 }
+
