@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // これらの要素は generations.html 側に用意してある前提
   const topView = document.getElementById("top-view");          // トップ用コンテンツ
   const stageView = document.getElementById("stage-view");      // ステージ詳細コンテンツのラッパ
-  const stageTitle = document.getElementById("stage-title");    // ステージタイトル
-  const stageLead = document.getElementById("stage-lead");      // リード文
+  const stageTitle = document.getElementById("stage-title");    // ステージタイトル（必要に応じて）
+  const stageLead = document.getElementById("stage-lead");      // リード文（必要に応じて）
   const stageContent = document.getElementById("stage-content");// メインコンテンツ
   const stageMeta = document.getElementById("stage-meta");      // 補足・メタ情報など
 
@@ -59,12 +59,24 @@ document.addEventListener("DOMContentLoaded", () => {
     // 表示切り替え
     if (stage === "top") {
       // トップ
-      if (topView) topView.hidden = false;
-      if (stageView) stageView.hidden = true;
+      if (topView) {
+        topView.hidden = false;
+        topView.classList.add("is-visible");
+      }
+      if (stageView) {
+        stageView.hidden = true;
+        stageView.classList.remove("is-visible");
+      }
       return;
     } else {
-      if (topView) topView.hidden = true;
-      if (stageView) stageView.hidden = false;
+      if (topView) {
+        topView.hidden = true;
+        topView.classList.remove("is-visible");
+      }
+      if (stageView) {
+        stageView.hidden = false;
+        stageView.classList.add("is-visible");
+      }
     }
 
     // ステージ詳細を読み込み
@@ -137,23 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // =====================================================
   //  ステージ UI 描画
-  //  期待する JSON のざっくり構造（例）：
-  //
-  //  {
-  //    "stageLabel": "大学・専門期",
-  //    "catch": "自由度が一気に高まり、選択肢が爆発するフェーズ",
-  //    "lead": "二周目視点で見ると、ここでの選択がその後の10年を左右する。",
-  //    "sections": [
-  //      { "title": "どんなフェーズか", "items": ["〜〜", "〜〜"] },
-  //      { "title": "詰まりやすいポイント", "items": ["〜〜"] },
-  //      ...
-  //    ],
-  //    "meta": {
-  //      "typicalPatterns": ["よくある進路パターンA", "パターンB"],
-  //      "risks": ["リスク1", "リスク2"],
-  //      "keywords": ["キーワード1", "キーワード2"]
-  //    }
-  //  }
   // =====================================================
   function renderStage(data, stage) {
     if (!stageContent) return;
@@ -179,7 +174,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const sections = Array.isArray(data.sections) ? data.sections : [];
     if (sections.length === 0) {
       // セクションがない場合は summary 的なフィールドをそのまま表示
-      const summary = data.summary || "このステージの詳細は順次追加していきます。";
+      const summary =
+        data.summary || "このステージの詳細は順次追加していきます。";
       const section = document.createElement("section");
       section.className = "stage-section";
       section.innerHTML = `<h3 class="stage-section-title">このステージについて</h3>
