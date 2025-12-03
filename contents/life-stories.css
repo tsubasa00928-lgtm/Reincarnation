@@ -574,3 +574,19 @@ body.home-body.page-life-stories {
     display: inline-flex;
   }
 }
+/* ----------------------------------------------------
+   背景を処世術禄と同じ淡いトーンに強制上書き
+   （グローバル style.css の黒背景を無効化する）
+---------------------------------------------------- */
+
+body.page-life-stories {
+  background: #f4faf7 !important;   /* 淡い緑がかった処世術禄トーン */
+}
+
+.page-life-stories .site-main {
+  background: transparent !important;
+}
+
+.page-life-stories .container {
+  background: transparent !important;
+}
