@@ -5,11 +5,11 @@
 // ・≪トップ≫：全体マップ表示（JSONなし）
 // ・各チャプター：data/<stage>.json から7部構成で描画
 //
-// JSON仕様（既存ファイルに合わせる）
+// JSON仕様（表示用フィールド付き）
 //
 // {
-//   "id": "university",
-//   "title": "大学・専門期（18〜22歳）",
+//   "id": "elementary",
+//   "title": "小学生期",
 //   "overview": "・・・",
 //   "essence": ["...", "..."],
 //   "commonPaths": [{ "label": "...", "desc": "..." }],
@@ -20,7 +20,13 @@
 //   "choices": [
 //     { "title": "...", "insight": "..." }
 //   ],
-//   "finalLine": "・・・"
+//   "finalLine": "・・・",
+//
+//   "essenceDisplay": "興味の萌芽・承認と安心・小さな世界",
+//   "branchesDisplay": "受験型・習い事集中型・遊び探求型",
+//   "painsDisplay": "友人関係・居場所の安らぎ・小さなトラウマ",
+//   "coreDisplay": "好きに従う・失敗と成長・友という宝",
+//   "compassDisplay": "中学受験・習い事・得意と興味"
 // }
 // =====================================================
 
@@ -43,13 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- サイドタブ -----
   const stageTabs = Array.from(document.querySelectorAll(".stage-tab"));
 
-  // ステージマップ（チャプター名をタブのラベルから取る）
+  // ステージ: 表示名マップ（タブのラベルから生成）
   const stageLabelMap = {};
   stageTabs.forEach((tab) => {
     const stage = tab.getAttribute("data-stage");
     if (!stage) return;
     const raw = tab.textContent.trim();
-    // 「1. 小学生」「5. 社会人前期（22〜28歳）」 → 数字・カッコを取って本体だけ
+    // 「1. 小学生」「5. 社会人前期（22〜28歳）」 → 数字・カッコを除いた本体だけ
     const noNumber = raw.replace(/^\d+\.\s*/, "");
     const label = noNumber.replace(/（.*?）/g, "");
     stageLabelMap[stage] = label;
@@ -215,8 +221,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * JSON から 7部構成ビューを描画
-   * 既存 JSON の配列・オブジェクトを
-   * 「ヘッダーの要点サマリ＋パネル内の詳細」に分けてはめ込む
+   * ・詳細テキストは従来通り
+   * ・タイトル横のキーワードは xxxDisplay を使用
    */
   function renderChapter(data, stage) {
     const overview = data.overview || "";
@@ -226,6 +232,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const insightsArr = Array.isArray(data.insights) ? data.insights : [];
     const choicesArr = Array.isArray(data.choices) ? data.choices : [];
     const finalLine = data.finalLine || "";
+
+    // 表示用キーワード
+    const essenceDisplay = data.essenceDisplay || "";
+    const branchesDisplay = data.branchesDisplay || "";
+    const painsDisplay = data.painsDisplay || "";
+    const coreDisplay = data.coreDisplay || "";
+    const compassDisplay = data.compassDisplay || "";
 
     // ---------- ① チャプター概要 ----------
     if (overviewHeadingEl) {
@@ -244,9 +257,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ---------- ② 本質 ----------
-    // ヘッダーのタイトルにサマリ（例：本質 世界が狭い、承認と安心、興味の芽）
-    const essenceSummary = buildSummaryFromArray(essenceArr, 3);
-    setAccordionTitleSummary("essence", essenceSummary, "② 本質");
+    // 見出しタイトルに Display を反映
+    setAccordionTitleDisplay("essence", essenceDisplay, "② 本質");
 
     if (essenceTextEl) {
       if (essenceArr.length === 0) {
@@ -260,8 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ---------- ③ 分岐パターン ----------
-    const branchSummary = buildSummaryFromLabels(pathsArr, 3);
-    setAccordionTitleSummary("branches", branchSummary, "③ 分岐パターン");
+    setAccordionTitleDisplay("branches", branchesDisplay, "③ 分岐パターン");
 
     if (branchesTextEl) {
       if (pathsArr.length === 0) {
@@ -279,8 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ---------- ④ 迷い・不安・つまずき ----------
-    const painsSummary = buildSummaryFromArray(painsArr, 3);
-    setAccordionTitleSummary("pains", painsSummary, "④ 迷い・不安・つまずき");
+    setAccordionTitleDisplay("pains", painsDisplay, "④ 迷い・不安・つまずき");
 
     if (painsTextEl) {
       if (painsArr.length === 0) {
@@ -293,12 +303,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // ---------- ⑤ 二周目視点（抽象）＋処世術（具体） ----------
-    const insightTitles = insightsArr
-      .map((ins) => ins.title)
-      .filter((t) => t && String(t).trim() !== "");
-    const coreSummary = buildSummaryFromArray(insightTitles, 3);
-    setAccordionTitleSummary("secondRound", coreSummary, "⑤ 二周目視点＋処世術");
+    // ---------- ⑤ 二周目視点＋処世術 ----------
+    setAccordionTitleDisplay("secondRound", coreDisplay, "⑤ 二周目視点＋処世術");
 
     if (insightsArr.length === 0) {
       if (secondRoundTextEl) {
@@ -344,11 +350,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ---------- ⑥ 選択のコンパス ----------
-    const choiceTitles = choicesArr
-      .map((c) => c.title)
-      .filter((t) => t && String(t).trim() !== "");
-    const compassSummary = buildSummaryFromArray(choiceTitles, 2);
-    setAccordionTitleSummary("compass", compassSummary, "⑥ 選択のコンパス");
+    setAccordionTitleDisplay("compass", compassDisplay, "⑥ 選択のコンパス");
 
     if (compassTextEl) {
       if (choicesArr.length === 0) {
@@ -434,10 +436,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * 指定のセクション（data-key）に対して、
-   * タイトル行に「ベースラベル + サマリ」を設定
-   * 例：② 本質 世界が狭い、承認と安心、興味の芽
+   * タイトル行に「ベースラベル + 表示用キーワード」を設定
+   * 例：② 本質　興味の萌芽・承認と安心・小さな世界
    */
-  function setAccordionTitleSummary(sectionKey, summary, fallbackBase) {
+  function setAccordionTitleDisplay(sectionKey, displayText, fallbackBase) {
     const section = document.querySelector(
       `.chapter-section.accordion[data-key="${sectionKey}"]`
     );
@@ -446,35 +448,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!titleEl) return;
 
     const base = titleEl.dataset.base || fallbackBase || titleEl.textContent;
-    if (!summary) {
+    if (!displayText || String(displayText).trim() === "") {
       titleEl.textContent = base;
     } else {
-      titleEl.textContent = `${base}　${summary}`;
+      titleEl.textContent = `${base}　${displayText}`;
     }
-  }
-
-  /**
-   * 配列から、先頭N件を「、」区切りでまとめたサマリを作成
-   */
-  function buildSummaryFromArray(arr, maxCount) {
-    const list = (arr || [])
-      .map((t) => String(t || "").trim())
-      .filter((t) => t !== "");
-    if (!list.length) return "";
-    const sliced = list.slice(0, maxCount);
-    return sliced.join("、");
-  }
-
-  /**
-   * commonPaths[] から label だけ取り出してサマリを作成
-   */
-  function buildSummaryFromLabels(paths, maxCount) {
-    const list = (paths || [])
-      .map((p) => (p && p.label ? String(p.label).trim() : ""))
-      .filter((t) => t !== "");
-    if (!list.length) return "";
-    const sliced = list.slice(0, maxCount);
-    return sliced.join("、");
   }
 
   /**
