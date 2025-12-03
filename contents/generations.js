@@ -1,303 +1,179 @@
+// =====================================================
+// 世代別ノート ページ用スクリプト
+// - ?stage=top / elementary / middle ... に応じて内容を切り替え
+// - デフォルトは "top"（≪トップ≫タブ）
+// - 各ステージは ./data/<stage>.json から読み込み
+// =====================================================
 // 世代別ノートページ用スクリプト
 // - ≪トップ≫ タブと 8 ステージの切り替え
 // - JSON から 7 部構成 UI を自動描画
 
 document.addEventListener("DOMContentLoaded", () => {
+  const tabs = Array.from(document.querySelectorAll(".gen-tab"));
+  const contentRoot = document.getElementById("genContentRoot");
   const tabs = Array.from(document.querySelectorAll(".stage-tab"));
   const topView = document.getElementById("top-view");
   const stageView = document.getElementById("stage-view");
   const stageContent = document.getElementById("stage-content");
 
+  // クエリパラメータから stage を取得
   if (!stageContent) return;
 
   // URL パラメータから初期ステージを取得
-  const params = new URLSearchParams(window.location.search);
-  let currentStage = params.get("stage") || "top";
+const params = new URLSearchParams(window.location.search);
+let currentStage = params.get("stage") || "top";
 
+  // 存在しない値対策
+  const validStages = [
+    "top",
+    "elementary",
+    "middle",
+    "high",
+    "university",
+    "earlyCareer",
+    "midCareer",
+    "lateCareer",
+    "secondCareer",
+  ];
+  if (!validStages.includes(currentStage)) {
+    currentStage = "top";
+  }
+
+  // 初期レンダリング
+  setActiveTab(currentStage);
+  renderStage(currentStage);
+
+  // タブクリックイベント
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", (e) => {
+      e.preventDefault();
+      const stage = tab.dataset.stage;
+      if (!stage || !validStages.includes(stage)) return;
+
+      currentStage = stage;
+      // URL 更新（履歴を汚しすぎないように replaceState）
+      const baseUrl = window.location.pathname;
+      const newUrl =
+        stage === "top" ? `${baseUrl}` : `${baseUrl}?stage=${stage}`;
+      window.history.replaceState(null, "", newUrl);
+
+      setActiveTab(stage);
+      renderStage(stage);
+    });
+  });
+
+  // -----------------------------------------------------
+  // タブのアクティブ状態を切り替え
+  // -----------------------------------------------------
   // タブのアクティブ状態を更新
-  function setActiveTab(stage) {
-    tabs.forEach((tab) => {
+function setActiveTab(stage) {
+tabs.forEach((tab) => {
+      if (tab.dataset.stage === stage) {
+        tab.classList.add("gen-tab-active");
       const s = tab.getAttribute("data-stage");
       if (s === stage) {
         tab.classList.add("is-active");
-      } else {
+} else {
+        tab.classList.remove("gen-tab-active");
         tab.classList.remove("is-active");
-      }
-    });
-// knowledge-notes.js
-// 処世術禄：サイドOSタブ / 総合検索 / 今日の処世術（ランダムカード） / ショートカット連動
-// 「今日の処世術」「今の悩みから探す」は ≪トップ≫（all）タブのみ表示
-
-(function () {
-  // ============================================================
-  // 状態管理
-  // ============================================================
-  const state = {
-    loaded: false,
-    topics: [], // { title, summary, tags, essence, ... , _category }
-    activeCategory: "all", // all | mind | relation | work | habit | future
-    search: ""
-  };
-
-  // カテゴリごとのJSON設定
-  const categoryConfigs = {
-    mind: {
-      jsonPath: "data/shoseijutsu/mind.json",
-      label: "心の扱い方（内部OS）"
-    },
-    relation: {
-      jsonPath: "data/shoseijutsu/relation.json",
-      label: "人との関わり方（対人OS）"
-    },
-    work: {
-      jsonPath: "data/shoseijutsu/work.json",
-      label: "社会での立ち回り（社会OS）"
-    },
-    habit: {
-      jsonPath: "data/shoseijutsu/habit.json",
-      label: "行動・習慣の技術（行動OS）"
-    },
-    future: {
-      jsonPath: "data/shoseijutsu/future.json",
-      label: "キャッチアップの極意（未来OS）"
-    }
-  };
-
-  // DOM参照
-  const sidebarEl = document.getElementById("kn-sidebar");
-  const sidebarToggleBtn = document.querySelector(".kn-sidebar-toggle");
-  const osTabButtons = sidebarEl
-    ? sidebarEl.querySelectorAll(".kn-os-tab")
-    : [];
-  const searchInput = document.getElementById("kn-search-input");
-  const todayCardContainer = document.getElementById("kn-today-card");
-  const todayRefreshBtn = document.getElementById("kn-today-refresh");
-  const resultsContainer = document.getElementById("kn-results-container");
-  const resultsMetaEl = document.getElementById("kn-results-meta");
-  const shortcutButtons = document.querySelectorAll(".kn-shortcut");
-  const topOnlySections = document.querySelectorAll(".kn-top-only");
-
-  // ============================================================
-  // 初期化
-  // ============================================================
-
-  function init() {
-    // イベントの紐付け
-    setupSidebarToggle();
-    setupOsTabs();
-    setupSearchInput();
-    setupShortcuts();
-    setupTodayRefresh();
-
-    // データのロード
-    loadAllCategories()
-      .then(() => {
-        state.loaded = true;
-        // 今日の処世術カード
-        renderTodayCard();
-        // 検索結果（初期はランダムピックアップ）
-        renderResults();
-        // トップ専用セクションの表示制御
-        updateTopOnlySections();
-      })
-      .catch((err) => {
-        console.error(err);
-        if (todayCardContainer) {
-          todayCardContainer.innerHTML =
-            '<p class="kn-loading-text">データの読み込み中にエラーが発生しました。</p>';
-        }
-        if (resultsMetaEl) {
-          resultsMetaEl.textContent =
-            "データの読み込み中にエラーが発生しました。";
-        }
-      });
-
-    // 初期状態（activeCategory = all）の可視状態を保証
-    updateTopOnlySections();
+}
+});
 }
 
+  // -----------------------------------------------------
+  // ステージに応じて描画
+  // -----------------------------------------------------
+  function renderStage(stage) {
+    if (!contentRoot) return;
+    contentRoot.innerHTML = "";
   // ビューの表示・非表示
   function showTopView() {
     topView.classList.add("is-visible");
     topView.setAttribute("aria-hidden", "false");
     stageView.classList.remove("is-visible");
     stageView.setAttribute("aria-hidden", "true");
-  // ============================================================
-  // データロード
-  // ============================================================
-
-  function loadAllCategories() {
-    const entries = Object.entries(categoryConfigs);
-    const promises = entries.map(([categoryId, config]) => {
-      return fetch(config.jsonPath)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(
-              `failed to load ${config.jsonPath} (${res.status})`
-            );
-          }
-          return res.json();
-        })
-        .then((json) => {
-          const topics = Array.isArray(json.topics) ? json.topics : [];
-          topics.forEach((topic) => {
-            const cloned = Object.assign({}, topic, {
-              _category: categoryId
-            });
-            state.topics.push(cloned);
-          });
-        });
-    });
-
-    return Promise.all(promises);
-}
+  }
 
   function showStageView() {
     topView.classList.remove("is-visible");
     topView.setAttribute("aria-hidden", "true");
     stageView.classList.add("is-visible");
     stageView.setAttribute("aria-hidden", "false");
-  // ============================================================
-  // サイドバー（OSタブ）
-  // ============================================================
-
-  function setupSidebarToggle() {
-    if (!sidebarToggleBtn || !sidebarEl) return;
-
-    sidebarToggleBtn.addEventListener("click", () => {
-      const isOpen = sidebarEl.classList.toggle("is-open");
-      sidebarToggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    });
-}
+  }
 
   // URL の stage パラメータを更新
   function updateUrl(stage) {
     const url = new URL(window.location.href);
     url.searchParams.set("stage", stage);
     window.history.replaceState({}, "", url.toString());
-  function setupOsTabs() {
-    if (!osTabButtons || osTabButtons.length === 0) return;
-
-    osTabButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const categoryId = btn.getAttribute("data-category") || "all";
-        setActiveCategory(categoryId);
-        // スマホ：タブ選択後はサイドバーを閉じる
-        if (sidebarEl && sidebarEl.classList.contains("is-open")) {
-          sidebarEl.classList.remove("is-open");
-          if (sidebarToggleBtn) {
-            sidebarToggleBtn.setAttribute("aria-expanded", "false");
-          }
-        }
-      });
-    });
-}
+  }
 
   // ステージを切り替えるメイン関数
   function setStage(stage, shouldUpdateUrl = true) {
     currentStage = stage;
     setActiveTab(stage);
-  function setActiveCategory(categoryId) {
-    state.activeCategory = categoryId;
 
-    if (stage === "top") {
+if (stage === "top") {
+      renderTopView();
       showTopView();
       // JSON は読み込まない
       if (shouldUpdateUrl) updateUrl("top");
-      return;
-    // ボタンの見た目更新
-    if (osTabButtons && osTabButtons.length > 0) {
-      osTabButtons.forEach((btn) => {
-        const target = btn.getAttribute("data-category");
-        btn.classList.toggle("is-active", target === categoryId);
-      });
+return;
 }
 
+    // 各ステージは JSON から読み込み
+    const jsonPath = `data/${stage}.json`;
+    fetch(jsonPath)
     showStageView();
     if (shouldUpdateUrl) updateUrl(stage);
     loadStageData(stage);
-    // トップ専用セクションの表示制御
-    updateTopOnlySections();
-
-    // 再描画
-    renderResults();
-}
+  }
 
   // ローディングメッセージ表示
   function showMessage(text) {
     stageContent.innerHTML = `<p class="stage-message">${text}</p>`;
-  // 「今日の処世術」「今の悩みから探す」を
-  // ≪トップ≫（all）のときだけ表示する
-  function updateTopOnlySections() {
-    const isTop = state.activeCategory === "all";
-    if (!topOnlySections || topOnlySections.length === 0) return;
-
-    topOnlySections.forEach((sec) => {
-      if (!sec) return;
-      sec.hidden = !isTop;
-    });
-}
+  }
 
   // JSON 読み込み
   function loadStageData(stage) {
     showMessage("このステージの構造を読み込んでいます…");
-  // ============================================================
-  // 検索入力
-  // ============================================================
-
-  function setupSearchInput() {
-    if (!searchInput) return;
 
     // contents/generations.html から見た相対パス
     const url = `data/${stage}.json`;
-    searchInput.addEventListener("input", () => {
-      state.search = searchInput.value || "";
-      renderResults();
-    });
 
     fetch(url)
-      .then((res) => {
-        if (!res.ok) {
+.then((res) => {
+if (!res.ok) {
+          throw new Error(`JSON 読み込みエラー: ${jsonPath}`);
           throw new Error(`JSON 読み込みエラー: ${res.status}`);
-    searchInput.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        state.search = searchInput.value || "";
-        renderResults();
-      }
-    });
-  }
-
-  // ============================================================
-  // ショートカット（シチュエーション別）
-  // ============================================================
-
-  function setupShortcuts() {
-    if (!shortcutButtons || shortcutButtons.length === 0) return;
-
-    shortcutButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const keyword = btn.getAttribute("data-keyword") || "";
-        if (!searchInput) return;
-        searchInput.value = keyword;
-        state.search = keyword;
-        renderResults();
-        // 必要ならスクロール
-        const resultsSection = document.querySelector(".kn-results-section");
-        if (resultsSection && typeof resultsSection.scrollIntoView === "function") {
-          resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
 }
-        return res.json();
-      })
-      .then((data) => {
+return res.json();
+})
+.then((data) => {
+        renderStageFromJson(data);
         renderStage(data);
-      })
-      .catch((err) => {
-        console.error(err);
+})
+.catch((err) => {
+console.error(err);
+        renderError(`データを読み込めませんでした。（${jsonPath}）`);
         showMessage("データの読み込みに失敗しました。しばらくしてからもう一度試してください。");
 });
-    });
 }
 
+  // -----------------------------------------------------
+  // トップタブ：人生マップ（デモ）
+  // -----------------------------------------------------
+  function renderTopView() {
+    const card = document.createElement("div");
+    card.className = "gen-card";
+
+    card.innerHTML = `
+      <div class="gen-map-header">
+        <h2 class="gen-map-title">人生マップ（デモ）</h2>
+        <p class="gen-map-sub">
+          小学生〜セカンドキャリアまでの流れを、二周目視点でざっくり俯瞰できるマップです。<br>
+          ここから、気になるステージをタブで選んで掘り下げていきます。
+        </p>
   // ステージ UI を描画（7 部構成）
   function renderStage(data) {
     // データが不足していても落ちないようにデフォルトを用意
@@ -325,7 +201,26 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="common-path-item">
         <div class="common-path-label">${escapeHtml(p.label || "")}</div>
         <p class="common-path-desc">${escapeHtml(p.desc || "")}</p>
-      </div>
+     </div>
+
+      <div class="gen-map-timeline">
+        <div class="gen-map-line"></div>
+
+        <div class="gen-map-stage-row">
+          <div class="gen-map-stage">
+            <div class="gen-map-dot"></div>
+            <div class="gen-map-stage-label">小学生</div>
+            <div class="gen-map-stage-note">「世界のルール」を初めて知る時期</div>
+          </div>
+          <div class="gen-map-stage">
+            <div class="gen-map-dot"></div>
+            <div class="gen-map-stage-label">中学生</div>
+            <div class="gen-map-stage-note">比較と序列が意識に入り込む</div>
+          </div>
+          <div class="gen-map-stage">
+            <div class="gen-map-dot"></div>
+            <div class="gen-map-stage-label">高校生</div>
+            <div class="gen-map-stage-note">「将来何者になるか」問題が立ち上がる</div>
     `
       )
       .join("");
@@ -382,7 +277,11 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="accordion-title-wrap">
             <span class="accordion-title">本質</span>
             <span class="accordion-sub">このステージの内側にある3つの構造</span>
-          </div>
+         </div>
+          <div class="gen-map-stage">
+            <div class="gen-map-dot gen-map-dot--mid"></div>
+            <div class="gen-map-stage-label">大学・専門期</div>
+            <div class="gen-map-stage-note">選択の幅が一時的に最大になる</div>
           <span class="accordion-icon">›</span>
         </button>
         <div class="accordion-panel">
@@ -390,8 +289,14 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="essence-list">
               ${essenceHtml || "<p>データがまだ登録されていません。</p>"}
             </div>
-          </div>
-        </div>
+         </div>
+       </div>
+
+        <div class="gen-map-stage-row">
+          <div class="gen-map-stage">
+            <div class="gen-map-dot gen-map-dot--mid"></div>
+            <div class="gen-map-stage-label">社会人前期</div>
+            <div class="gen-map-stage-note">実戦で「自分のパターン」を知るフェーズ</div>
       </section>
 
       <!-- ③ Common Paths -->
@@ -400,7 +305,11 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="accordion-title-wrap">
             <span class="accordion-title">分岐パターン</span>
             <span class="accordion-sub">よくある進み方・キャリアの流れ</span>
-          </div>
+         </div>
+          <div class="gen-map-stage">
+            <div class="gen-map-dot gen-map-dot--mid"></div>
+            <div class="gen-map-stage-label">社会人中期</div>
+            <div class="gen-map-stage-note">責任と自由のバランスが重くなる</div>
           <span class="accordion-icon">›</span>
         </button>
         <div class="accordion-panel">
@@ -408,7 +317,11 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="common-paths-list">
               ${commonPathsHtml || "<p>データがまだ登録されていません。</p>"}
             </div>
-          </div>
+         </div>
+          <div class="gen-map-stage">
+            <div class="gen-map-dot"></div>
+            <div class="gen-map-stage-label">社会人後期</div>
+            <div class="gen-map-stage-note">守るものと手放すものを選び始める</div>
         </div>
       </section>
 
@@ -418,7 +331,11 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="accordion-title-wrap">
             <span class="accordion-title">迷い・不安</span>
             <span class="accordion-sub">この時期に出やすい悩み・行き詰まり</span>
-          </div>
+         </div>
+          <div class="gen-map-stage">
+            <div class="gen-map-dot gen-map-dot--end"></div>
+            <div class="gen-map-stage-label">セカンドキャリア</div>
+            <div class="gen-map-stage-note">「何を残すか」のフェーズ</div>
           <span class="accordion-icon">›</span>
         </button>
         <div class="accordion-panel">
@@ -426,8 +343,16 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="pains-list">
               ${painsHtml || "<p>データがまだ登録されていません。</p>"}
             </div>
-          </div>
-        </div>
+         </div>
+       </div>
+
+        <div class="gen-map-phases">
+          <div class="gen-phase-card">
+            <h3 class="gen-phase-title">① 成長のフェーズ</h3>
+            <p class="gen-phase-text">
+              小〜高校は、「自分が選べない前提」が多い時期。<br>
+              二周目視点では、自分を責めるより「環境の構造」を理解することが大事になります。
+            </p>
       </section>
 
       <!-- ⑤ Insights -->
@@ -436,7 +361,13 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="accordion-title-wrap">
             <span class="accordion-title">二周目視点 × 処世術</span>
             <span class="accordion-sub">抽象と具体をつなぐ「見方」と「動き方」</span>
-          </div>
+         </div>
+          <div class="gen-phase-card">
+            <h3 class="gen-phase-title">② 選択が増えるフェーズ</h3>
+            <p class="gen-phase-text">
+              大学・専門期〜社会人前期は、選択肢が一気に増える一方で、<br>
+              「本当に選び直せる期限」も同時に進んでいきます。
+            </p>
           <span class="accordion-icon">›</span>
         </button>
         <div class="accordion-panel">
@@ -444,7 +375,13 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="insights-list">
               ${insightsHtml || "<p>データがまだ登録されていません。</p>"}
             </div>
-          </div>
+         </div>
+          <div class="gen-phase-card">
+            <h3 class="gen-phase-title">③ 仕事の重みが増すフェーズ</h3>
+            <p class="gen-phase-text">
+              社会人中期〜後期は、役割と責任が増え、<br>
+              自分だけの問題ではなくなることで判断が難しくなります。
+            </p>
         </div>
       </section>
 
@@ -454,7 +391,13 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="accordion-title-wrap">
             <span class="accordion-title">選択のコンパス</span>
             <span class="accordion-sub">よく迷う分岐に対する「軸」のヒント</span>
-          </div>
+         </div>
+          <div class="gen-phase-card">
+            <h3 class="gen-phase-title">④ 自由度が再び高まるフェーズ</h3>
+            <p class="gen-phase-text">
+              セカンドキャリアは、「もう一度人生を再設計する」タイミング。<br>
+              一周目の経験を、二周目の自由さに変換していくステージです。
+            </p>
           <span class="accordion-icon">›</span>
         </button>
         <div class="accordion-panel">
@@ -462,59 +405,131 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="choices-list">
               ${choicesHtml || "<p>データがまだ登録されていません。</p>"}
             </div>
-          </div>
-        </div>
+         </div>
+       </div>
+      </div>
+    `;
+
+    contentRoot.appendChild(card);
+  }
+
+  // -----------------------------------------------------
+  // 各ステージ：JSON から描画（簡易版7部構成）
+  // -----------------------------------------------------
+  function renderStageFromJson(data) {
+    if (!data) {
+      renderError("データが見つかりません。");
+      return;
+    }
       </section>
 
+    const wrapper = document.createElement("div");
+    wrapper.className = "gen-stage-wrapper";
+
+    // 1. 概要
+    const headerCard = document.createElement("div");
+    headerCard.className = "gen-card gen-stage-header";
+
+    headerCard.innerHTML = `
+      <h2 class="gen-stage-title">${escapeHtml(data.title || "")}</h2>
+      <p class="gen-stage-overview">${escapeHtml(data.overview || "")}</p>
+      <div class="gen-tag-row">
+        ${(data.essence || [])
+          .map(
+            (e) =>
+              `<span class="gen-tag-pill">${escapeHtml(e)}</span>`
+          )
+          .join("")}
+      </div>
       <!-- ⑦ Final Line -->
       <section class="stage-final">
         <p class="stage-final-label">指針一言</p>
         <p class="stage-final-text">${escapeHtml(finalLine)}</p>
       </section>
-    `;
+   `;
 
+    // 2. 本質（Essence）＋ 3. 分岐（commonPaths）＋ 4. 迷い（pains）
+    const coreCard = document.createElement("div");
+    coreCard.className = "gen-card";
+
+    coreCard.innerHTML = `
+      <h3 class="gen-section-title">このステージの本質</h3>
+      <p class="gen-section-sub">よくある構造・分岐・迷いをざっくり整理しています。</p>
+
+      <h4 class="gen-section-title" style="font-size:0.92rem;margin-top:10px;">よくある分岐パターン</h4>
+      <ul class="gen-list">
+        ${(data.commonPaths || [])
+          .map(
+            (p) =>
+              `<li><span class="gen-inline-label">${escapeHtml(
+                p.label || ""
+              )}</span>：${escapeHtml(p.desc || "")}</li>`
+          )
+          .join("")}
+      </ul>
+
+      <h4 class="gen-section-title" style="font-size:0.92rem;margin-top:14px;">よくある迷い・不安</h4>
+      <ul class="gen-list">
+        ${(data.pains || [])
+          .map((p) => `<li>${escapeHtml(p)}</li>`)
+          .join("")}
+      </ul>
+    `;
     stageContent.innerHTML = html;
     initAccordions();
-  // ============================================================
-  // 今日の処世術（ランダムカード）＋更新ボタン
-  // ============================================================
+  }
 
-  function setupTodayRefresh() {
-    if (!todayRefreshBtn) return;
-
-    todayRefreshBtn.addEventListener("click", () => {
-      if (!state.loaded) return;
-      renderTodayCard();
-    });
-}
-
+    // 5. Insights（二周目視点 × 処世術）
+    const insightsCard = document.createElement("div");
+    insightsCard.className = "gen-card";
   // アコーディオンの初期化
   function initAccordions() {
     const sections = Array.from(stageContent.querySelectorAll(".stage-section"));
-  function renderTodayCard() {
-    if (!todayCardContainer) return;
 
+    insightsCard.innerHTML = `
+      <h3 class="gen-section-title">二周目視点 × 処世術</h3>
+      <p class="gen-section-sub">一周目でつまずきやすいポイントを、構造ごと整理したメモです。</p>
+    `;
     sections.forEach((section) => {
       const header = section.querySelector(".accordion-header");
       const panel = section.querySelector(".accordion-panel");
       if (!header || !panel) return;
-    todayCardContainer.innerHTML = "";
 
+    const insightsList = document.createElement("div");
+    (data.insights || []).forEach((ins) => {
+      const item = document.createElement("div");
+      item.className = "gen-insight-item";
+      item.innerHTML = `
+        <p class="gen-insight-title">${escapeHtml(ins.title || "")}</p>
+        <p class="gen-insight-abstract">${escapeHtml(ins.abstract || "")}</p>
+        <p class="gen-insight-action">${escapeHtml(ins.action || "")}</p>
+      `;
+      insightsList.appendChild(item);
+    });
+    insightsCard.appendChild(insightsList);
+
+    // 6. Choices（選択のコンパス）
+    const choicesCard = document.createElement("div");
+    choicesCard.className = "gen-card";
       // 初期状態は閉
       panel.style.maxHeight = "0px";
-    if (!state.loaded || !Array.isArray(state.topics) || state.topics.length === 0) {
-      const p = document.createElement("p");
-      p.className = "kn-loading-text";
-      p.textContent = "利用可能な処世術カードがまだありません。";
-      todayCardContainer.appendChild(p);
-      return;
-    }
 
+    choicesCard.innerHTML = `
+      <h3 class="gen-section-title">選択のコンパス</h3>
+      <p class="gen-section-sub">どちらを選んでもいいが、「何を大事にするか」を意識して選ぶためのメモです。</p>
+    `;
       header.addEventListener("click", () => {
         const isOpen = section.classList.contains("is-open");
-    const randomIndex = Math.floor(Math.random() * state.topics.length);
-    const topic = state.topics[randomIndex];
 
+    const choicesList = document.createElement("div");
+    (data.choices || []).forEach((ch) => {
+      const item = document.createElement("div");
+      item.className = "gen-choice-item";
+      item.innerHTML = `
+        <p class="gen-choice-title">${escapeHtml(ch.title || "")}</p>
+        <p class="gen-choice-text">${escapeHtml(ch.insight || "")}</p>
+      `;
+      choicesList.appendChild(item);
         if (isOpen) {
           section.classList.remove("is-open");
           panel.style.maxHeight = "0px";
@@ -522,223 +537,53 @@ document.addEventListener("DOMContentLoaded", () => {
           section.classList.add("is-open");
           panel.style.maxHeight = panel.scrollHeight + "px";
         }
-    const card = createShoseiCard(topic);
-    card.classList.add("is-today");
-
-    // カテゴリラベルを追加
-    const catLabel = document.createElement("span");
-    catLabel.className = "tag-chip tag-chip-category";
-    const categoryLabel = categoryConfigs[topic._category]
-      ? categoryConfigs[topic._category].label
-      : "不明カテゴリ";
-    catLabel.textContent = categoryLabel;
-
-    const tagsWrap = card.querySelector(".shosei-tags");
-    if (tagsWrap) {
-      tagsWrap.insertBefore(catLabel, tagsWrap.firstChild);
-    }
-
-    todayCardContainer.appendChild(card);
-  }
-
-  // ============================================================
-  // 検索結果のレンダリング
-  // ============================================================
-
-  function renderResults() {
-    if (!resultsContainer || !resultsMetaEl) return;
-
-    resultsContainer.innerHTML = "";
-
-    if (!state.loaded) {
-      resultsMetaEl.textContent = "データを読み込み中です…";
-      return;
-    }
-
-    const allTopics = Array.isArray(state.topics) ? state.topics : [];
-    if (allTopics.length === 0) {
-      resultsMetaEl.textContent =
-        "まだ処世術カードが登録されていません。";
-      return;
-    }
-
-    const keyword = (state.search || "").trim().toLowerCase();
-    const activeCat = state.activeCategory;
-
-    let filtered = allTopics;
-
-    // カテゴリフィルタ
-    if (activeCat && activeCat !== "all") {
-      filtered = filtered.filter((t) => t._category === activeCat);
-    }
-
-    // キーワードフィルタ
-    if (keyword) {
-      filtered = filtered.filter((topic) => {
-        const title = (topic.title || "").toLowerCase();
-        const summary = (topic.summary || "").toLowerCase();
-        return title.includes(keyword) || summary.includes(keyword);
+      });
 });
-    }
+    choicesCard.appendChild(choicesList);
 
-    const totalCount = filtered.length;
+    // 7. Final Line
+    const finalCard = document.createElement("div");
+    finalCard.className = "gen-card";
+    finalCard.innerHTML = `
+      <p class="gen-final-line">${escapeHtml(data.finalLine || "")}</p>
+    `;
 
-    // メタ情報表示
-    const catLabelText =
-      activeCat === "all"
-        ? "すべてのOS"
-        : categoryConfigs[activeCat]
-        ? categoryConfigs[activeCat].label
-        : "不明カテゴリ";
+    wrapper.appendChild(headerCard);
+    wrapper.appendChild(coreCard);
+    wrapper.appendChild(insightsCard);
+    wrapper.appendChild(choicesCard);
+    wrapper.appendChild(finalCard);
 
-    if (!keyword && activeCat === "all") {
-      resultsMetaEl.textContent = `全カテゴリからランダムに最大6件をピックアップして表示しています（登録総数：${allTopics.length}件）。`;
-    } else if (!keyword && activeCat !== "all") {
-      resultsMetaEl.textContent = `${catLabelText} から ${totalCount}件を表示中。`;
-    } else if (keyword && activeCat === "all") {
-      resultsMetaEl.textContent = `「${keyword}」で全カテゴリから ${totalCount}件ヒットしました。`;
-    } else {
-      resultsMetaEl.textContent = `${catLabelText} × 「${keyword}」で ${totalCount}件ヒットしました。`;
-    }
-
-    // ヒットなし
-    if (filtered.length === 0) {
-      const p = document.createElement("p");
-      p.className = "kn-loading-text";
-      p.textContent = "条件に合う処世術カードがありませんでした。";
-      resultsContainer.appendChild(p);
-      return;
-    }
-
-    // 初期表示（キーワードなし・カテゴリall）の場合は上限6件ランダム表示
-    if (!keyword && activeCat === "all") {
-      const shuffled = shuffleArray(filtered.slice());
-      filtered = shuffled.slice(0, 6);
-    }
-
-    filtered.forEach((topic) => {
-      const card = createShoseiCard(topic);
-
-      // カテゴリラベルチップ
-      const catLabel = document.createElement("span");
-      catLabel.className = "tag-chip tag-chip-category";
-      const categoryLabel = categoryConfigs[topic._category]
-        ? categoryConfigs[topic._category].label
-        : "不明カテゴリ";
-      catLabel.textContent = categoryLabel;
-
-      const tagsWrap = card.querySelector(".shosei-tags");
-      if (tagsWrap) {
-        tagsWrap.insertBefore(catLabel, tagsWrap.firstChild);
-      }
-
-      resultsContainer.appendChild(card);
-});
+    contentRoot.appendChild(wrapper);
 }
 
-  // シンプルなエスケープ処理
-  function escapeHtml(str) {
-    if (typeof str !== "string") return "";
-    return str
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
-  // ============================================================
-  // ユーティリティ：配列シャッフル
-  // ============================================================
-
-  function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const tmp = arr[i];
-      arr[i] = arr[j];
-      arr[j] = tmp;
-    }
-    return arr;
+  // -----------------------------------------------------
+  // エラー表示
+  // -----------------------------------------------------
+  function renderError(msg) {
+    const card = document.createElement("div");
+    card.className = "gen-card";
+    card.innerHTML = `
+      <p style="margin:0;font-size:0.9rem;color:var(--text-sub);">
+        ${escapeHtml(msg)}
+      </p>
+    `;
+    contentRoot.appendChild(card);
   }
 
-  // ============================================================
-  // 処世術カード生成（概要＋アコーディオン詳細）
-  // ============================================================
-
-  function createShoseiCard(topic) {
-    const card = document.createElement("article");
-    card.className = "shosei-card";
-
-    // タイトル
-    const titleEl = document.createElement("h3");
-    titleEl.className = "shosei-title";
-    titleEl.textContent = topic.title || "タイトル未設定";
-
-    // サマリー
-    const summaryEl = document.createElement("p");
-    summaryEl.className = "shosei-summary";
-    summaryEl.textContent = topic.summary || "";
-
-    // タグ列
-    const tagsWrap = document.createElement("div");
-    tagsWrap.className = "shosei-tags";
-    if (Array.isArray(topic.tags)) {
-      topic.tags.forEach((tag) => {
-        const chip = document.createElement("span");
-        chip.className = "tag-chip";
-        chip.textContent = tag;
-        tagsWrap.appendChild(chip);
-      });
-    }
-
-    // 詳細（アコーディオン部）
-    const detailWrapper = document.createElement("div");
-    detailWrapper.className = "shosei-detail";
-
-    const detailInner = document.createElement("div");
-    detailInner.className = "shosei-detail-inner";
-
-    // essence
-    if (Array.isArray(topic.essence) && topic.essence.length > 0) {
-      detailInner.appendChild(
-        createDetailBlock("本質ポイント", topic.essence)
-      );
-    }
-
-    // traps
-    if (Array.isArray(topic.traps) && topic.traps.length > 0) {
-      detailInner.appendChild(createDetailBlock("よくある罠", topic.traps));
-    }
-
-    // actionTips
-    if (Array.isArray(topic.actionTips) && topic.actionTips.length > 0) {
-      detailInner.appendChild(
-        createDetailBlock("行動ヒント", topic.actionTips)
-      );
-    }
-
-    if (detailInner.children.length > 0) {
-      detailWrapper.appendChild(detailInner);
-    }
-
-    // カードクリックで詳細開閉
-    let isOpen = false;
-    card.addEventListener("click", () => {
-      isOpen = !isOpen;
-      if (isOpen) {
-        card.classList.add("is-open");
-        detailWrapper.style.maxHeight = detailInner.scrollHeight + "px";
-      } else {
-        card.classList.remove("is-open");
-        detailWrapper.style.maxHeight = "0";
-      }
-    });
-
-    // 構成を組み立て
-    card.appendChild(titleEl);
-    card.appendChild(summaryEl);
-    card.appendChild(tagsWrap);
-    card.appendChild(detailWrapper);
-
-    return card;
+  // -----------------------------------------------------
+  // シンプルなエスケープ
+  // -----------------------------------------------------
+  // シンプルなエスケープ処理
+function escapeHtml(str) {
+if (typeof str !== "string") return "";
+return str
+.replace(/&/g, "&amp;")
+.replace(/</g, "&lt;")
+.replace(/>/g, "&gt;")
+.replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+      .replace(/'/g, "&#39;");
 }
 
   // タブクリックイベント
@@ -747,36 +592,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const stage = tab.getAttribute("data-stage");
       if (!stage || stage === currentStage) return;
       setStage(stage, true);
-  function createDetailBlock(title, items) {
-    const block = document.createElement("div");
-    block.className = "detail-block";
-
-    const titleEl = document.createElement("h4");
-    titleEl.className = "detail-title";
-    titleEl.textContent = title;
-
-    const ul = document.createElement("ul");
-    ul.className = "detail-list";
-
-    items.forEach((text) => {
-      const li = document.createElement("li");
-      li.textContent = text;
-      ul.appendChild(li);
-});
+    });
   });
 
   // 初期表示ステージを反映
   setStage(currentStage, false);
 });
-    block.appendChild(titleEl);
-    block.appendChild(ul);
-    return block;
-  }
-
-  // ============================================================
-  // 実行
-  // ============================================================
-
-  // defer で読み込まれる前提なので、そのまま init を叩いて問題ない
-  init();
-})();
