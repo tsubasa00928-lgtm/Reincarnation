@@ -591,13 +591,7 @@
       isOpen = !isOpen;
       card.classList.toggle("is-open", isOpen);
 
-      if (isOpen) {
-        detailWrapper.style.maxHeight = "none";
-        const h = detailInner.scrollHeight;
-        detailWrapper.style.maxHeight = h + "px";
-      } else {
-        detailWrapper.style.maxHeight = "0";
-      }
+      
     });
 
     card.appendChild(titleEl);
@@ -635,3 +629,4 @@
   // ============================================================
   init();
 })();
+
