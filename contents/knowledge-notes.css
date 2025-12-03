@@ -205,6 +205,29 @@
 }
 
 /* =============================================================
+   トップ用 2カラムレイアウト
+   ============================================================= */
+
+.kn-top-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.kn-top-left {
+  width: 100%;
+}
+
+.kn-top-left-inner {
+  max-width: 620px; /* 検索＋今日＋悩みが“必要十分”に収まる幅 */
+}
+
+.kn-top-right {
+  width: 100%;
+}
+
+/* =============================================================
    検索バー
    ============================================================= */
 
@@ -330,6 +353,69 @@
 }
 
 /* =============================================================
+   右カラム：OS構造カード
+   ============================================================= */
+
+.kn-os-structure-card {
+  background: #ecfdf5;
+  border-radius: 18px;
+  border: 1px solid #a7f3d0;
+  padding: 14px 16px;
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.25);
+}
+
+.kn-os-structure-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #047857;
+}
+
+.kn-os-structure-lead {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #065f46;
+}
+
+.kn-os-structure-list {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kn-os-structure-list li {
+  font-size: 12px;
+  color: #064e3b;
+}
+
+.kn-os-pill {
+  display: inline-block;
+  margin-bottom: 2px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #d1fae5;
+  font-size: 11px;
+  font-weight: 600;
+  color: #047857;
+}
+
+.kn-os-structure-text {
+  display: block;
+  margin-left: 2px;
+}
+
+.kn-os-structure-footer {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: #047857;
+}
+
+/* =============================================================
    OSモード：検索結果
    ============================================================= */
 
@@ -406,7 +492,7 @@
   border: 1px solid #d1d5db;
   padding: 11px 13px;
   box-shadow: 0 10px 20px rgba(15, 118, 110, 0.08);
-  cursor: default;
+  cursor: pointer;
   transition:
     transform 0.16s ease,
     box-shadow 0.18s ease,
@@ -464,7 +550,7 @@
   color: #3730a3;
 }
 
-/* 詳細ブロック（今は開かないが構造だけ保持） */
+/* 詳細アコーディオン */
 
 .shosei-detail {
   overflow: hidden;
@@ -534,5 +620,17 @@
 
   .kn-sidebar-toggle {
     display: inline-flex;
+  }
+
+  .kn-top-shell {
+    display: block; /* スマホでは1カラム */
+  }
+
+  .kn-top-left-inner {
+    max-width: none;
+  }
+
+  .kn-top-right {
+    margin-top: 8px;
   }
 }
