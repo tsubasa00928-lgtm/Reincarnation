@@ -41,7 +41,8 @@ body.home-body.page-life-stories {
 .ls-sidebar {
   flex-shrink: 0;
   width: 220px;
-  background: #021510;
+  /* 黒ベタをやめて、処世術禄系のガラスっぽい深緑グラデに */
+  background: radial-gradient(circle at top left, #064e3b 0%, #022c22 55%, #011b10 100%);
   border-radius: 0; /* 角張らせる */
   border: 1px solid rgba(148, 239, 193, 0.4);
   box-shadow: 0 18px 40px rgba(22, 163, 74, 0.35);
@@ -49,6 +50,7 @@ body.home-body.page-life-stories {
   color: #e5fbea;
   position: relative;
 }
+
 
 .ls-sidebar-title {
   font-size: 11px;
