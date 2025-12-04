@@ -10,13 +10,10 @@
 }
 
 .page-knowledge-notes .container {
-  /* ✅ 本当に画面いっぱいに広げる */
   width: 100%;
   max-width: 100%;
   margin-left: 0;
   margin-right: 0;
-
-  /* 余白は中身で持つ */
   padding-left: 0;
   padding-right: 0;
 }
@@ -25,9 +22,8 @@
 .page-inner {
   max-width: 100%;
   margin: 0;
-  padding: 0 16px 24px;  /* 👈 ここに左右余白を移す */
+  padding: 0 16px 24px;
 }
-
 
 .page-knowledge-notes .site-main {
   padding-top: 16px;
@@ -73,57 +69,15 @@
   border-color: rgba(56, 189, 248, 0.25);
 }
 
-/* 中身は通常レイヤーに乗せる */
 .scroll-panel > * {
   position: relative;
   z-index: 1;
 }
 
-
-
 /* =============================================================
-   HERO
+   検索バー（検索タブ内で使用）
    ============================================================= */
 
-.hero-copy.hero-knowledge {
-  margin-bottom: 4px;
-}
-
-.hero-inner {
-  max-width: 720px;
-}
-
-.hero-section-title {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #022c22;
-  margin: 0 0 4px;
-}
-
-.hero-section-underline {
-  width: 140px;
-  height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #22c55e, #0ea5e9);
-  margin-bottom: 3px;
-}
-
-.hero-section-underline.second {
-  width: 110px;
-  height: 2px;
-  background: linear-gradient(90deg, rgba(34, 197, 94, 0.7), rgba(56, 189, 248, 0.6));
-}
-
-.hero-text {
-  margin: 8px 0 14px;
-  font-size: 13px;
-  line-height: 1.8;
-  color: #1f2933;
-}
-
-/* HERO内検索バー */
 .kn-search-section {
   margin-top: 6px;
   max-width: 520px;
@@ -264,6 +218,9 @@
 .os-tab-future {
   border-left: 3px solid #fed7d7;
 }
+.os-tab-search {
+  border-left: 3px solid #d1d5db;
+}
 
 /* メイン側 */
 .kn-main {
@@ -273,7 +230,7 @@
 
 /* スマホ用：OSカテゴリ折りたたみトグル */
 .kn-sidebar-toggle {
-  display: none; /* PCでは非表示 */
+  display: none;
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
@@ -524,7 +481,7 @@
 }
 
 /* =============================================================
-   OSモード：検索結果
+   OSモード：一覧
    ============================================================= */
 
 .kn-results-header {
@@ -576,29 +533,33 @@
   box-shadow: 0 6px 14px rgba(5, 150, 105, 0.4);
 }
 
-/* デフォルト（スマホ想定）は 1 列でOK */
+/* 共通カードグリッド（OSモード・検索モード共通） */
 .kn-card-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 12px;
-  justify-items: stretch; /* 左右いっぱいに広げる */
+  justify-items: stretch;
 }
 
-/* ✅ 768px 以上（PC幅）は 2列構成にする */
+/* PC では 2列 */
 @media (min-width: 768px) {
   .kn-card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-items: stretch;
   }
 
-  /* カードの max-width を外して、列幅いっぱい使う */
   .shosei-card {
     max-width: none;
   }
 }
 
+/* 検索モード専用の微調整 */
+.kn-search-mode-section .kn-search-section {
+  margin-bottom: 8px;
+}
+
 /* =============================================================
-   処世術カード（OS帯＋OS感デザイン）
+   処世術カード
    ============================================================= */
 
 .shosei-card {
@@ -851,7 +812,7 @@
 
   .kn-sidebar {
     width: 100%;
-    display: none; /* トグルで開く */
+    display: none;
   }
 
   .kn-sidebar.is-open {
@@ -880,25 +841,7 @@
 }
 
 @media (max-width: 640px) {
-  .hero-section-title {
-    font-size: 22px;
-  }
-
-  .hero-text {
-    font-size: 12px;
-  }
-
   .kn-search-section {
     max-width: 100%;
   }
 }
-
-.hero-copy.hero-knowledge {
-  text-align: left;
-}
-
-.hero-inner {
-  margin-left: 0;
-}
-
-
