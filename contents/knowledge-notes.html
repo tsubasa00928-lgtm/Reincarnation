@@ -13,10 +13,13 @@
     rel="stylesheet"
   />
 
-  <!-- 共通CSS / このページ専用CSS -->
+  <!-- 共通CSS -->
   <link rel="stylesheet" href="../style.css" />
+
+  <!-- このページ専用CSS -->
   <link rel="stylesheet" href="knowledge-notes.css" />
 </head>
+
 <body class="home-body page-knowledge-notes">
   <!-- ======================
        ヘッダー
@@ -45,9 +48,10 @@
   <main class="site-main">
     <div class="container">
       <div class="scroll-panel">
-        <!-- ======================
-             HERO（世界観＋トップ検索）
-             ====================== -->
+
+        <!-- ===============================
+            HERO（世界観）
+            =============================== -->
         <section class="hero-copy hero-knowledge">
           <div class="hero-inner">
             <div class="hero-heading-block">
@@ -55,137 +59,110 @@
               <div class="hero-section-underline"></div>
               <div class="hero-section-underline second"></div>
             </div>
+
             <p class="hero-text">
-              人生を賢く、したたかに。世の教訓は5つのOSに構造化される。<br />
+              人生を賢く、したたかに。世の教訓は5つのOSに構造化される。<br>
               情報が多すぎる時代に必要なのは、「断片的な知識」ではなく「構造化された知恵」。
             </p>
+          </div>
+        </section>
 
-            <!-- ▼ トップ検索バー（Enterで検索タブに飛ぶ） -->
-            <section class="kn-search-section" aria-label="処世術を検索する">
-              <div class="kn-search-inner">
-                <div class="kn-search-icon">
-                  <svg
-                    class="kn-search-svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <circle cx="11" cy="11" r="6" stroke-width="2" />
-                    <line x1="15.5" y1="15.5" x2="20" y2="20" stroke-width="2" />
-                  </svg>
-                </div>
-                <input
-                  id="kn-search-input-top"
-                  class="kn-search-input"
-                  type="search"
-                  placeholder="キーワードで探す…（例：評価・転職・自信・不安 など）"
-                  autocomplete="off"
-                />
-              </div>
-            </section>
-            <!-- ※ 「処世術OSの全体構造」カードは削除 -->
+        <!-- ===============================
+            HERO 直下の検索バー（新配置）
+            =============================== -->
+        <section class="kn-search-section top-search-under-hero" aria-label="処世術を検索する">
+          <div class="kn-search-inner">
+            <div class="kn-search-icon">
+              <svg
+                class="kn-search-svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="6" stroke-width="2" />
+                <line x1="15.5" y1="15.5" x2="20" y2="20" stroke-width="2" />
+              </svg>
+            </div>
+
+            <input
+              id="kn-search-input-top"
+              class="kn-search-input"
+              type="search"
+              placeholder="キーワードで探す…（例：評価・転職・自信・不安 など）"
+              autocomplete="off"
+            />
           </div>
         </section>
 
         <!-- ======================
-             HERO より下：処世術禄 UI
-             ====================== -->
+            MAIN LAYOUT
+            ====================== -->
         <div class="page-inner">
           <div class="kn-layout">
-            <!-- 左サイドバー（OSタブ＋検索タブ） -->
-            <aside class="kn-sidebar" id="kn-sidebar" aria-label="処世術禄一覧">
+
+            <!-- 左サイドバー（OSタブ） -->
+            <aside id="kn-sidebar" class="kn-sidebar">
               <div class="kn-sidebar-title">処世術OS</div>
 
-              <button class="kn-os-tab is-active" type="button" data-category="all">
-                ≪トップ≫
+              <button class="kn-os-tab is-active" type="button" data-category="all">≪トップ≫</button>
+
+              <button class="kn-os-tab" type="button" data-category="mind">
+                1.心の扱い方<br><span class="kn-os-label">内部OS</span>
               </button>
 
-              <button class="kn-os-tab os-tab-mind" type="button" data-category="mind">
-                <span class="kn-os-tab-main">1.心の扱い方</span><br />
-                <span class="kn-os-label">内部OS</span>
+              <button class="kn-os-tab" type="button" data-category="relation">
+                2.人との関わり方<br><span class="kn-os-label">対人OS</span>
               </button>
 
-              <button class="kn-os-tab os-tab-relation" type="button" data-category="relation">
-                <span class="kn-os-tab-main">2.人との関わり方</span><br />
-                <span class="kn-os-label">対人OS</span>
+              <button class="kn-os-tab" type="button" data-category="work">
+                3.社会での立ち回り<br><span class="kn-os-label">社会OS</span>
               </button>
 
-              <button class="kn-os-tab os-tab-work" type="button" data-category="work">
-                <span class="kn-os-tab-main">3.社会での立ち回り</span><br />
-                <span class="kn-os-label">社会OS</span>
+              <button class="kn-os-tab" type="button" data-category="habit">
+                4.行動・習慣の技術<br><span class="kn-os-label">行動OS</span>
               </button>
 
-              <button class="kn-os-tab os-tab-habit" type="button" data-category="habit">
-                <span class="kn-os-tab-main">4.行動・習慣の技術</span><br />
-                <span class="kn-os-label">行動OS</span>
+              <button class="kn-os-tab" type="button" data-category="future">
+                5.キャッチアップの極意<br><span class="kn-os-label">未来OS</span>
               </button>
 
-              <button class="kn-os-tab os-tab-future" type="button" data-category="future">
-                <span class="kn-os-tab-main">5.キャッチアップの極意</span><br />
-                <span class="kn-os-label">未来OS</span>
-              </button>
-
-              <!-- 「検索」タブ（OS横断検索） -->
-              <button class="kn-os-tab os-tab-search" type="button" data-category="search">
+              <!-- 検索タブ -->
+              <button class="kn-os-tab" type="button" data-category="search">
                 🔍 検索（OS横断）
               </button>
             </aside>
 
-            <!-- メインコンテンツ -->
+            <!-- ======================
+                 メインコンテンツ
+                 ====================== -->
             <section class="kn-main">
-              <!-- スマホ用：サイドバー表示トグル -->
-              <button
-                class="kn-sidebar-toggle"
-                type="button"
-                aria-expanded="false"
-                aria-controls="kn-sidebar"
-              >
-                <span class="kn-sidebar-toggle-icon"></span>
-                <span class="kn-sidebar-toggle-label">処世術OSを選ぶ</span>
-              </button>
 
-              <!-- ▼ トップモード：カードは表示しない（空のセクション） -->
-              <section id="top-mode" class="kn-section" aria-label="処世術禄トップモード">
-                <!-- トップでは処世術カードを表示しない -->
+              <!-- ▼ トップ（カード非表示） -->
+              <section id="top-mode" class="kn-section">
+                <!-- トップ画面では処世術カードを一切表示しない -->
               </section>
 
-              <!-- ▼ OSモード：特定OSを選んだ時の一覧 -->
-              <section
-                id="os-mode"
-                class="kn-section kn-os-mode-section"
-                aria-label="OS別の処世術一覧"
-                hidden
-              >
+              <!-- ▼ OSモード -->
+              <section id="os-mode" class="kn-section" hidden>
                 <div class="kn-results-header">
-                  <h2 class="kn-section-title" id="kn-results-title">処世術カード一覧</h2>
-                  <p id="kn-results-meta" class="kn-results-meta">
-                    サブカテゴリで、OS内のカードを絞り込みます。
-                  </p>
+                  <h2 id="kn-results-title" class="kn-section-title">処世術カード一覧</h2>
+                  <p id="kn-results-meta" class="kn-results-meta"></p>
                 </div>
 
-                <!-- サブカテゴリタブ -->
-                <div id="kn-subcategory-tabs" class="kn-subtabs" aria-label="サブカテゴリで絞り込む">
-                  <!-- JSで生成 -->
-                </div>
+                <!-- サブカテゴリ -->
+                <div id="kn-subcategory-tabs" class="kn-subtabs"></div>
 
-                <!-- カードグリッド -->
-                <div id="kn-results-container" class="kn-card-grid" aria-live="polite">
-                  <!-- JSでカード生成 -->
-                </div>
+                <!-- OS別カード -->
+                <div id="kn-results-container" class="kn-card-grid"></div>
               </section>
 
-              <!-- ▼ 検索モード：「検索」タブ用のOS横断検索 -->
-              <section
-                id="search-mode"
-                class="kn-section kn-search-mode-section"
-                aria-label="OS横断の処世術検索"
-                hidden
-              >
+              <!-- ▼ 検索タブ（OS横断検索） -->
+              <section id="search-mode" class="kn-section" hidden>
                 <div class="kn-results-header">
-                  <h2 class="kn-section-title" id="kn-search-title">処世術 横断検索</h2>
+                  <h2 id="kn-search-title" class="kn-section-title">処世術 横断検索</h2>
                   <p id="kn-search-meta" class="kn-results-meta">
-                    キーワードを入力すると、すべてのOSから該当する処世術カードを表示します。
+                    キーワードを入力すると、OS横断で処世術カードが表示されます。
                   </p>
                 </div>
 
@@ -208,32 +185,29 @@
                       id="kn-search-input"
                       class="kn-search-input"
                       type="search"
-                      placeholder="キーワードで探す…（例：評価・転職・自信・不安 など）"
+                      placeholder="キーワードで探す…"
                       autocomplete="off"
                     />
                   </div>
                 </section>
 
-                <!-- 検索結果（OS横断） -->
-                <div id="kn-search-results" class="kn-card-grid" aria-live="polite">
-                  <!-- JSでカード生成 -->
-                </div>
+                <!-- 検索結果 -->
+                <div id="kn-search-results" class="kn-card-grid"></div>
               </section>
             </section>
-          </div>
-        </div>
-      </div>
-    </div>
+          </div><!-- kn-layout -->
+        </div><!-- page-inner -->
+      </div><!-- scroll-panel -->
+    </div><!-- container -->
   </main>
 
-  <!-- ========== フッター ========== -->
   <footer class="site-footer">
     <div class="container footer-inner">
       <p class="footer-copy">© 人生二周目録</p>
     </div>
   </footer>
 
-  <!-- 共通JS ＋ このページ専用JS -->
+  <!-- JS -->
   <script src="../main.js" defer></script>
   <script src="knowledge-notes.js" defer></script>
 </body>
