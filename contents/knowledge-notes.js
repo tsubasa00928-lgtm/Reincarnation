@@ -179,6 +179,10 @@
   // 検索タブ内の入力
   const searchInput = document.getElementById("kn-search-input");
 
+  // トップ専用検索バー（≪トップ≫タブ用）
+  const topSearchSection = document.querySelector(".top-search-under-hero");
+  const topSearchInput = document.getElementById("kn-search-input-top");
+
   // トップ専用「この体系書でできること」セクション
   const topCapabilitiesSection = document.getElementById("kn-top-capabilities");
 
@@ -242,7 +246,7 @@
       });
     }
 
-    // 検索バー（検索タブ専用）
+    // 検索タブ専用検索バー
     if (searchInput) {
       searchInput.addEventListener("input", () => {
         state.search = searchInput.value.trim();
@@ -251,6 +255,22 @@
         } else {
           refreshCurrentView();
         }
+      });
+    }
+
+    // トップ検索バー：Enterで検索タブに遷移
+    if (topSearchInput) {
+      topSearchInput.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter") return;
+        const keyword = topSearchInput.value.trim();
+        if (!keyword) return;
+
+        // 検索タブ側にもキーワードを反映
+        if (searchInput) {
+          searchInput.value = keyword;
+        }
+        state.search = keyword;
+        setActiveCategory("search");
       });
     }
 
@@ -382,6 +402,7 @@
     if (searchModeSection) searchModeSection.hidden = true;
     if (osStructureSection) osStructureSection.style.display = "";
     if (topCapabilitiesSection) topCapabilitiesSection.hidden = false;
+    if (topSearchSection) topSearchSection.hidden = false;
   }
 
   function showOsMode() {
@@ -390,6 +411,7 @@
     if (searchModeSection) searchModeSection.hidden = true;
     if (osStructureSection) osStructureSection.style.display = "none";
     if (topCapabilitiesSection) topCapabilitiesSection.hidden = true;
+    if (topSearchSection) topSearchSection.hidden = true;
   }
 
   function showSearchMode() {
@@ -398,6 +420,7 @@
     if (searchModeSection) searchModeSection.hidden = false;
     if (osStructureSection) osStructureSection.style.display = "none";
     if (topCapabilitiesSection) topCapabilitiesSection.hidden = true;
+    if (topSearchSection) topSearchSection.hidden = true;
   }
 
   // ============================================================
