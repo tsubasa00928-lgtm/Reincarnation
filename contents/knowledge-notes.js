@@ -1,740 +1,907 @@
-// knowledge-notes.js
-// 処世術禄：トップモード / OSモード / 横断検索 / 今日の処世術 / お気に入り / いいね
+/* =============================================================
+   ページ全体
+   ============================================================= */
 
-(function () {
-  "use strict";
+.page-knowledge-notes {
+  background: radial-gradient(circle at 0% 0%, #e0f2f1 0, #f9fafb 40%, #f9fafb 100%);
+  color: #0f172a;
+  font-family: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
 
-  // ============================================================
-  // カテゴリ設定（JSON一元管理前提）
-  // ============================================================
-  const categoryConfigs = {
-    mind: {
-      id: "mind",
-      jsonPath: "data/shoseijutsu/mind.json",
-      label: "心の扱い方（内部OS）",
-      icon: "🧠"
-    },
-    relation: {
-      id: "relation",
-      jsonPath: "data/shoseijutsu/relation.json",
-      label: "人との関わり方（対人OS）",
-      icon: "🤝"
-    },
-    work: {
-      id: "work",
-      jsonPath: "data/shoseijutsu/work.json",
-      label: "社会での立ち回り（社会OS）",
-      icon: "🏢"
-    },
-    habit: {
-      id: "habit",
-      jsonPath: "data/shoseijutsu/habit.json",
-      label: "行動・習慣の技術（行動OS）",
-      icon: "⚙️"
-    },
-    future: {
-      id: "future",
-      jsonPath: "data/shoseijutsu/future.json",
-      label: "キャッチアップの極意（未来OS）",
-      icon: "📡"
-    }
-  };
+/* グローバル .container をフル幅寄りに調整 */
+.page-knowledge-notes .container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
 
-  // OSごとのサブカテゴリ（UI表示用）
-  const subCategoryOptions = {
-    mind: [
-      { id: "all", label: "すべて" },
-      { id: "emotion", label: "感情" },
-      { id: "thought", label: "思考" },
-      { id: "self", label: "自己イメージ" },
-      { id: "stress", label: "ストレス" },
-      { id: "other", label: "その他" }
-    ],
-    relation: [
-      { id: "all", label: "すべて" },
-      { id: "close", label: "家族・恋人" },
-      { id: "middle", label: "友人・同僚" },
-      { id: "boss", label: "上司・組織" },
-      { id: "boundary", label: "境界線" },
-      { id: "other", label: "その他" }
-    ],
-    work: [
-      { id: "all", label: "すべて" },
-      { id: "evaluation", label: "評価" },
-      { id: "safety", label: "安全保障" },
-      { id: "negotiation", label: "交渉" },
-      { id: "context", label: "環境理解" },
-      { id: "other", label: "その他" }
-    ],
-    habit: [
-      { id: "all", label: "すべて" },
-      { id: "routine", label: "ルーティン" },
-      { id: "productivity", label: "生産性" },
-      { id: "health", label: "健康" },
-      { id: "mindset", label: "マインドセット" },
-      { id: "other", label: "その他" }
-    ],
-    future: [
-      { id: "all", label: "すべて" },
-      { id: "info", label: "情報収集" },
-      { id: "learning", label: "学習" },
-      { id: "ai", label: "AI活用" },
-      { id: "strategy", label: "キャリア戦略" },
-      { id: "other", label: "その他" }
-    ]
-  };
+.page-knowledge-notes .site-main {
+  padding-top: 16px;
+  padding-bottom: 80px;
+  background: transparent;
+}
 
-  // ============================================================
-  // 状態管理
-  // ============================================================
-  const state = {
-    loaded: false,
-    // トピック:
-    // { title, summary, tags, essence, traps, actionTips,
-    //   _category, _subCategory, _cardId, _globalId }
-    topics: [],
-    activeCategory: "all", // "all" はトップ or 横断検索
-    search: "",
-    activeSubCategory: {
-      mind: "all",
-      relation: "all",
-      work: "all",
-      habit: "all",
-      future: "all"
-    }
-  };
+/* コンテンツラッパ（パネル自体は中央寄せ・横幅を決める） */
+.page-inner {
+  max-width: 1100px;
+  margin: 16px auto 0;
+  padding: 0 16px 24px;
+}
 
-  // ユーザー別の永続データ（localStorage）
-  const STORAGE_KEY = "shoseijutsu_user_v1";
+/* =============================================================
+   スクロールパネル（OS感・円弧レイヤー）
+   ============================================================= */
 
-  let userData = {
-    favorites: [], // [globalId, ...]
-    likes: {}, // { [globalId]: number }
-    history: [] // 最近開いたカード [globalId, ...]
-  };
+.scroll-panel {
+  position: relative;
+  border-radius: 24px;
+  padding: 20px 20px 28px;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 118, 110, 0.06),
+    rgba(240, 253, 250, 0.9)
+  );
+  box-shadow:
+    0 24px 60px rgba(15, 118, 110, 0.25),
+    0 0 0 1px rgba(15, 118, 110, 0.08);
+  overflow: hidden;
+}
 
-  function loadUserData() {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw);
-      if (parsed && typeof parsed === "object") {
-        userData = {
-          favorites: Array.isArray(parsed.favorites) ? parsed.favorites : [],
-          likes: parsed.likes && typeof parsed.likes === "object" ? parsed.likes : {},
-          history: Array.isArray(parsed.history) ? parsed.history : []
-        };
-      }
-    } catch (e) {
-      console.warn("Failed to load user data", e);
-    }
-  }
+.scroll-panel::before,
+.scroll-panel::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  opacity: 0.4;
+}
 
-  function saveUserData() {
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
-    } catch (e) {
-      console.warn("Failed to save user data", e);
-    }
-  }
+.scroll-panel::before {
+  width: 220%;
+  height: 220%;
+  top: -60%;
+  left: -40%;
+  transform: rotate(4deg);
+}
 
-  function isFavorite(globalId) {
-    return userData.favorites.includes(globalId);
-  }
+.scroll-panel::after {
+  width: 180%;
+  height: 180%;
+  top: -40%;
+  left: -30%;
+  transform: rotate(-6deg);
+  border-color: rgba(56, 189, 248, 0.25);
+}
 
-  function toggleFavorite(globalId) {
-    if (!globalId) return;
-    if (isFavorite(globalId)) {
-      userData.favorites = userData.favorites.filter((id) => id !== globalId);
-    } else {
-      userData.favorites.push(globalId);
-    }
-    saveUserData();
-  }
+/* 中身は通常レイヤー */
+.scroll-panel > * {
+  position: relative;
+  z-index: 1;
+}
 
-  function getLikeCount(globalId) {
-    if (!globalId) return 0;
-    return userData.likes[globalId] || 0;
-  }
+/* =============================================================
+   HERO
+   ============================================================= */
 
-  function incrementLike(globalId) {
-    if (!globalId) return;
-    const current = userData.likes[globalId] || 0;
-    userData.likes[globalId] = current + 1;
-    saveUserData();
-  }
+.hero-copy.hero-knowledge {
+  margin-bottom: 4px;
+}
 
-  function pushHistory(globalId) {
-    if (!globalId) return;
-    userData.history = [globalId]
-      .concat(userData.history.filter((id) => id !== globalId))
-      .slice(0, 30);
-    saveUserData();
-  }
+.hero-inner {
+  max-width: 720px; /* 左寄せだが、行長は揃える */
+}
 
-  // ============================================================
-  // DOM参照
-  // ============================================================
-  const sidebarEl = document.getElementById("kn-sidebar");
-  const sidebarToggleBtn = document.querySelector(".kn-sidebar-toggle");
-  const osTabButtons = sidebarEl ? sidebarEl.querySelectorAll(".kn-os-tab") : [];
+.hero-section-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #022c22;
+  margin: 0 0 4px;
+}
 
-  const searchInput = document.getElementById("kn-search-input");
+.hero-section-underline {
+  width: 140px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22c55e, #0ea5e9);
+  margin-bottom: 3px;
+}
 
-  const topModeSection = document.getElementById("top-mode");
-  const osModeSection = document.getElementById("os-mode");
-  const osStructureSection = document.querySelector(".kn-os-structure-section");
+.hero-section-underline.second {
+  width: 110px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(34, 197, 94, 0.7),
+    rgba(56, 189, 248, 0.6)
+  );
+}
 
-  const todayCardContainer = document.getElementById("kn-today-card");
-  const todayRefreshBtn = document.getElementById("kn-today-refresh");
+.hero-text {
+  margin: 8px 0 14px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #1f2933;
+}
 
-  const shortcutButtons = document.querySelectorAll(".kn-shortcut");
+/* =============================================================
+   レイアウト：左サイドバー + メイン
+   ============================================================= */
 
-  const resultsContainer = document.getElementById("kn-results-container");
-  const resultsMetaEl = document.getElementById("kn-results-meta");
-  const resultsTitleEl = document.getElementById("kn-results-title");
-  const subTabsContainer = document.getElementById("kn-subcategory-tabs");
+.kn-layout {
+  display: flex;
+  gap: 24px;
+  margin-top: 12px;
+  align-items: flex-start;
+}
 
-  // ============================================================
-  // 初期化
-  // ============================================================
-  function init() {
-    loadUserData();
-    attachEventListeners();
-    fetchAllTopics()
-      .then(() => {
-        state.loaded = true;
-        renderInitialView();
-      })
-      .catch((err) => {
-        console.error("処世術カードの読み込みに失敗しました", err);
-        if (todayCardContainer) {
-          todayCardContainer.innerHTML =
-            '<p class="kn-loading-text">カードの読み込みに失敗しました。</p>';
-        }
-      });
-  }
+/* 左サイドバー */
+.kn-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: rgba(236, 253, 245, 0.8);
+  border-radius: 18px;
+  padding: 8px 10px 12px;
+  box-shadow:
+    0 18px 38px rgba(16, 185, 129, 0.28),
+    0 0 0 1px rgba(34, 197, 94, 0.25);
+  backdrop-filter: blur(6px);
+}
 
-  function attachEventListeners() {
-    // サイドバータブ
-    osTabButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const category = btn.getAttribute("data-category") || "all";
-        setActiveCategory(category);
-      });
-    });
+.kn-sidebar-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #047857;
+  margin-bottom: 6px;
+}
 
-    // サイドバー（スマホ）トグル
-    if (sidebarToggleBtn && sidebarEl) {
-      sidebarToggleBtn.addEventListener("click", () => {
-        const expanded = sidebarToggleBtn.getAttribute("aria-expanded") === "true";
-        const newState = !expanded;
-        sidebarToggleBtn.setAttribute("aria-expanded", String(newState));
-        sidebarEl.classList.toggle("is-open", newState);
-      });
-    }
+/* OSタブボタン */
+.kn-os-tab {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.6);
+  color: #064e3b;
+  font-size: 11px;
+  line-height: 1.5;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.12s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
+  white-space: normal;
+}
 
-    // 横断OS検索バー
-    if (searchInput) {
-      searchInput.addEventListener("input", () => {
-        state.search = searchInput.value.trim();
-        refreshCurrentView();
-      });
-    }
+.kn-os-tab:hover {
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.32);
+  color: #065f46;
+}
 
-    // ショートカット
-    shortcutButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const keyword = btn.getAttribute("data-keyword") || "";
-        if (searchInput) {
-          searchInput.value = keyword;
-          state.search = keyword;
-        }
-        // ショートカット → そのまま横断検索モードへ
-        setActiveCategory("all");
-        refreshCurrentView();
-      });
-    });
+.kn-os-tab.is-active {
+  background: #059669;
+  border-color: #059669;
+  color: #ecfdf5;
+  box-shadow: 0 14px 30px rgba(5, 150, 105, 0.7);
+}
 
-    // 今日の処世術 更新
-    if (todayRefreshBtn) {
-      todayRefreshBtn.addEventListener("click", () => {
-        renderTodayCard(true);
-      });
-    }
-  }
+.kn-os-tab-main {
+  font-weight: 600;
+}
 
-  // ============================================================
-  // データ読み込み
-  // ============================================================
-  function fetchAllTopics() {
-    const entries = Object.entries(categoryConfigs);
-    const promises = entries.map(([categoryId, cfg]) =>
-      fetch(cfg.jsonPath)
-        .then((res) => {
-          if (!res.ok) throw new Error(`${cfg.jsonPath} 読み込みエラー`);
-          return res.json();
-        })
-        .then((list) => {
-          if (!Array.isArray(list)) {
-            console.warn("JSON format unexpected for", cfg.jsonPath);
-            return [];
-          }
-          return list.map((item, index) => normalizeTopic(item, categoryId, index));
-        })
-        .catch((err) => {
-          console.warn("カテゴリ読み込み失敗:", categoryId, err);
-          return [];
-        })
+.kn-os-label {
+  display: inline-block;
+  margin-top: 0;
+  font-size: 10px;
+  opacity: 0.9;
+}
+
+/* OSごとのタブカラーのニュアンス */
+.os-tab-top {
+  border-left: 3px solid #a7f3d0;
+}
+.os-tab-mind {
+  border-left: 3px solid #a7f3d0;
+}
+.os-tab-relation {
+  border-left: 3px solid #bfdbfe;
+}
+.os-tab-work {
+  border-left: 3px solid #ddd6fe;
+}
+.os-tab-habit {
+  border-left: 3px solid #fef9c3;
+}
+.os-tab-future {
+  border-left: 3px solid #fed7d7;
+}
+
+/* サイドバー内：横断OS検索ブロック */
+.kn-cross-search {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(16, 185, 129, 0.4);
+}
+
+.kn-cross-search-title {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #047857;
+}
+
+.kn-cross-search-hint {
+  margin: 0 0 6px;
+  font-size: 11px;
+  color: #065f46;
+}
+
+/* HERO内ではなく、サイドバー下の検索バー */
+.kn-search-section {
+  margin-top: 4px;
+}
+
+.kn-search-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #a7f3d0;
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.22);
+}
+
+.kn-search-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.kn-search-svg {
+  width: 100%;
+  height: 100%;
+  stroke: #6b7280;
+}
+
+.kn-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #111827;
+  font-size: 13px;
+  outline: none;
+}
+
+.kn-search-input::placeholder {
+  color: #9ca3af;
+}
+
+/* メイン側 */
+.kn-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* スマホ用：OSカテゴリ折りたたみトグル */
+.kn-sidebar-toggle {
+  display: none; /* PCでは非表示 */
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 197, 94, 0.7);
+  background: rgba(236, 253, 245, 0.95);
+  color: #064e3b;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.2);
+}
+
+.kn-sidebar-toggle-icon {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(34, 197, 94, 0.8);
+  position: relative;
+}
+
+.kn-sidebar-toggle-icon::before,
+.kn-sidebar-toggle-icon::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  height: 1px;
+  background: #047857;
+}
+
+.kn-sidebar-toggle-icon::before {
+  top: 4px;
+}
+
+.kn-sidebar-toggle-icon::after {
+  bottom: 4px;
+}
+
+.kn-sidebar-toggle-label {
+  letter-spacing: 0.08em;
+}
+
+.kn-sidebar-toggle[aria-expanded="true"] {
+  border-color: #22c55e;
+  box-shadow:
+    0 0 0 1px rgba(34, 197, 94, 0.35),
+    0 10px 24px rgba(16, 185, 129, 0.4);
+}
+
+/* =============================================================
+   共通セクション
+   ============================================================= */
+
+.kn-section {
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  padding: 10px 0 14px;
+  margin-bottom: 4px;
+  box-shadow: none;
+}
+
+.kn-section-header {
+  margin-bottom: 8px;
+}
+
+.kn-section-title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #064e3b;
+  margin: 0 0 3px;
+}
+
+.kn-section-subtitle {
+  font-size: 12px;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* =============================================================
+   トップ用 2カラムレイアウト
+   ============================================================= */
+
+.kn-top-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
+  gap: 20px;
+  align-items: flex-start;
+  margin-top: 4px;
+}
+
+.kn-top-left {
+  width: 100%;
+}
+
+.kn-top-left-inner {
+  max-width: 640px;
+}
+
+.kn-top-right {
+  width: 100%;
+}
+
+/* =============================================================
+   トップモード：ショートカット
+   ============================================================= */
+
+.kn-shortcuts-header {
+  margin-bottom: 6px;
+}
+
+.kn-shortcut-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.kn-shortcut {
+  border-radius: 999px;
+  border: none;
+  background: #ecfdf5;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #065f46;
+  cursor: pointer;
+  transition:
+    background 0.16s ease,
+    transform 0.12s ease,
+    box-shadow 0.16s ease;
+  white-space: nowrap;
+}
+
+.kn-shortcut:hover {
+  background: #bbf7d0;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.35);
+}
+
+/* =============================================================
+   トップモード：今日の処世術
+   ============================================================= */
+
+.kn-today-card-container {
+  margin-top: 4px;
+}
+
+.kn-loading-text {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.kn-today-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.kn-today-refresh-btn {
+  border-radius: 999px;
+  border: 1px solid #34d399;
+  background: #ecfdf5;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #047857;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 6px 12px rgba(16, 185, 129, 0.28);
+  transition:
+    background 0.16s ease,
+    transform 0.12s ease,
+    box-shadow 0.16s ease;
+}
+
+.kn-today-refresh-btn:hover {
+  background: #bbf7d0;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* =============================================================
+   右カラム：OS構造カード
+   ============================================================= */
+
+.kn-os-structure-card {
+  background: #ecfdf5;
+  border-radius: 18px;
+  border: 1px solid #a7f3d0;
+  padding: 14px 16px;
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.25);
+}
+
+.kn-os-structure-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #047857;
+}
+
+.kn-os-structure-lead {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #065f46;
+}
+
+.kn-os-structure-list {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kn-os-structure-list li {
+  font-size: 12px;
+  color: #064e3b;
+}
+
+.kn-os-pill {
+  display: inline-block;
+  margin-bottom: 2px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #d1fae5;
+  font-size: 11px;
+  font-weight: 600;
+  color: #047857;
+}
+
+.kn-os-structure-text {
+  display: block;
+  margin-left: 2px;
+}
+
+.kn-os-structure-footer {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: #047857;
+}
+
+/* =============================================================
+   OSモード：検索結果
+   ============================================================= */
+
+.kn-results-header {
+  margin-bottom: 6px;
+}
+
+.kn-results-meta {
+  font-size: 11px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* サブカテゴリタブ */
+.kn-subtabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 10px;
+}
+
+.kn-subtab {
+  border-radius: 999px;
+  border: 1px solid #a7f3d0;
+  background: #f0fdf4;
+  padding: 3px 10px;
+  font-size: 11px;
+  color: #065f46;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.16s ease,
+    color 0.16s ease,
+    border-color 0.16s ease,
+    box-shadow 0.18s ease,
+    transform 0.1s ease;
+}
+
+.kn-subtab:hover {
+  background: #bbf7d0;
+  border-color: #34d399;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+  transform: translateY(-1px);
+}
+
+.kn-subtab.is-active {
+  background: #047857;
+  border-color: #047857;
+  color: #ecfdf5;
+  box-shadow: 0 6px 14px rgba(5, 150, 105, 0.4);
+}
+
+/* カードグリッド：PCは2列、スマホは1列 */
+.kn-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
+}
+
+/* =============================================================
+   処世術カード（OS帯＋OS感デザイン）
+   ============================================================= */
+
+.shosei-card {
+  position: relative;
+  width: 100%;
+  border-radius: 16px;
+  padding: 10px 12px 10px;
+  cursor: pointer;
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+/* OSカラーバンド */
+.shosei-os-band {
+  height: 6px;
+  border-radius: 999px;
+  margin: -2px -2px 8px;
+  background: #e5e7eb;
+}
+
+.os-mind .shosei-os-band {
+  background: linear-gradient(90deg, #a7f3d0, #4ade80);
+}
+.os-relation .shosei-os-band {
+  background: linear-gradient(90deg, #bfdbfe, #60a5fa);
+}
+.os-work .shosei-os-band {
+  background: linear-gradient(90deg, #ddd6fe, #a855f7);
+}
+.os-habit .shosei-os-band {
+  background: linear-gradient(90deg, #fef9c3, #facc15);
+}
+.os-future .shosei-os-band {
+  background: linear-gradient(90deg, #fed7d7, #fb7185);
+}
+
+/* 今日の処世術カードは少し強め */
+.shosei-card.is-today {
+  border-color: rgba(251, 191, 36, 0.9);
+  box-shadow: 0 18px 40px rgba(180, 83, 9, 0.35);
+}
+
+/* ホバー */
+.shosei-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.18);
+  border-color: rgba(148, 163, 184, 0.9);
+}
+
+/* タイトル・本文 */
+.shosei-title {
+  margin: 0 0 3px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.shosei-title-icon {
+  font-size: 14px;
+}
+
+.shosei-summary {
+  margin: 0 0 4px;
+  font-size: 11px;
+  color: #4b5563;
+}
+
+/* ID & コントロール行 */
+.shosei-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.shosei-id {
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+.shosei-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* お気に入り・いいねボタン */
+.shosei-ctrl-btn {
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  padding: 1px 6px;
+  font-size: 10px;
+  color: #6b7280;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    box-shadow 0.18s ease,
+    transform 0.1s ease;
+}
+
+.shosei-ctrl-btn:hover {
+  background: #fef3c7;
+  border-color: #facc15;
+  color: #92400e;
+  box-shadow: 0 4px 10px rgba(251, 191, 36, 0.35);
+  transform: translateY(-1px);
+}
+
+.shosei-fav-btn.is-active {
+  background: #fef9c3;
+  border-color: #facc15;
+  color: #92400e;
+}
+
+.shosei-like-btn-count {
+  font-variant-numeric: tabular-nums;
+}
+
+/* タグ */
+.shosei-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(45, 212, 191, 0.9);
+  background: #ecfeff;
+  padding: 2px 7px;
+  font-size: 10px;
+  color: #0f766e;
+}
+
+.tag-chip-category {
+  border-color: rgba(129, 140, 248, 0.95);
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+/* 詳細アコーディオン */
+.shosei-detail {
+  display: none;
+  margin-top: 5px;
+}
+
+.shosei-card.is-open .shosei-detail {
+  display: block;
+}
+
+.shosei-detail-inner {
+  padding: 7px 9px 9px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background:
+    radial-gradient(circle at 0 0, rgba(249, 250, 251, 0.96), transparent 55%),
+    repeating-linear-gradient(
+      135deg,
+      #f9fafb 0px,
+      #f9fafb 2px,
+      #e5e7eb 2px,
+      #e5e7eb 4px
     );
+}
 
-    return Promise.all(promises).then((results) => {
-      const merged = [];
-      results.forEach((arr) => merged.push(...arr));
-      state.topics = merged;
-    });
+.detail-block {
+  margin-bottom: 6px;
+}
+
+.detail-title {
+  margin: 0 0 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #0369a1;
+  letter-spacing: 0.06em;
+}
+
+.detail-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 11px;
+  color: #374151;
+}
+
+.detail-list li {
+  margin-bottom: 2px;
+}
+
+/* =============================================================
+   フッター
+   ============================================================= */
+
+.page-footer,
+.footer-inner,
+.footer-copy {
+  font-size: 11px;
+}
+
+/* =============================================================
+   アニメーション
+   ============================================================= */
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fade-up 0.4s ease forwards;
+}
+
+/* =============================================================
+   レスポンシブ調整
+   ============================================================= */
+
+@media (max-width: 900px) {
+  .scroll-panel {
+    padding: 14px 12px 22px;
   }
 
-  function normalizeTopic(raw, categoryId, index) {
-    const safeTitle = raw.title || raw.name || "タイトル未設定";
-    const safeSummary = raw.summary || raw.description || "";
-    const tags = Array.isArray(raw.tags) ? raw.tags : raw.tags ? [raw.tags] : [];
-    const essence = raw.essence || raw.core || "";
-    const traps = raw.traps || raw.troubles || raw.pitfalls || "";
-    const actionTips = raw.actionTips || raw.actions || raw.howto || "";
-
-    const subCatRaw = raw.subCategory || raw.subcategory || raw.area || "other";
-
-    const globalId = `${categoryId}-${index + 1}`;
-
-    return {
-      title: safeTitle,
-      summary: safeSummary,
-      tags,
-      essence,
-      traps,
-      actionTips,
-      _category: categoryId,
-      _subCategory: subCatRaw,
-      _cardId: index + 1,
-      _globalId: globalId
-    };
+  .kn-layout {
+    flex-direction: column;
   }
 
-  // ============================================================
-  // 表示切り替え
-  // ============================================================
-  function setActiveCategory(category) {
-    state.activeCategory = category || "all";
-
-    // OSタブの見た目
-    osTabButtons.forEach((btn) => {
-      const cat = btn.getAttribute("data-category") || "";
-      btn.classList.toggle("is-active", cat === state.activeCategory);
-    });
-
-    refreshCurrentView();
+  .kn-sidebar {
+    width: 100%;
+    display: none; /* トグルで開く */
   }
 
-  function renderInitialView() {
-    // 初期はトップモード（検索値は空）
-    setActiveCategory("all");
-    renderTodayCard(false);
+  .kn-sidebar.is-open {
+    display: block;
   }
 
-  function refreshCurrentView() {
-    const hasKeyword = !!state.search;
-
-    if (!hasKeyword && state.activeCategory === "all") {
-      // 完全なトップモード
-      showTopMode();
-      renderTodayCard(false);
-    } else {
-      // 横断検索 or OS別一覧
-      showOsMode();
-      renderResults();
-    }
+  .kn-sidebar-toggle {
+    display: inline-flex;
   }
 
-  function showTopMode() {
-    if (topModeSection) topModeSection.hidden = false;
-    if (osModeSection) osModeSection.hidden = true;
-    if (osStructureSection) osStructureSection.style.display = "";
+  .kn-top-shell {
+    display: block;
   }
 
-  function showOsMode() {
-    if (topModeSection) topModeSection.hidden = true;
-    if (osModeSection) osModeSection.hidden = false;
-    if (osStructureSection) osStructureSection.style.display = "none";
+  .kn-top-left-inner {
+    max-width: none;
   }
 
-  // ============================================================
-  // 今日の処世術
-  // ============================================================
-  function renderTodayCard() {
-    if (!todayCardContainer || !state.topics.length) return;
-
-    todayCardContainer.innerHTML = "";
-
-    const candidates = state.topics;
-    if (!candidates.length) {
-      todayCardContainer.innerHTML =
-        '<p class="kn-loading-text">カードがまだ登録されていません。</p>';
-      return;
-    }
-
-    const randomIndex = Math.floor(Math.random() * candidates.length);
-    const topic = candidates[randomIndex];
-
-    const card = createShoseiCard(topic, { compact: true });
-    card.classList.add("is-today");
-
-    // カテゴリラベル（OS名）をタグ先頭に
-    const catLabel = document.createElement("span");
-    catLabel.className = "tag-chip tag-chip-category";
-    const categoryLabel = categoryConfigs[topic._category]
-      ? categoryConfigs[topic._category].label
-      : "不明カテゴリ";
-    catLabel.textContent = categoryLabel;
-
-    const tagsWrap = card.querySelector(".shosei-tags");
-    if (tagsWrap) {
-      tagsWrap.insertBefore(catLabel, tagsWrap.firstChild);
-    }
-
-    todayCardContainer.appendChild(card);
+  .kn-top-right {
+    margin-top: 8px;
   }
 
-  // ============================================================
-  // 検索結果のレンダリング
-  // ============================================================
-  function renderResults() {
-    if (!resultsContainer || !state.topics.length) return;
+  .kn-card-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 
-    const catId = state.activeCategory; // "all" or mind / relation ...
-    const hasKeyword = !!state.search;
-
-    // タイトル
-    if (resultsTitleEl) {
-      if (catId === "all") {
-        resultsTitleEl.textContent = hasKeyword
-          ? "横断OS検索の結果"
-          : "処世術カード一覧";
-      } else {
-        const cfg = categoryConfigs[catId];
-        resultsTitleEl.textContent = cfg
-          ? `${cfg.label} の処世術一覧`
-          : "処世術カード一覧";
-      }
-    }
-
-    // サブカテゴリタブ（OS選択時のみ）
-    if (catId === "all") {
-      if (subTabsContainer) subTabsContainer.innerHTML = "";
-    } else {
-      renderSubCategoryTabs(catId);
-    }
-
-    // フィルタリング
-    let filtered = state.topics.slice();
-
-    // OS 絞り込み
-    if (catId !== "all") {
-      filtered = filtered.filter((t) => t._category === catId);
-    }
-
-    // サブカテゴリ（OS指定時のみ）
-    if (catId !== "all") {
-      const subActive = state.activeSubCategory[catId] || "all";
-      if (subActive !== "all") {
-        filtered = filtered.filter((t) => {
-          const sc = (t._subCategory || "").toString().toLowerCase();
-          return sc === subActive.toLowerCase();
-        });
-      }
-    }
-
-    // キーワードは常に「横断OS」で適用
-    const keyword = (state.search || "").toLowerCase();
-    if (keyword) {
-      filtered = filtered.filter((t) => {
-        const joined = [
-          t.title,
-          t.summary,
-          t.essence,
-          t.traps,
-          t.actionTips,
-          (t.tags || []).join(" ")
-        ]
-          .join(" ")
-          .toLowerCase();
-        return joined.includes(keyword);
-      });
-    }
-
-    // メタ
-    if (resultsMetaEl) {
-      const count = filtered.length;
-      const parts = [];
-
-      if (keyword) {
-        parts.push(`「${state.search}」で横断検索中`);
-      }
-
-      if (catId !== "all") {
-        const cfg = categoryConfigs[catId];
-        if (cfg) parts.push(`OS：${cfg.label}`);
-        const subActive = state.activeSubCategory[catId] || "all";
-        if (subActive !== "all" && subCategoryOptions[catId]) {
-          const subLabel =
-            (subCategoryOptions[catId].find((o) => o.id === subActive) || {})
-              .label || "その他";
-          parts.push(`サブカテゴリ：${subLabel}`);
-        }
-      }
-
-      parts.push(`件数：${count} 件`);
-      resultsMetaEl.textContent = parts.join(" / ");
-    }
-
-    // 表示
-    resultsContainer.innerHTML = "";
-    if (!filtered.length) {
-      const p = document.createElement("p");
-      p.className = "kn-loading-text";
-      p.textContent = "条件に合う処世術カードが見つかりませんでした。";
-      resultsContainer.appendChild(p);
-      return;
-    }
-
-    filtered.forEach((topic) => {
-      const card = createShoseiCard(topic);
-      card.classList.add("fade-up");
-      resultsContainer.appendChild(card);
-    });
+@media (max-width: 640px) {
+  .hero-section-title {
+    font-size: 22px;
   }
 
-  function renderSubCategoryTabs(catId) {
-    if (!subTabsContainer) return;
-    subTabsContainer.innerHTML = "";
-
-    const options = subCategoryOptions[catId];
-    if (!options || !options.length) return;
-
-    const activeId = state.activeSubCategory[catId] || "all";
-
-    options.forEach((opt) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "kn-subtab";
-      if (opt.id === activeId) {
-        btn.classList.add("is-active");
-      }
-      btn.textContent = opt.label;
-      btn.addEventListener("click", () => {
-        state.activeSubCategory[catId] = opt.id;
-        renderResults();
-      });
-      subTabsContainer.appendChild(btn);
-    });
+  .hero-text {
+    font-size: 12px;
   }
 
-  // ============================================================
-  // カード生成
-  // ============================================================
-  function createShoseiCard(topic, options) {
-    const opts = options || {};
-    const catId = topic._category || "other";
-    const cfg = categoryConfigs[catId];
-
-    const card = document.createElement("article");
-    card.className = "shosei-card";
-    card.dataset.globalId = topic._globalId || "";
-
-    // OSクラス
-    card.classList.add(`os-${catId}`);
-    if (opts.compact) {
-      card.classList.add("shosei-card--compact");
-    }
-
-    // OS帯
-    const band = document.createElement("div");
-    band.className = "shosei-os-band";
-    card.appendChild(band);
-
-    // タイトル
-    const titleEl = document.createElement("h3");
-    titleEl.className = "shosei-title";
-
-    if (cfg && cfg.icon) {
-      const iconSpan = document.createElement("span");
-      iconSpan.className = "shosei-title-icon";
-      iconSpan.textContent = cfg.icon;
-      titleEl.appendChild(iconSpan);
-    }
-
-    const titleTextNode = document.createElement("span");
-    titleTextNode.textContent = topic.title || "タイトル未設定";
-    titleEl.appendChild(titleTextNode);
-
-    card.appendChild(titleEl);
-
-    // サマリー
-    if (topic.summary) {
-      const summaryEl = document.createElement("p");
-      summaryEl.className = "shosei-summary";
-      summaryEl.textContent = topic.summary;
-      card.appendChild(summaryEl);
-    }
-
-    // ▼ ID + お気に入り / いいね 行
-    const metaRow = document.createElement("div");
-    metaRow.className = "shosei-meta-row";
-
-    const idSpan = document.createElement("span");
-    idSpan.className = "shosei-id";
-    idSpan.textContent = topic._globalId || "";
-
-    const controls = document.createElement("div");
-    controls.className = "shosei-controls";
-
-    const favBtn = document.createElement("button");
-    favBtn.type = "button";
-    favBtn.className = "shosei-ctrl-btn shosei-fav-btn";
-    favBtn.setAttribute("aria-label", "この処世術をお気に入りに追加");
-    favBtn.textContent = "★";
-
-    if (isFavorite(topic._globalId)) {
-      favBtn.classList.add("is-active");
-    }
-
-    favBtn.addEventListener("click", (event) => {
-      event.stopPropagation(); // カードの開閉とは独立
-      toggleFavorite(topic._globalId);
-
-      if (isFavorite(topic._globalId)) {
-        favBtn.classList.add("is-active");
-      } else {
-        favBtn.classList.remove("is-active");
-      }
-    });
-
-    const likeBtn = document.createElement("button");
-    likeBtn.type = "button";
-    likeBtn.className = "shosei-ctrl-btn shosei-like-btn";
-    likeBtn.setAttribute("aria-label", "この処世術にいいね");
-
-    const likeIconSpan = document.createElement("span");
-    likeIconSpan.textContent = "♥";
-
-    const likeCountSpan = document.createElement("span");
-    likeCountSpan.className = "shosei-like-btn-count";
-    likeCountSpan.textContent = String(getLikeCount(topic._globalId));
-
-    likeBtn.appendChild(likeIconSpan);
-    likeBtn.appendChild(likeCountSpan);
-
-    likeBtn.addEventListener("click", (event) => {
-      event.stopPropagation();
-      incrementLike(topic._globalId);
-      likeCountSpan.textContent = String(getLikeCount(topic._globalId));
-    });
-
-    controls.appendChild(favBtn);
-    controls.appendChild(likeBtn);
-
-    metaRow.appendChild(idSpan);
-    metaRow.appendChild(controls);
-    card.appendChild(metaRow);
-
-    // タグ
-    const tagsWrap = document.createElement("div");
-    tagsWrap.className = "shosei-tags";
-    if (Array.isArray(topic.tags)) {
-      topic.tags.forEach((tag) => {
-        const chip = document.createElement("span");
-        chip.className = "tag-chip";
-        chip.textContent = tag;
-        tagsWrap.appendChild(chip);
-      });
-    }
-    card.appendChild(tagsWrap);
-
-    // 詳細部分
-    const detail = document.createElement("div");
-    detail.className = "shosei-detail";
-
-    const detailInner = document.createElement("div");
-    detailInner.className = "shosei-detail-inner";
-
-    if (topic.essence) {
-      detailInner.appendChild(createDetailBlock("本質・要点", topic.essence));
-    }
-    if (topic.traps) {
-      detailInner.appendChild(createDetailBlock("やりがちな落とし穴", topic.traps));
-    }
-    if (topic.actionTips) {
-      detailInner.appendChild(createDetailBlock("具体的な一手", topic.actionTips));
-    }
-
-    detail.appendChild(detailInner);
-    card.appendChild(detail);
-
-    // カードクリックで詳細開閉
-    card.addEventListener("click", () => {
-      const isOpen = card.classList.toggle("is-open");
-      if (isOpen) {
-        pushHistory(topic._globalId);
-      }
-    });
-
-    return card;
+  .page-inner {
+    padding: 0 10px 20px;
   }
-
-  function createDetailBlock(title, content) {
-    const block = document.createElement("div");
-    block.className = "detail-block";
-
-    const titleEl = document.createElement("h4");
-    titleEl.className = "detail-title";
-    titleEl.textContent = title;
-
-    const list = document.createElement("ul");
-    list.className = "detail-list";
-
-    if (Array.isArray(content)) {
-      content.forEach((item) => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        list.appendChild(li);
-      });
-    } else if (typeof content === "string") {
-      // 改行で分割して箇条書き風に
-      const lines = content.split(/\r?\n/).filter((line) => line.trim() !== "");
-      if (lines.length > 1) {
-        lines.forEach((line) => {
-          const li = document.createElement("li");
-          li.textContent = line;
-          list.appendChild(li);
-        });
-      } else {
-        const li = document.createElement("li");
-        li.textContent = content;
-        list.appendChild(li);
-      }
-    }
-
-    block.appendChild(titleEl);
-    block.appendChild(list);
-    return block;
-  }
-
-  // ============================================================
-  // 実行
-  // ============================================================
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-})();
+}
