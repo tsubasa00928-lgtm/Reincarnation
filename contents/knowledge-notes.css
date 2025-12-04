@@ -852,4 +852,20 @@
   max-width: 640px;
 }
 
+/* サイドタブと HERO の距離を近づける */
+.kn-layout {
+  margin-top: 0px !important;
+  padding-top: 0px !important;
+}
+
+.kn-sidebar {
+  margin-top: 8px !important;  /* ← 今までは20px以上だったはず */
+}
+
+/* HERO 下の検索バーとの距離も最適化 */
+.top-search-under-hero {
+  margin-bottom: 12px !important;
+}
+
+
 
