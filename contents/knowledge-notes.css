@@ -1,907 +1,364 @@
-/* =============================================================
-   ページ全体
-   ============================================================= */
-
-.page-knowledge-notes {
-  background: radial-gradient(circle at 0% 0%, #e0f2f1 0, #f9fafb 40%, #f9fafb 100%);
-  color: #0f172a;
-  font-family: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-}
-
-/* グローバル .container をフル幅寄りに調整 */
-.page-knowledge-notes .container {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.page-knowledge-notes .site-main {
-  padding-top: 16px;
-  padding-bottom: 80px;
-  background: transparent;
-}
-
-/* コンテンツラッパ（パネル自体は中央寄せ・横幅を決める） */
-.page-inner {
-  max-width: 1100px;
-  margin: 16px auto 0;
-  padding: 0 16px 24px;
-}
-
-/* =============================================================
-   スクロールパネル（OS感・円弧レイヤー）
-   ============================================================= */
-
-.scroll-panel {
-  position: relative;
-  border-radius: 24px;
-  padding: 20px 20px 28px;
-  background: linear-gradient(
-    135deg,
-    rgba(15, 118, 110, 0.06),
-    rgba(240, 253, 250, 0.9)
-  );
-  box-shadow:
-    0 24px 60px rgba(15, 118, 110, 0.25),
-    0 0 0 1px rgba(15, 118, 110, 0.08);
-  overflow: hidden;
-}
-
-.scroll-panel::before,
-.scroll-panel::after {
-  content: "";
-  position: absolute;
-  border-radius: 999px;
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  opacity: 0.4;
-}
-
-.scroll-panel::before {
-  width: 220%;
-  height: 220%;
-  top: -60%;
-  left: -40%;
-  transform: rotate(4deg);
-}
-
-.scroll-panel::after {
-  width: 180%;
-  height: 180%;
-  top: -40%;
-  left: -30%;
-  transform: rotate(-6deg);
-  border-color: rgba(56, 189, 248, 0.25);
-}
-
-/* 中身は通常レイヤー */
-.scroll-panel > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* =============================================================
-   HERO
-   ============================================================= */
-
-.hero-copy.hero-knowledge {
-  margin-bottom: 4px;
-}
-
-.hero-inner {
-  max-width: 720px; /* 左寄せだが、行長は揃える */
-}
-
-.hero-section-title {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #022c22;
-  margin: 0 0 4px;
-}
-
-.hero-section-underline {
-  width: 140px;
-  height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #22c55e, #0ea5e9);
-  margin-bottom: 3px;
-}
-
-.hero-section-underline.second {
-  width: 110px;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    rgba(34, 197, 94, 0.7),
-    rgba(56, 189, 248, 0.6)
-  );
-}
-
-.hero-text {
-  margin: 8px 0 14px;
-  font-size: 13px;
-  line-height: 1.8;
-  color: #1f2933;
-}
-
-/* =============================================================
-   レイアウト：左サイドバー + メイン
-   ============================================================= */
-
-.kn-layout {
-  display: flex;
-  gap: 24px;
-  margin-top: 12px;
-  align-items: flex-start;
-}
-
-/* 左サイドバー */
-.kn-sidebar {
-  width: 220px;
-  flex-shrink: 0;
-  background: rgba(236, 253, 245, 0.8);
-  border-radius: 18px;
-  padding: 8px 10px 12px;
-  box-shadow:
-    0 18px 38px rgba(16, 185, 129, 0.28),
-    0 0 0 1px rgba(34, 197, 94, 0.25);
-  backdrop-filter: blur(6px);
-}
-
-.kn-sidebar-title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #047857;
-  margin-bottom: 6px;
-}
-
-/* OSタブボタン */
-.kn-os-tab {
-  display: block;
-  width: 100%;
-  text-align: left;
-  padding: 8px 10px;
-  margin-bottom: 4px;
-  border-radius: 10px;
-  border: 1px solid transparent;
-  background: rgba(255, 255, 255, 0.6);
-  color: #064e3b;
-  font-size: 11px;
-  line-height: 1.5;
-  cursor: pointer;
-  user-select: none;
-  transition:
-    background 0.18s ease,
-    border-color 0.18s ease,
-    transform 0.12s ease,
-    box-shadow 0.18s ease,
-    color 0.18s ease;
-  white-space: normal;
-}
-
-.kn-os-tab:hover {
-  background: #ecfdf5;
-  border-color: #6ee7b7;
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.32);
-  color: #065f46;
-}
-
-.kn-os-tab.is-active {
-  background: #059669;
-  border-color: #059669;
-  color: #ecfdf5;
-  box-shadow: 0 14px 30px rgba(5, 150, 105, 0.7);
-}
-
-.kn-os-tab-main {
-  font-weight: 600;
-}
-
-.kn-os-label {
-  display: inline-block;
-  margin-top: 0;
-  font-size: 10px;
-  opacity: 0.9;
-}
-
-/* OSごとのタブカラーのニュアンス */
-.os-tab-top {
-  border-left: 3px solid #a7f3d0;
-}
-.os-tab-mind {
-  border-left: 3px solid #a7f3d0;
-}
-.os-tab-relation {
-  border-left: 3px solid #bfdbfe;
-}
-.os-tab-work {
-  border-left: 3px solid #ddd6fe;
-}
-.os-tab-habit {
-  border-left: 3px solid #fef9c3;
-}
-.os-tab-future {
-  border-left: 3px solid #fed7d7;
-}
-
-/* サイドバー内：横断OS検索ブロック */
-.kn-cross-search {
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px dashed rgba(16, 185, 129, 0.4);
-}
-
-.kn-cross-search-title {
-  margin: 0 0 4px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #047857;
-}
-
-.kn-cross-search-hint {
-  margin: 0 0 6px;
-  font-size: 11px;
-  color: #065f46;
-}
-
-/* HERO内ではなく、サイドバー下の検索バー */
-.kn-search-section {
-  margin-top: 4px;
-}
-
-.kn-search-inner {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  background: #ffffff;
-  border: 1px solid #a7f3d0;
-  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.22);
-}
-
-.kn-search-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-.kn-search-svg {
-  width: 100%;
-  height: 100%;
-  stroke: #6b7280;
-}
-
-.kn-search-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  color: #111827;
-  font-size: 13px;
-  outline: none;
-}
-
-.kn-search-input::placeholder {
-  color: #9ca3af;
-}
-
-/* メイン側 */
-.kn-main {
-  flex: 1;
-  min-width: 0;
-}
-
-/* スマホ用：OSカテゴリ折りたたみトグル */
-.kn-sidebar-toggle {
-  display: none; /* PCでは非表示 */
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  margin-bottom: 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(34, 197, 94, 0.7);
-  background: rgba(236, 253, 245, 0.95);
-  color: #064e3b;
-  font-size: 12px;
-  cursor: pointer;
-  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.2);
-}
-
-.kn-sidebar-toggle-icon {
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  border: 1px solid rgba(34, 197, 94, 0.8);
-  position: relative;
-}
-
-.kn-sidebar-toggle-icon::before,
-.kn-sidebar-toggle-icon::after {
-  content: "";
-  position: absolute;
-  left: 2px;
-  right: 2px;
-  height: 1px;
-  background: #047857;
-}
-
-.kn-sidebar-toggle-icon::before {
-  top: 4px;
-}
-
-.kn-sidebar-toggle-icon::after {
-  bottom: 4px;
-}
-
-.kn-sidebar-toggle-label {
-  letter-spacing: 0.08em;
-}
-
-.kn-sidebar-toggle[aria-expanded="true"] {
-  border-color: #22c55e;
-  box-shadow:
-    0 0 0 1px rgba(34, 197, 94, 0.35),
-    0 10px 24px rgba(16, 185, 129, 0.4);
-}
-
-/* =============================================================
-   共通セクション
-   ============================================================= */
-
-.kn-section {
-  background: transparent;
-  border-radius: 0;
-  border: none;
-  padding: 10px 0 14px;
-  margin-bottom: 4px;
-  box-shadow: none;
-}
-
-.kn-section-header {
-  margin-bottom: 8px;
-}
-
-.kn-section-title {
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: #064e3b;
-  margin: 0 0 3px;
-}
-
-.kn-section-subtitle {
-  font-size: 12px;
-  color: #4b5563;
-  margin: 0;
-}
-
-/* =============================================================
-   トップ用 2カラムレイアウト
-   ============================================================= */
-
-.kn-top-shell {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.1fr);
-  gap: 20px;
-  align-items: flex-start;
-  margin-top: 4px;
-}
-
-.kn-top-left {
-  width: 100%;
-}
-
-.kn-top-left-inner {
-  max-width: 640px;
-}
-
-.kn-top-right {
-  width: 100%;
-}
-
-/* =============================================================
-   トップモード：ショートカット
-   ============================================================= */
-
-.kn-shortcuts-header {
-  margin-bottom: 6px;
-}
-
-.kn-shortcut-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.kn-shortcut {
-  border-radius: 999px;
-  border: none;
-  background: #ecfdf5;
-  padding: 6px 12px;
-  font-size: 12px;
-  color: #065f46;
-  cursor: pointer;
-  transition:
-    background 0.16s ease,
-    transform 0.12s ease,
-    box-shadow 0.16s ease;
-  white-space: nowrap;
-}
-
-.kn-shortcut:hover {
-  background: #bbf7d0;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.35);
-}
-
-/* =============================================================
-   トップモード：今日の処世術
-   ============================================================= */
-
-.kn-today-card-container {
-  margin-top: 4px;
-}
-
-.kn-loading-text {
-  font-size: 12px;
-  color: #6b7280;
-}
-
-.kn-today-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.kn-today-refresh-btn {
-  border-radius: 999px;
-  border: 1px solid #34d399;
-  background: #ecfdf5;
-  padding: 4px 12px;
-  font-size: 11px;
-  font-weight: 500;
-  color: #047857;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  box-shadow: 0 6px 12px rgba(16, 185, 129, 0.28);
-  transition:
-    background 0.16s ease,
-    transform 0.12s ease,
-    box-shadow 0.16s ease;
-}
-
-.kn-today-refresh-btn:hover {
-  background: #bbf7d0;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
-}
-
-/* =============================================================
-   右カラム：OS構造カード
-   ============================================================= */
-
-.kn-os-structure-card {
-  background: #ecfdf5;
-  border-radius: 18px;
-  border: 1px solid #a7f3d0;
-  padding: 14px 16px;
-  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.25);
-}
-
-.kn-os-structure-title {
-  margin: 0 0 6px;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #047857;
-}
-
-.kn-os-structure-lead {
-  margin: 0 0 10px;
-  font-size: 12px;
-  color: #065f46;
-}
-
-.kn-os-structure-list {
-  list-style: none;
-  margin: 0 0 10px;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.kn-os-structure-list li {
-  font-size: 12px;
-  color: #064e3b;
-}
-
-.kn-os-pill {
-  display: inline-block;
-  margin-bottom: 2px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #d1fae5;
-  font-size: 11px;
-  font-weight: 600;
-  color: #047857;
-}
-
-.kn-os-structure-text {
-  display: block;
-  margin-left: 2px;
-}
-
-.kn-os-structure-footer {
-  margin: 6px 0 0;
-  font-size: 11px;
-  color: #047857;
-}
-
-/* =============================================================
-   OSモード：検索結果
-   ============================================================= */
-
-.kn-results-header {
-  margin-bottom: 6px;
-}
-
-.kn-results-meta {
-  font-size: 11px;
-  color: #6b7280;
-  margin: 0;
-}
-
-/* サブカテゴリタブ */
-.kn-subtabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 6px 0 10px;
-}
-
-.kn-subtab {
-  border-radius: 999px;
-  border: 1px solid #a7f3d0;
-  background: #f0fdf4;
-  padding: 3px 10px;
-  font-size: 11px;
-  color: #065f46;
-  cursor: pointer;
-  white-space: nowrap;
-  transition:
-    background 0.16s ease,
-    color 0.16s ease,
-    border-color 0.16s ease,
-    box-shadow 0.18s ease,
-    transform 0.1s ease;
-}
-
-.kn-subtab:hover {
-  background: #bbf7d0;
-  border-color: #34d399;
-  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
-  transform: translateY(-1px);
-}
-
-.kn-subtab.is-active {
-  background: #047857;
-  border-color: #047857;
-  color: #ecfdf5;
-  box-shadow: 0 6px 14px rgba(5, 150, 105, 0.4);
-}
-
-/* カードグリッド：PCは2列、スマホは1列 */
-.kn-card-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 12px;
-}
-
-/* =============================================================
-   処世術カード（OS帯＋OS感デザイン）
-   ============================================================= */
-
-.shosei-card {
-  position: relative;
-  width: 100%;
-  border-radius: 16px;
-  padding: 10px 12px 10px;
-  cursor: pointer;
-  background: #ffffff;
-  border: 1px solid rgba(148, 163, 184, 0.4);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
-  transition:
-    transform 0.16s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease,
-    background 0.18s ease;
-}
-
-/* OSカラーバンド */
-.shosei-os-band {
-  height: 6px;
-  border-radius: 999px;
-  margin: -2px -2px 8px;
-  background: #e5e7eb;
-}
-
-.os-mind .shosei-os-band {
-  background: linear-gradient(90deg, #a7f3d0, #4ade80);
-}
-.os-relation .shosei-os-band {
-  background: linear-gradient(90deg, #bfdbfe, #60a5fa);
-}
-.os-work .shosei-os-band {
-  background: linear-gradient(90deg, #ddd6fe, #a855f7);
-}
-.os-habit .shosei-os-band {
-  background: linear-gradient(90deg, #fef9c3, #facc15);
-}
-.os-future .shosei-os-band {
-  background: linear-gradient(90deg, #fed7d7, #fb7185);
-}
-
-/* 今日の処世術カードは少し強め */
-.shosei-card.is-today {
-  border-color: rgba(251, 191, 36, 0.9);
-  box-shadow: 0 18px 40px rgba(180, 83, 9, 0.35);
-}
-
-/* ホバー */
-.shosei-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.18);
-  border-color: rgba(148, 163, 184, 0.9);
-}
-
-/* タイトル・本文 */
-.shosei-title {
-  margin: 0 0 3px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #0f172a;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.shosei-title-icon {
-  font-size: 14px;
-}
-
-.shosei-summary {
-  margin: 0 0 4px;
-  font-size: 11px;
-  color: #4b5563;
-}
-
-/* ID & コントロール行 */
-.shosei-meta-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-
-.shosei-id {
-  font-size: 10px;
-  color: #9ca3af;
-}
-
-.shosei-controls {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* お気に入り・いいねボタン */
-.shosei-ctrl-btn {
-  border-radius: 999px;
-  border: 1px solid #e5e7eb;
-  background: #f9fafb;
-  padding: 1px 6px;
-  font-size: 10px;
-  color: #6b7280;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  transition:
-    background 0.16s ease,
-    border-color 0.16s ease,
-    color 0.16s ease,
-    box-shadow 0.18s ease,
-    transform 0.1s ease;
-}
-
-.shosei-ctrl-btn:hover {
-  background: #fef3c7;
-  border-color: #facc15;
-  color: #92400e;
-  box-shadow: 0 4px 10px rgba(251, 191, 36, 0.35);
-  transform: translateY(-1px);
-}
-
-.shosei-fav-btn.is-active {
-  background: #fef9c3;
-  border-color: #facc15;
-  color: #92400e;
-}
-
-.shosei-like-btn-count {
-  font-variant-numeric: tabular-nums;
-}
-
-/* タグ */
-.shosei-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-bottom: 4px;
-}
-
-.tag-chip {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  border: 1px solid rgba(45, 212, 191, 0.9);
-  background: #ecfeff;
-  padding: 2px 7px;
-  font-size: 10px;
-  color: #0f766e;
-}
-
-.tag-chip-category {
-  border-color: rgba(129, 140, 248, 0.95);
-  background: #eef2ff;
-  color: #3730a3;
-}
-
-/* 詳細アコーディオン */
-.shosei-detail {
-  display: none;
-  margin-top: 5px;
-}
-
-.shosei-card.is-open .shosei-detail {
-  display: block;
-}
-
-.shosei-detail-inner {
-  padding: 7px 9px 9px;
-  border-radius: 10px;
-  border: 1px solid rgba(148, 163, 184, 0.5);
-  background:
-    radial-gradient(circle at 0 0, rgba(249, 250, 251, 0.96), transparent 55%),
-    repeating-linear-gradient(
-      135deg,
-      #f9fafb 0px,
-      #f9fafb 2px,
-      #e5e7eb 2px,
-      #e5e7eb 4px
-    );
-}
-
-.detail-block {
-  margin-bottom: 6px;
-}
-
-.detail-title {
-  margin: 0 0 3px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #0369a1;
-  letter-spacing: 0.06em;
-}
-
-.detail-list {
-  margin: 0;
-  padding-left: 16px;
-  font-size: 11px;
-  color: #374151;
-}
-
-.detail-list li {
-  margin-bottom: 2px;
-}
-
-/* =============================================================
-   フッター
-   ============================================================= */
-
-.page-footer,
-.footer-inner,
-.footer-copy {
-  font-size: 11px;
-}
-
-/* =============================================================
-   アニメーション
-   ============================================================= */
-
-@keyframes fade-up {
-  0% {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-up {
-  opacity: 0;
-  animation: fade-up 0.4s ease forwards;
-}
-
-/* =============================================================
-   レスポンシブ調整
-   ============================================================= */
-
-@media (max-width: 900px) {
-  .scroll-panel {
-    padding: 14px 12px 22px;
-  }
-
-  .kn-layout {
-    flex-direction: column;
-  }
-
-  .kn-sidebar {
-    width: 100%;
-    display: none; /* トグルで開く */
-  }
-
-  .kn-sidebar.is-open {
-    display: block;
-  }
-
-  .kn-sidebar-toggle {
-    display: inline-flex;
-  }
-
-  .kn-top-shell {
-    display: block;
-  }
-
-  .kn-top-left-inner {
-    max-width: none;
-  }
-
-  .kn-top-right {
-    margin-top: 8px;
-  }
-
-  .kn-card-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .hero-section-title {
-    font-size: 22px;
-  }
-
-  .hero-text {
-    font-size: 12px;
-  }
-
-  .page-inner {
-    padding: 0 10px 20px;
-  }
-}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>処世術禄 – 人生二周目録</title>
+
+    <!-- 共通レイアウト -->
+    <link rel="stylesheet" href="../style.css" />
+
+    <!-- 処世術禄専用レイアウト -->
+    <link rel="stylesheet" href="knowledge-notes.css" />
+  </head>
+
+  <body class="page-knowledge-notes">
+    <!-- =========================================================
+         グローバルヘッダー（他ページと同じ構造）
+         ========================================================= -->
+    <header class="site-header">
+      <div class="container header-container">
+        <div class="header-inner">
+          <div class="site-logo">
+            <a href="../index.html">
+              人生二周目録-β版
+            </a>
+            <p class="site-tagline">
+              二周目目線で、人生をアップデートする
+            </p>
+          </div>
+
+          <nav class="global-nav" aria-label="グローバルナビゲーション">
+            <ul class="global-nav-list">
+              <li class="global-nav-item">
+                <a href="../index.html">ホーム</a>
+              </li>
+              <li class="global-nav-item">
+                <a href="generations.html">人生地図禄</a>
+              </li>
+              <li class="global-nav-item is-active">
+                <a href="knowledge-notes.html">処世術禄</a>
+              </li>
+              <li class="global-nav-item">
+                <a href="life-stories.html">人生体験禄</a>
+              </li>
+              <li class="global-nav-item">
+                <a href="user-features.html">ユーザー機能</a>
+              </li>
+              <li class="global-nav-item">
+                <a href="concept.html">コンセプト</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- =========================================================
+         メインコンテンツ
+         ========================================================= -->
+    <main class="site-main">
+      <div class="container">
+        <div class="page-inner">
+          <section class="scroll-panel">
+            <!-- =========================
+                 HERO
+               ========================= -->
+            <header class="hero-copy hero-knowledge">
+              <div class="hero-inner">
+                <h1 class="hero-section-title">処世術禄</h1>
+                <div class="hero-section-underline"></div>
+                <div class="hero-section-underline second"></div>
+
+                <p class="hero-text">
+                  人生を賢く、したたかに。世の教訓は5つのOSに構造化される。<br />
+                  情報が多すぎる時代に必要なのは、「断片的な知識」ではなく「構造化された知恵」。
+                </p>
+
+                <!-- HERO 左下の検索バー -->
+                <section class="kn-search-section" aria-label="処世術カード検索">
+                  <div class="kn-search-inner">
+                    <div class="kn-search-icon">
+                      <svg
+                        class="kn-search-svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle
+                          cx="11"
+                          cy="11"
+                          r="6"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></circle>
+                        <line
+                          x1="15.5"
+                          y1="15.5"
+                          x2="20"
+                          y2="20"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        ></line>
+                      </svg>
+                    </div>
+                    <input
+                      id="kn-search-input"
+                      class="kn-search-input"
+                      type="search"
+                      placeholder="キーワードで探す…（例：不安、人間関係、評価、AIなど）"
+                      autocomplete="off"
+                    />
+                  </div>
+                </section>
+              </div>
+            </header>
+
+            <!-- =========================
+                 OSレイアウト
+               ========================= -->
+            <div class="kn-layout">
+              <!-- スマホ用：OSカテゴリ表示トグル -->
+              <button
+                class="kn-sidebar-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="kn-sidebar"
+              >
+                <span class="kn-sidebar-toggle-icon"></span>
+                <span class="kn-sidebar-toggle-label">処世術OSを表示</span>
+              </button>
+
+              <!-- 左サイドバー：OSタブ -->
+              <aside
+                class="kn-sidebar"
+                id="kn-sidebar"
+                aria-label="処世術OSカテゴリ"
+              >
+                <p class="kn-sidebar-title">処世術OS</p>
+
+                <button
+                  type="button"
+                  class="kn-os-tab os-tab-all"
+                  data-category="all"
+                >
+                  <div class="kn-os-tab-main">≪トップ≫</div>
+                  <div class="kn-os-label">今日の処世術・ショートカット</div>
+                </button>
+
+                <button
+                  type="button"
+                  class="kn-os-tab os-tab-mind is-active"
+                  data-category="mind"
+                >
+                  <div class="kn-os-tab-main">1.心の扱い方</div>
+                  <div class="kn-os-label">内部OS</div>
+                </button>
+
+                <button
+                  type="button"
+                  class="kn-os-tab os-tab-relation"
+                  data-category="relation"
+                >
+                  <div class="kn-os-tab-main">2.人との関わり方</div>
+                  <div class="kn-os-label">対人OS</div>
+                </button>
+
+                <button
+                  type="button"
+                  class="kn-os-tab os-tab-work"
+                  data-category="work"
+                >
+                  <div class="kn-os-tab-main">3.社会での立ち回り</div>
+                  <div class="kn-os-label">社会OS</div>
+                </button>
+
+                <button
+                  type="button"
+                  class="kn-os-tab os-tab-habit"
+                  data-category="habit"
+                >
+                  <div class="kn-os-tab-main">4.行動・習慣の技術</div>
+                  <div class="kn-os-label">行動OS</div>
+                </button>
+
+                <button
+                  type="button"
+                  class="kn-os-tab os-tab-future"
+                  data-category="future"
+                >
+                  <div class="kn-os-tab-main">5.キャッチアップの極意</div>
+                  <div class="kn-os-label">未来OS</div>
+                </button>
+              </aside>
+
+              <!-- 右側：トップモード / OSモード -->
+              <section class="kn-main">
+                <!-- ---------- トップモード（OS=all のとき） ---------- -->
+                <section class="kn-section" id="top-mode">
+                  <div class="kn-top-shell">
+                    <!-- 左：今日の処世術 + ショートカット -->
+                    <div class="kn-top-left">
+                      <div class="kn-top-left-inner">
+                        <header class="kn-section-header">
+                          <h2 class="kn-section-title">今日の処世術</h2>
+                          <p class="kn-section-subtitle">
+                            その日の気分で、OSをまたいで1枚だけカードを引きます。
+                          </p>
+                        </header>
+
+                        <div
+                          class="kn-today-card-container"
+                          id="kn-today-card"
+                        >
+                          <p class="kn-loading-text">
+                            カードを読み込み中です…
+                          </p>
+                        </div>
+
+                        <div class="kn-today-header">
+                          <button
+                            id="kn-today-refresh"
+                            class="kn-today-refresh-btn"
+                            type="button"
+                          >
+                            別のカードを引き直す
+                          </button>
+                        </div>
+
+                        <!-- ショートカット群 -->
+                        <section class="kn-shortcuts">
+                          <header class="kn-shortcuts-header">
+                            <h3 class="kn-section-subtitle">
+                              よくあるシーンから探す
+                            </h3>
+                          </header>
+                          <div class="kn-shortcut-list">
+                            <button
+                              type="button"
+                              class="kn-shortcut"
+                              data-keyword="不安"
+                            >
+                              不安で頭がいっぱい
+                            </button>
+                            <button
+                              type="button"
+                              class="kn-shortcut"
+                              data-keyword="人間関係"
+                            >
+                              人間関係でしんどい
+                            </button>
+                            <button
+                              type="button"
+                              class="kn-shortcut"
+                              data-keyword="評価"
+                            >
+                              評価・キャリアが不安
+                            </button>
+                            <button
+                              type="button"
+                              class="kn-shortcut"
+                              data-keyword="習慣"
+                            >
+                              習慣を立て直したい
+                            </button>
+                            <button
+                              type="button"
+                              class="kn-shortcut"
+                              data-keyword="AI"
+                            >
+                              AI時代の生き方を知りたい
+                            </button>
+                          </div>
+                        </section>
+                      </div>
+                    </div>
+
+                    <!-- 右：OS構造カード -->
+                    <div class="kn-top-right">
+                      <article class="kn-os-structure-card kn-os-structure-section">
+                        <h3 class="kn-os-structure-title">処世術OSの全体像</h3>
+                        <p class="kn-os-structure-lead">
+                          「内部」「対人」「社会」「行動」「未来」の5つのOSで、
+                          実社会を賢く・したたかに生き抜くためのカードを整理しています。
+                        </p>
+                        <ul class="kn-os-structure-list">
+                          <li>
+                            <span class="kn-os-pill">心の扱い方（内部OS）</span>
+                            <span class="kn-os-structure-text">
+                              不安・感情・自己イメージの扱い方。
+                            </span>
+                          </li>
+                          <li>
+                            <span class="kn-os-pill">人との関わり方（対人OS）</span>
+                            <span class="kn-os-structure-text">
+                              家族・恋人・職場との距離感と境界線。
+                            </span>
+                          </li>
+                          <li>
+                            <span class="kn-os-pill">社会での立ち回り（社会OS）</span>
+                            <span class="kn-os-structure-text">
+                              評価・交渉・安全保障のルール。
+                            </span>
+                          </li>
+                          <li>
+                            <span class="kn-os-pill">行動・習慣の技術（行動OS）</span>
+                            <span class="kn-os-structure-text">
+                              仕組みで動くためのルーティンと設計。
+                            </span>
+                          </li>
+                          <li>
+                            <span class="kn-os-pill">キャッチアップの極意（未来OS）</span>
+                            <span class="kn-os-structure-text">
+                              AI・テクノロジー時代の学び方と選び方。
+                            </span>
+                          </li>
+                        </ul>
+                        <p class="kn-os-structure-footer">
+                          左のOSタブを選ぶと、そのOSだけに絞り込んだカード一覧が表示されます。
+                        </p>
+                      </article>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- ---------- OSモード（特定カテゴリ選択時） ---------- -->
+                <section class="kn-section" id="os-mode" hidden>
+                  <header class="kn-results-header">
+                    <h2 class="kn-section-title" id="kn-results-title">
+                      処世術カード一覧
+                    </h2>
+                    <p class="kn-results-meta" id="kn-results-meta">
+                      件数：0件
+                    </p>
+                  </header>
+
+                  <!-- サブカテゴリタブ -->
+                  <div class="kn-subtabs" id="kn-subcategory-tabs"></div>
+
+                  <!-- カードグリッド -->
+                  <div class="kn-card-grid" id="kn-results-container"></div>
+                </section>
+              </section>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- =========================================================
+         フッター
+         ========================================================= -->
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p class="footer-copy">
+          © 人生二周目録-β版 / Reincarnation Note.
+        </p>
+      </div>
+    </footer>
+
+    <!-- スクリプト -->
+    <script src="knowledge-notes.js"></script>
+  </body>
+</html>
