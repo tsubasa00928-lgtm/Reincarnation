@@ -60,31 +60,6 @@
               人生を賢く、したたかに。世の教訓は5つのOSに構造化される。<br />
               情報が多すぎる時代に必要なのは、「断片的な知識」ではなく「構造化された知恵」。
             </p>
-
-            <!-- HERO内に統合された検索バー -->
-            <section class="kn-search-section" aria-label="処世術を検索する">
-              <div class="kn-search-inner">
-                <div class="kn-search-icon">
-                  <svg
-                    class="kn-search-svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <circle cx="11" cy="11" r="6" stroke-width="2" />
-                    <line x1="15.5" y1="15.5" x2="20" y2="20" stroke-width="2" />
-                  </svg>
-                </div>
-                <input
-                  id="kn-search-input"
-                  class="kn-search-input"
-                  type="search"
-                  placeholder="キーワードで探す…（例：評価・転職・自信・不安 など）"
-                  autocomplete="off"
-                />
-              </div>
-            </section>
           </div>
         </section>
 
@@ -124,6 +99,11 @@
               <button class="kn-os-tab os-tab-future" type="button" data-category="future">
                 <span class="kn-os-tab-main">5.キャッチアップの極意</span><br />
                 <span class="kn-os-label">未来OS</span>
+              </button>
+
+              <!-- ▼ 追加：OS横断検索タブ -->
+              <button class="kn-os-tab os-tab-search" type="button" data-category="search">
+                🔍 検索（OS横断）
               </button>
             </aside>
 
@@ -224,12 +204,12 @@
                 </aside>
               </div>
 
-              <!-- ▼OSモード：特定OSを選んだときの検索結果エリア -->
+              <!-- ▼OSモード：特定OSを選んだときの一覧エリア -->
               <section id="os-mode" class="kn-section kn-os-mode-section" aria-label="OS別の処世術一覧" hidden>
                 <div class="kn-results-header">
                   <h2 class="kn-section-title" id="kn-results-title">処世術カード一覧</h2>
                   <p id="kn-results-meta" class="kn-results-meta">
-                    キーワードとサブカテゴリで、OS内のカードを絞り込みます。
+                    サブカテゴリで、OS内のカードを絞り込みます。
                   </p>
                 </div>
 
@@ -240,6 +220,55 @@
 
                 <!-- カードグリッド（PC：2列 / スマホ：1列） -->
                 <div id="kn-results-container" class="kn-card-grid" aria-live="polite">
+                  <!-- JSでカード生成 -->
+                </div>
+              </section>
+
+              <!-- ▼検索モード：OS横断キーワード検索 -->
+              <section
+                id="search-mode"
+                class="kn-section kn-search-mode-section"
+                aria-label="OS横断の処世術検索"
+                hidden
+              >
+                <div class="kn-results-header">
+                  <h2 class="kn-section-title" id="kn-search-title">処世術 横断検索</h2>
+                  <p id="kn-search-meta" class="kn-results-meta">
+                    キーワードを入力すると、すべてのOSから該当する処世術カードを表示します。
+                  </p>
+                </div>
+
+                <!-- 検索バー（ここに移動） -->
+                <section class="kn-search-section" aria-label="処世術を検索する">
+                  <div class="kn-search-inner">
+                    <div class="kn-search-icon">
+                      <svg
+                        class="kn-search-svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <circle cx="11" cy="11" r="6" stroke-width="2" />
+                        <line x1="15.5" y1="15.5" x2="20" y2="20" stroke-width="2" />
+                      </svg>
+                    </div>
+                    <input
+                      id="kn-search-input"
+                      class="kn-search-input"
+                      type="search"
+                      placeholder="キーワードで探す…（例：評価・転職・自信・不安 など）"
+                      autocomplete="off"
+                    />
+                  </div>
+                </section>
+
+                <!-- 検索結果 -->
+                <div
+                  id="kn-search-results"
+                  class="kn-card-grid"
+                  aria-live="polite"
+                >
                   <!-- JSでカード生成 -->
                 </div>
               </section>
