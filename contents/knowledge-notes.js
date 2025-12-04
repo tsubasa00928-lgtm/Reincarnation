@@ -266,6 +266,28 @@
   // ============================================================
   // データ読み込み
   // ============================================================
+
+  // JSON からカード配列を取り出すためのユーティリティ
+  function extractTopicArray(json, cfg) {
+    // そのまま配列ならOK
+    if (Array.isArray(json)) {
+      return json;
+    }
+
+    // オブジェクトの場合、よくありそうなキーから取り出す
+    if (json && typeof json === "object") {
+      const candidateKeys = ["cards", "items", "data", "list", "topics"];
+      for (const key of candidateKeys) {
+        if (Array.isArray(json[key])) {
+          return json[key];
+        }
+      }
+    }
+
+    console.warn("JSON format unexpected for", cfg.jsonPath, json);
+    return [];
+  }
+
   function fetchAllTopics() {
     const entries = Object.entries(categoryConfigs);
     const promises = entries.map(([categoryId, cfg]) =>
@@ -274,11 +296,8 @@
           if (!res.ok) throw new Error(`${cfg.jsonPath} 読み込みエラー`);
           return res.json();
         })
-        .then((list) => {
-          if (!Array.isArray(list)) {
-            console.warn("JSON format unexpected for", cfg.jsonPath);
-            return [];
-          }
+        .then((json) => {
+          const list = extractTopicArray(json, cfg);
           return list.map((item, index) => normalizeTopic(item, categoryId, index));
         })
         .catch((err) => {
@@ -298,7 +317,7 @@
     const cfg = categoryConfigs[categoryId];
     const safeTitle = raw.title || raw.name || "タイトル未設定";
     const safeSummary = raw.summary || raw.description || "";
-    const tags = Array.isArray(raw.tags) ? raw.tags : (raw.tags ? [raw.tags] : []);
+    const tags = Array.isArray(raw.tags) ? raw.tags : raw.tags ? [raw.tags] : [];
     const essence = raw.essence || raw.core || "";
     const traps = raw.traps || raw.troubles || raw.pitfalls || "";
     const actionTips = raw.actionTips || raw.actions || raw.howto || "";
@@ -435,17 +454,16 @@
 
     if (keyword) {
       filtered = filtered.filter((t) => {
-        const joined =
-          [
-            t.title,
-            t.summary,
-            t.essence,
-            t.traps,
-            t.actionTips,
-            (t.tags || []).join(" ")
-          ]
-            .join(" ")
-            .toLowerCase();
+        const joined = [
+          t.title,
+          t.summary,
+          t.essence,
+          t.traps,
+          t.actionTips,
+          (t.tags || []).join(" ")
+        ]
+          .join(" ")
+          .toLowerCase();
         return joined.includes(keyword);
       });
     }
