@@ -79,13 +79,6 @@
   z-index: 1;
 }
 
-/* コンテンツラッパ */
-.page-inner {
-  max-width: 1060px;
-  margin: 16px auto 0;
-  padding-bottom: 24px;
-}
-
 /* =============================================================
    HERO
    ============================================================= */
@@ -883,4 +876,12 @@
     max-width: 100%;
   }
 }
+.hero-copy.hero-knowledge {
+  text-align: left;
+}
+
+.hero-inner {
+  margin-left: 0;
+}
+
 
