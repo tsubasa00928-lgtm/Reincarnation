@@ -28,7 +28,6 @@
   padding: 0 16px 24px;  /* 👈 ここに左右余白を移す */
 }
 
-
 .page-knowledge-notes .site-main {
   padding-top: 16px;
   padding-bottom: 80px;
@@ -79,8 +78,6 @@
   z-index: 1;
 }
 
-
-
 /* =============================================================
    HERO
    ============================================================= */
@@ -123,7 +120,7 @@
   color: #1f2933;
 }
 
-/* HERO内検索バー */
+/* 検索バー（検索タブ内で使用） */
 .kn-search-section {
   margin-top: 6px;
   max-width: 520px;
@@ -263,6 +260,9 @@
 }
 .os-tab-future {
   border-left: 3px solid #fed7d7;
+}
+.os-tab-search {
+  border-left: 3px solid #d1d5db;
 }
 
 /* メイン側 */
@@ -576,7 +576,7 @@
   box-shadow: 0 6px 14px rgba(5, 150, 105, 0.4);
 }
 
-/* デフォルト（スマホ想定）は 1 列でOK */
+/* 共通カードグリッド（OSモード・検索モード共通） */
 .kn-card-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -595,6 +595,11 @@
   .shosei-card {
     max-width: none;
   }
+}
+
+/* 検索モード専用の微調整（必要に応じて） */
+.kn-search-mode-section .kn-search-section {
+  margin-bottom: 8px;
 }
 
 /* =============================================================
@@ -900,5 +905,3 @@
 .hero-inner {
   margin-left: 0;
 }
-
-
