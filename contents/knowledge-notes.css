@@ -10,10 +10,24 @@
 }
 
 .page-knowledge-notes .container {
-  max-width: 1120px;
-  padding-left: 16px;
-  padding-right: 16px;
+  /* ✅ 本当に画面いっぱいに広げる */
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+
+  /* 余白は中身で持つ */
+  padding-left: 0;
+  padding-right: 0;
 }
+
+/* 中身側（page-inner）で 16px の余白を付ける */
+.page-inner {
+  max-width: 100%;
+  margin: 0;
+  padding: 0 16px 24px;  /* 👈 ここに左右余白を移す */
+}
+
 
 .page-knowledge-notes .site-main {
   padding-top: 16px;
@@ -567,11 +581,25 @@
   box-shadow: 0 6px 14px rgba(5, 150, 105, 0.4);
 }
 
-/* カードグリッド：PCは2列、スマホは1列 */
+/* デフォルト（スマホ想定）は 1 列でOK */
 .kn-card-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 12px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  justify-items: stretch; /* 左右いっぱいに広げる */
+}
+
+/* ✅ 768px 以上（PC幅）は 2列構成にする */
+@media (min-width: 768px) {
+  .kn-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: stretch;
+  }
+
+  /* カードの max-width を外して、列幅いっぱい使う */
+  .shosei-card {
+    max-width: none;
+  }
 }
 
 /* =============================================================
@@ -869,3 +897,4 @@
     max-width: 100%;
   }
 }
+
