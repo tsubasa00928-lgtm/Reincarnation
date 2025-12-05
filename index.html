@@ -19,47 +19,51 @@
 <body class="home-body">
   <!-- ========== ヘッダー ========== -->
   <header class="site-header">
-  <div class="header-inner container">
-    <div class="logo-block">
-      <div class="logo-title">人生二周目録－β版</div>
-      <div class="logo-sub">二周目視点で、人生をアップデートする</div>
-    </div>
+    <div class="header-inner container">
+      <div class="logo-block">
+        <div class="logo-title">人生二周目録－β版</div>
+        <div class="logo-sub">二周目視点で、人生をアップデートする</div>
+      </div>
 
-    <!-- PC 用ナビ -->
-    <nav class="header-nav">
-      <a href="index.html" class="nav-link is-current">ホーム</a>
-      <a href="contents/generations.html" class="nav-link">生涯禄</a>
-      <a href="contents/knowledge-notes.html" class="nav-link">処世術禄</a>
-      <a href="contents/life-stories.html" class="nav-link">キャリア禄</a>
-      <a href="contents/user-notes.html" class="nav-link">ユーザー機能</a>
-      <a href="contents/concept.html" class="nav-link">コンセプト</a>
-    </nav>
+      <!-- PC 用ナビ（PCではこちらだけ表示） -->
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link is-current">ホーム</a>
+        <a href="contents/generations.html" class="nav-link">生涯禄</a>
+        <a href="contents/knowledge-notes.html" class="nav-link">処世術禄</a>
+        <a href="contents/life-stories.html" class="nav-link">キャリア禄</a>
+        <a href="contents/user-notes.html" class="nav-link">ユーザー機能</a>
+        <a href="contents/concept.html" class="nav-link">コンセプト</a>
+      </nav>
 
-    <!-- スマホ用アコーディオンナビ -->
-    <div class="mobile-nav-wrapper">
-      <input type="checkbox" id="mobile-nav-toggle" class="mobile-nav-checkbox" aria-hidden="true">
-      <label for="mobile-nav-toggle" class="mobile-nav-button">
-        <span class="mobile-nav-button-bar"></span>
-        <span class="mobile-nav-button-label">メニュー</span>
-      </label>
-      <div class="mobile-nav-panel" aria-label="グローバルナビゲーション">
-        <a href="index.html" class="mobile-nav-link">ホーム</a>
-        <a href="contents/generations.html" class="mobile-nav-link">生涯禄</a>
-        <a href="contents/knowledge-notes.html" class="mobile-nav-link">処世術禄</a>
-        <a href="contents/life-stories.html" class="mobile-nav-link">キャリア禄</a>
-        <a href="contents/user-notes.html" class="mobile-nav-link">ユーザー機能</a>
-        <a href="contents/concept.html" class="mobile-nav-link">コンセプト</a>
+      <!-- SP 用アコーディオンナビ（960px 未満でだけ表示） -->
+      <div class="mobile-nav-wrapper">
+        <input
+          type="checkbox"
+          id="mobile-nav-toggle"
+          class="mobile-nav-checkbox"
+          aria-hidden="true"
+        >
+        <label for="mobile-nav-toggle" class="mobile-nav-button">
+          <span class="mobile-nav-button-bar"></span>
+          <span class="mobile-nav-button-label">メニュー</span>
+        </label>
+        <div class="mobile-nav-panel" aria-label="グローバルナビゲーション">
+          <a href="index.html" class="mobile-nav-link">ホーム</a>
+          <a href="contents/generations.html" class="mobile-nav-link">生涯禄</a>
+          <a href="contents/knowledge-notes.html" class="mobile-nav-link">処世術禄</a>
+          <a href="contents/life-stories.html" class="mobile-nav-link">キャリア禄</a>
+          <a href="contents/user-notes.html" class="mobile-nav-link">ユーザー機能</a>
+          <a href="contents/concept.html" class="mobile-nav-link">コンセプト</a>
+        </div>
       </div>
     </div>
-  </div>
-</header>
+  </header>
 
-
+  <!-- ========== メイン ========== -->
   <main class="site-main">
     <div class="container">
-      <!-- 巻物パネル：ホーム全体を一枚の巻物として開く -->
       <div class="scroll-panel">
-        <!-- ========== ① HERO ========== -->
+        <!-- HERO -->
         <section class="hero-copy">
           <div class="hero-inner">
             <div class="hero-heading-block">
@@ -68,14 +72,13 @@
               <div class="hero-section-underline second"></div>
             </div>
             <p class="hero-text">
-              人生二周目視点で、人生をしたたかに生きるためのポータルサイト。<br>
-              AIでビッグデータを解析して作り上げられた”人生のOS”。<br>
-              人生を先読みし、洗練された本質だけを掴み、幾多の教訓を活かし、人生をスマートに。
+              情報過多の時代を終わらせる。二周目視点で、人生の本質だけを残すノート。<br>
+              生涯禄・処世術禄・キャリア禄の三つの禄で、人生の構造・原則・物語を一枚の地図にまとめます。
             </p>
           </div>
         </section>
 
-        <!-- ========== ② できること ========== -->
+        <!-- できること -->
         <section class="section section-actions">
           <div class="section-header">
             <h2 class="section-title">できること</h2>
@@ -98,7 +101,7 @@
             <a class="card action-card scroll-card" href="contents/knowledge-notes.html">
               <h3 class="card-heading">人間関係・心理の本質を知りたい</h3>
               <p class="card-body">
-                対人関係・感情・キャリアなど、実生活で使える処世術で人生をしたたかに生き抜く。
+                対人関係・感情・キャリアなど、実生活で使える処世術を体系化したノート。
               </p>
               <p class="card-tag">#処世術禄</p>
             </a>
@@ -107,28 +110,29 @@
             <a class="card action-card scroll-card" href="contents/life-stories.html">
               <h3 class="card-heading">他人の人生から学びたい</h3>
               <p class="card-body">
-                さまざまな人生ストーリーから、選択と結果のパターンを読み解く。
+                さまざまな人生ストーリーから、「こう生きるとこうなる」をコンパクトに学ぶ。
               </p>
               <p class="card-tag">#キャリア禄</p>
             </a>
           </div>
         </section>
 
-        <!-- ========== ③ 3つの”禄” ========== -->
+        <!-- 3つの禄 -->
         <section class="section section-tiles">
           <div class="section-header">
-            <h2 class="section-title">3つの”禄”</h2>
+            <h2 class="section-title">3つの禄</h2>
             <p class="section-sub">ここから先は、それぞれの禄の世界に入っていきます。</p>
           </div>
 
           <div class="tile-list">
             <!-- 生涯禄 -->
-            <a class="tile-card scroll-card scroll-card--primary" href="contents/generations.html">
+            <a class="tile-card scroll-card" href="contents/generations.html">
               <span class="tile-badge">1</span>
               <div class="tile-text">
                 <h3 class="tile-title">生涯禄</h3>
                 <p class="tile-sub">
-                  人生を、小学生〜セカンドキャリアまでのステージで整理した「人生の攻略マップ」。人生を 8 つのチャプターに分けて、二周目視点で「詰まりやすい構造」を見える化します。
+                  人生を、小学生〜セカンドキャリアまでのステージで整理した「人生の攻略マップ」。
+                  二周目視点で「どこで詰まりやすいか」を俯瞰できます。
                 </p>
               </div>
             </a>
@@ -139,7 +143,7 @@
               <div class="tile-text">
                 <h3 class="tile-title">処世術禄</h3>
                 <p class="tile-sub">
-                  心理・人間関係・働き方・習慣など、「実用的な処世術」だけを厳選して要約。
+                  心理・人間関係・行動原則など、「人生のOS」として機能する処世術の原理をまとめたノート。
                 </p>
               </div>
             </a>
@@ -150,18 +154,18 @@
               <div class="tile-text">
                 <h3 class="tile-title">キャリア禄</h3>
                 <p class="tile-sub">
-                  さまざまな人の人生の分岐と結果から、「こう生きるとこうなる」をコンパクトに学ぶ。
+                  職業選択・転職・起業など、キャリアの分岐点で起きる現実をストーリー形式で記録した禄。
                 </p>
               </div>
             </a>
           </div>
         </section>
 
-        <!-- ========== ④ 補助コンテンツ ========== -->
+        <!-- 補助コンテンツ -->
         <section class="section section-subcards">
           <div class="section-header">
             <h2 class="section-title">補助コンテンツ</h2>
-            <p class="section-sub">自分だけのログと、このノートが生まれた背景。</p>
+            <p class="section-sub">自分のログと、このノートが生まれた背景。</p>
           </div>
 
           <div class="card-grid two">
@@ -169,7 +173,7 @@
             <a class="card sub-card scroll-card" href="contents/user-notes.html">
               <h3 class="card-heading">ユーザー機能</h3>
               <p class="card-body">
-                自分の気づきや価値観をストックし、二周目視点のコメントと一緒に振り返れるマイノート機能。
+                自分の気づきや価値観をストックし、二周目視点のコメントと一緒に振り返るためのマイノート機能。
               </p>
             </a>
 
@@ -177,7 +181,7 @@
             <a class="card sub-card scroll-card" href="contents/concept.html">
               <h3 class="card-heading">コンセプト</h3>
               <p class="card-body">
-                なぜこのサイトが生まれたのか、二周目視点とは何かをまとめた解説ページ。
+                なぜこのサイトが生まれたのか、二周目視点とは何かをまとめた背景説明。
               </p>
             </a>
           </div>
@@ -192,8 +196,7 @@
     </div>
   </footer>
 
-  <!-- 巻物アニメーション共通スクリプト -->
+  <!-- 必要であれば巻物アニメーション用の JS をここで読み込む -->
   <script src="main.js" defer></script>
 </body>
 </html>
-
