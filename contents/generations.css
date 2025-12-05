@@ -453,3 +453,17 @@
     flex-basis: 160px;
   }
 }
+
+/* ======================================
+   生涯禄：外側の大きなカードを消して一面化する
+   ====================================== */
+
+.generation-container.scroll-panel {
+  margin-top: 0;              /* 上の余白を揃える */
+  padding: 0 0 40px;          /* 中身の上下余白だけ残す */
+  border-radius: 0;           /* 角丸を消す */
+  border: none;               /* 外枠線を消す */
+  background: transparent;    /* 背景色をなくして body のグリーンと一体化 */
+  box-shadow: none;           /* 影も消す */
+}
+
