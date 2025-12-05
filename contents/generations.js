@@ -790,3 +790,34 @@
     init();
   }
 })();
+
+// ========== サブタブ切り替え処理 ==========
+document.addEventListener("DOMContentLoaded", () => {
+  const tabButtons = document.querySelectorAll(".gen-subtab");
+  const pages = document.querySelectorAll(".gen-page");
+
+  function activateTab(targetId) {
+    // 全タブを非アクティブ化
+    tabButtons.forEach(btn => btn.classList.remove("active"));
+    pages.forEach(page => page.classList.remove("active"));
+
+    // 対象タブをアクティブ化
+    document.querySelector(`[data-target='${targetId}']`).classList.add("active");
+    document.getElementById(targetId).classList.add("active");
+  }
+
+  // クリックイベントを付与
+  tabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = btn.getAttribute("data-target");
+      activateTab(target);
+    });
+  });
+
+  // 初期表示（最初のタブを表示）
+  if (tabButtons.length > 0) {
+    const first = tabButtons[0].getAttribute("data-target");
+    activateTab(first);
+  }
+});
+
