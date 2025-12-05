@@ -727,7 +727,7 @@
       detailInner.appendChild(createDetailBlock("やりがちな落とし穴", topic.traps));
     }
     if (topic.actionTips) {
-      detailInner.appendChild(createDetailBlock("具体的な一手", topic.actionTips));
+      detailInner.appendChild(createDetailBlock("二周目視点の戦略", topic.actionTips));
     }
 
     detail.appendChild(detailInner);
@@ -789,3 +789,4 @@
     init();
   }
 })();
+
