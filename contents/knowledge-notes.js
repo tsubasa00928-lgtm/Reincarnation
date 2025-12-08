@@ -781,12 +781,53 @@
   }
 
   // ============================================================
+  // スマホ用：サイドバートグル
+  // ============================================================
+  // スマホ表示の閾値（CSSのメディアクエリと一致させる）
+  const MOBILE_BREAKPOINT = 900;
+  
+  function initSidebarToggle() {
+    const toggleBtn = document.querySelector(".kn-sidebar-toggle");
+    const sidebar = document.getElementById("kn-sidebar");
+    
+    if (!toggleBtn || !sidebar) return;
+    
+    toggleBtn.addEventListener("click", () => {
+      const isOpen = sidebar.classList.contains("is-open");
+      
+      if (isOpen) {
+        sidebar.classList.remove("is-open");
+        toggleBtn.setAttribute("aria-expanded", "false");
+      } else {
+        sidebar.classList.add("is-open");
+        toggleBtn.setAttribute("aria-expanded", "true");
+      }
+    });
+    
+    // サイドバー内のタブをクリックしたら自動で閉じる（スマホのみ）
+    const osTabs = sidebar.querySelectorAll(".kn-os-tab");
+    osTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        // ウィンドウ幅が閾値以下の場合のみ閉じる
+        if (window.innerWidth <= MOBILE_BREAKPOINT) {
+          sidebar.classList.remove("is-open");
+          toggleBtn.setAttribute("aria-expanded", "false");
+        }
+      });
+    });
+  }
+
+  // ============================================================
   // 実行
   // ============================================================
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("DOMContentLoaded", () => {
+      init();
+      initSidebarToggle();
+    });
   } else {
     init();
+    initSidebarToggle();
   }
 })();
 

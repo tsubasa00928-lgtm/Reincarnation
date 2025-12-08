@@ -13,3 +13,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+// Service Worker登録（PWA対応）
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    // ルートディレクトリからの相対パスを計算
+    const path = window.location.pathname;
+    const swPath = path.includes('/contents/') ? '../sw.js' : './sw.js';
+    
+    navigator.serviceWorker.register(swPath)
+      .then(registration => {
+        console.log('ServiceWorker registration successful:', registration.scope);
+      })
+      .catch(err => {
+        console.log('ServiceWorker registration failed:', err);
+      });
+  });
+}
