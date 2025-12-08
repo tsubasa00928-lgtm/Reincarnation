@@ -783,6 +783,9 @@
   // ============================================================
   // スマホ用：サイドバートグル
   // ============================================================
+  // スマホ表示の閾値（CSSのメディアクエリと一致させる）
+  const MOBILE_BREAKPOINT = 900;
+  
   function initSidebarToggle() {
     const toggleBtn = document.querySelector(".kn-sidebar-toggle");
     const sidebar = document.getElementById("kn-sidebar");
@@ -805,8 +808,8 @@
     const osTabs = sidebar.querySelectorAll(".kn-os-tab");
     osTabs.forEach(tab => {
       tab.addEventListener("click", () => {
-        // ウィンドウ幅が900px以下の場合のみ閉じる
-        if (window.innerWidth <= 900) {
+        // ウィンドウ幅が閾値以下の場合のみ閉じる
+        if (window.innerWidth <= MOBILE_BREAKPOINT) {
           sidebar.classList.remove("is-open");
           toggleBtn.setAttribute("aria-expanded", "false");
         }

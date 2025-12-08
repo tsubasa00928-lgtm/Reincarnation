@@ -58,7 +58,7 @@ self.addEventListener('activate', event => {
   );
 });
 
-// フェッチイベント：キャッシュファーストの戦略
+        // フェッチイベント：キャッシュファーストの戦略
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
@@ -72,7 +72,8 @@ self.addEventListener('fetch', event => {
         return fetch(event.request)
           .then(response => {
             // レスポンスが無効な場合はそのまま返す
-            if (!response || response.status !== 200 || response.type !== 'basic') {
+            if (!response || response.status !== 200 || 
+                (response.type !== 'basic' && response.type !== 'cors')) {
               return response;
             }
             
@@ -86,13 +87,10 @@ self.addEventListener('fetch', event => {
             return response;
           })
           .catch(() => {
-            // ネットワークエラー時の処理（オフライン対応）
-            return new Response('オフラインです', {
+            // ネットワークエラー時は何もしない（ブラウザのデフォルト動作に任せる）
+            return new Response('', {
               status: 503,
-              statusText: 'Service Unavailable',
-              headers: new Headers({
-                'Content-Type': 'text/plain'
-              })
+              statusText: 'Service Unavailable'
             });
           });
       })
