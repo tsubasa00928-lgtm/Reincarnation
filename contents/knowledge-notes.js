@@ -246,13 +246,8 @@
     if (sidebarToggleBtn && sidebarEl) {
       sidebarToggleBtn.addEventListener("click", () => {
         const isOpen = sidebarEl.classList.contains("is-open");
-        if (isOpen) {
-          sidebarEl.classList.remove("is-open");
-          sidebarToggleBtn.setAttribute("aria-expanded", "false");
-        } else {
-          sidebarEl.classList.add("is-open");
-          sidebarToggleBtn.setAttribute("aria-expanded", "true");
-        }
+        sidebarEl.classList.toggle("is-open", !isOpen);
+        sidebarToggleBtn.setAttribute("aria-expanded", String(!isOpen));
       });
     }
 
