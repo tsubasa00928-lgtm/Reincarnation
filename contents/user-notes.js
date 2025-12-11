@@ -179,8 +179,11 @@ function initChat() {
   });
 }
 
-// ---- ルーティン時刻表（localStorage保存） ----
+// ---- Routine timetable (persisted in localStorage) ----
 const STORAGE_KEY_ROUTINE = "jn_user_routine_v1";
+const ROUTINE_EMPTY_MESSAGE = "まだ項目がありません。行を追加してください。";
+const ROUTINE_TIME_PLACEHOLDER = "08:30";
+const ROUTINE_TASK_PLACEHOLDER = "内容を入力";
 const DEFAULT_ROUTINE = [
   { time: "8:30", task: "起床 / 水分補給・ストレッチ / 身支度" },
   { time: "9:00", task: "朝食" },
@@ -200,7 +203,7 @@ const DEFAULT_ROUTINE = [
   { time: "22:00", task: "入浴（湯船）" },
   { time: "22:30", task: "瞑想・ライトダウン" },
   { time: "23:00", task: "読書・就寝準備" },
-  { time: "24:30", task: "就寝" }
+  { time: "00:30", task: "就寝" }
 ];
 
 function cloneDefaultRoutine() {
@@ -236,12 +239,19 @@ function renderRoutineTable() {
   if (!container) return;
 
   const data = loadRoutineTable();
+  const updateField = (idx, key, value) => {
+    const list = loadRoutineTable();
+    if (idx < 0 || idx >= list.length) return;
+    list[idx][key] = value;
+    saveRoutineTable(list);
+  };
+
   container.innerHTML = "";
 
   if (!data.length) {
     const empty = document.createElement("p");
     empty.className = "routine-empty";
-    empty.textContent = "まだ項目がありません。行を追加してください。";
+    empty.textContent = ROUTINE_EMPTY_MESSAGE;
     container.appendChild(empty);
     return;
   }
@@ -254,34 +264,35 @@ function renderRoutineTable() {
     timeInput.type = "text";
     timeInput.className = "routine-input routine-time";
     timeInput.value = item.time || "";
-    timeInput.placeholder = "08:30";
+    timeInput.placeholder = ROUTINE_TIME_PLACEHOLDER;
+    timeInput.dataset.index = String(index);
     timeInput.addEventListener("change", () => {
-      const current = loadRoutineTable();
-      if (!current[index]) return;
-      current[index].time = timeInput.value.trim();
-      saveRoutineTable(current);
+      const idx = Number(timeInput.dataset.index);
+      updateField(idx, "time", timeInput.value.trim());
     });
 
     const taskInput = document.createElement("input");
     taskInput.type = "text";
     taskInput.className = "routine-input routine-task";
     taskInput.value = item.task || "";
-    taskInput.placeholder = "内容を入力";
+    taskInput.placeholder = ROUTINE_TASK_PLACEHOLDER;
+    taskInput.dataset.index = String(index);
     taskInput.addEventListener("change", () => {
-      const current = loadRoutineTable();
-      if (!current[index]) return;
-      current[index].task = taskInput.value.trim();
-      saveRoutineTable(current);
+      const idx = Number(taskInput.dataset.index);
+      updateField(idx, "task", taskInput.value.trim());
     });
 
     const delBtn = document.createElement("button");
     delBtn.type = "button";
     delBtn.className = "routine-delete-btn";
     delBtn.textContent = "削除";
+    delBtn.dataset.index = String(index);
     delBtn.addEventListener("click", () => {
-      const current = loadRoutineTable();
-      current.splice(index, 1);
-      saveRoutineTable(current);
+      const idx = Number(delBtn.dataset.index);
+      const list = loadRoutineTable();
+      if (idx < 0 || idx >= list.length) return;
+      list.splice(idx, 1);
+      saveRoutineTable(list);
       renderRoutineTable();
     });
 
@@ -314,9 +325,7 @@ function initRoutineTable() {
   const resetBtn = document.getElementById("routineResetBtn");
 
   if (addBtn) {
-    addBtn.addEventListener("click", () => {
-      addRoutineRow();
-    });
+    addBtn.addEventListener("click", addRoutineRow);
   }
 
   if (resetBtn) {
